@@ -21,6 +21,7 @@ import LeadDetails from "./pages/LeadDetails.jsx";
 import TeamPerformance from "./pages/TeamPerformance.jsx";
 import NotificationsPage from "./pages/NotificationsPage.jsx";
 import Settings from "./pages/Settings.jsx";
+import FollowUpReport from "./pages/FollowUpReport.jsx";
 
 // Reusable Layout Components
 import Sidebar from "./components/Sidebar.jsx";
@@ -85,7 +86,7 @@ export default function App() {
                   />
                   <Route
                     path="/followups"
-                    element={<Navigate to="/dashboard" replace />}
+                    element={<FollowUpReport />}
                   />
                   <Route path="/performance" element={<TeamPerformance />} />
                   <Route

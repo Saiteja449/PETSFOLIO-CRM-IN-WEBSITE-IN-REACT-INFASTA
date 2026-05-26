@@ -7,7 +7,8 @@ import {
   Bell,
   Settings,
   LogOut,
-  PawPrint
+  PawPrint,
+  ClipboardList
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext.jsx";
 import { useNotifications } from "../context/NotificationContext.jsx";
@@ -23,6 +24,7 @@ export default function Sidebar({ mobileOpen, handleDrawerToggle }) {
   const menuItems = [
     { text: "Dashboard", icon: <LayoutDashboard className="w-5 h-5" />, path: "/dashboard" },
     { text: "Leads", icon: <Users className="w-5 h-5" />, path: "/leads" },
+    { text: "Recent Follow-ups", icon: <ClipboardList className="w-5 h-5" />, path: "/followups" },
     ...(currentUser?.role === "Sales Manager" ? [
       { text: "Team Performance", icon: <BarChart2 className="w-5 h-5" />, path: "/performance" }
     ] : []),
