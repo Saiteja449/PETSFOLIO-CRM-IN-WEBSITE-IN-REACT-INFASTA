@@ -1,0 +1,6 @@
+{
+  "name": "Petsfolio Sales CRM",
+  "description": "A modern Sales Operating System and CRM UI for managing pet care leads, service pipelines, follow-ups, and sales performance.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
