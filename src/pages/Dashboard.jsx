@@ -66,7 +66,7 @@ export default function Dashboard() {
         <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 flex items-center justify-between">
           <div>
             <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-wider">
-              Total Pipeline Leads
+              Total Leads
             </h3>
             <div className="text-3xl font-extrabold text-white mt-1">
               {stats.totalLeads}
@@ -142,7 +142,7 @@ export default function Dashboard() {
         <h2 className="text-lg font-bold text-white mb-4">
           Service Performance Hubs
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {stats.revenueByServiceData.map((s, index) => {
             const numLeads =
               stats.leadsByServiceData.find((le) => le.name === s.name)
