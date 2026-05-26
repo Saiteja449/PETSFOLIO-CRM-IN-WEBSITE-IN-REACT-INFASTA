@@ -648,14 +648,7 @@ export default function Leads() {
                     </span>
                   </div>
                 </div>
-                <div>
-                  <span className="block text-xs text-zinc-400 mb-1">
-                    Pipeline Stage
-                  </span>
-                  <Badge colorClass={getTwStageColor(selectedLead.stage)}>
-                    {selectedLead.stage}
-                  </Badge>
-                </div>
+                
                 <div>
                   <span className="block text-xs text-zinc-400 mb-1">
                     Assigned Manager
@@ -866,24 +859,7 @@ export default function Leads() {
                       ))}
                     </select>
                   </div>
-                  <div>
-                    <label className="block text-xs font-bold text-zinc-400 mb-1">
-                      Pipeline Stage
-                    </label>
-                    <select
-                      value={formFields.stage}
-                      onChange={(e) =>
-                        setFormFields({ ...formFields, stage: e.target.value })
-                      }
-                      className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-teal-500"
-                    >
-                      {stages[formFields.service]?.map((stg) => (
-                        <option key={stg} value={stg}>
-                          {stg}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                  
 
                   <div>
                     <label className="block text-xs font-bold text-zinc-400 mb-1">
@@ -906,36 +882,6 @@ export default function Leads() {
                         </option>
                       ))}
                     </select>
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-zinc-400 mb-1">
-                      Deal Pipeline Value ($)
-                    </label>
-                    <input
-                      type="number"
-                      value={formFields.value}
-                      onChange={(e) =>
-                        setFormFields({ ...formFields, value: e.target.value })
-                      }
-                      className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-teal-500"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-zinc-400 mb-1">
-                      Next Agenda Schedule Date
-                    </label>
-                    <input
-                      type="date"
-                      value={formFields.nextFollowUp}
-                      onChange={(e) =>
-                        setFormFields({
-                          ...formFields,
-                          nextFollowUp: e.target.value,
-                        })
-                      }
-                      className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-[7px] text-sm text-white focus:outline-none focus:border-teal-500 css-color-scheme-dark"
-                    />
                   </div>
                   <div>
                     <label className="block text-xs font-bold text-zinc-400 mb-1">

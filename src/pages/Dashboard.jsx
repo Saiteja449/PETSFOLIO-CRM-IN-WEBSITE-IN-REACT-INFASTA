@@ -10,6 +10,7 @@ import {
   Calendar,
   Star,
   CheckCircle2,
+  Download,
 } from "lucide-react";
 import {
   ResponsiveContainer,
@@ -24,13 +25,19 @@ import {
   Legend,
 } from "recharts";
 import { useDashboard } from "../context/DashboardContext.jsx";
-import { formatDate, getServiceColor } from "../utils/helpers.js";
+import { useLeads } from "../context/LeadsContext.jsx";
+import { formatDate, getServiceColor, exportToCSV } from "../utils/helpers.js";
 
 const CHART_COLORS = ["#2563eb", "#16a34a", "#ea580c", "#db2777", "#7c3aed"];
 
 export default function Dashboard() {
   const navigate = useNavigate();
   const stats = useDashboard();
+  const { leads } = useLeads();
+
+  const handleExport = () => {
+    exportToCSV(leads, "dashboard_leads_export.csv");
+  };
 
   return (
     <div className="p-4 md:p-6 space-y-6">
@@ -45,6 +52,12 @@ export default function Dashboard() {
             pipelines.
           </p>
         </div>
+        <button
+          onClick={handleExport}
+          className="flex items-center gap-2 px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white text-sm font-bold rounded-lg transition-colors"
+        >
+          <Download className="w-4 h-4" /> Export Data
+        </button>
       </div>
 
       {/* KPI Cards Row */}
@@ -166,6 +179,67 @@ export default function Dashboard() {
               </div>
             );
           })}
+        </div>
+      </div>
+
+      {/* Analytics Pie Charts */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-5 h-[400px]">
+          <h3 className="text-base font-bold text-white mb-4">Leads by Service</h3>
+          <ResponsiveContainer width="100%" height="85%">
+            <PieChart>
+              <Pie
+                data={stats.leadsByServiceData}
+                cx="50%"
+                cy="50%"
+                innerRadius={60}
+                outerRadius={100}
+                paddingAngle={2}
+                dataKey="value"
+                nameKey="name"
+                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                labelLine={false}
+              >
+                {stats.leadsByServiceData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
+                ))}
+              </Pie>
+              <RechartsTooltip 
+                contentStyle={{ backgroundColor: "#18181b", borderColor: "#27272a", color: "#f4f4f5", borderRadius: "8px" }}
+                itemStyle={{ color: "#f4f4f5" }}
+              />
+              <Legend verticalAlign="bottom" height={36} wrapperStyle={{ fontSize: "12px", color: "#a1a1aa" }} />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+
+        <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-5 h-[400px]">
+          <h3 className="text-base font-bold text-white mb-4">Leads by Source</h3>
+          <ResponsiveContainer width="100%" height="85%">
+            <PieChart>
+              <Pie
+                data={stats.leadSourceData}
+                cx="50%"
+                cy="50%"
+                innerRadius={60}
+                outerRadius={100}
+                paddingAngle={2}
+                dataKey="value"
+                nameKey="name"
+                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                labelLine={false}
+              >
+                {stats.leadSourceData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={CHART_COLORS[(index + 2) % CHART_COLORS.length]} />
+                ))}
+              </Pie>
+              <RechartsTooltip 
+                contentStyle={{ backgroundColor: "#18181b", borderColor: "#27272a", color: "#f4f4f5", borderRadius: "8px" }}
+                itemStyle={{ color: "#f4f4f5" }}
+              />
+              <Legend verticalAlign="bottom" height={36} wrapperStyle={{ fontSize: "12px", color: "#a1a1aa" }} />
+            </PieChart>
+          </ResponsiveContainer>
         </div>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

@@ -8,7 +8,8 @@ import {
   UserPlus,
   Trash2,
   Medal,
-  Activity
+  Activity,
+  Eye
 } from "lucide-react";
 import {
   ResponsiveContainer,
@@ -230,17 +231,26 @@ export default function TeamPerformance() {
                   </div>
                 </td>
                 <td className="py-3 px-4 text-center">
-                  <button
-                    onClick={() => {
-                      setDeleteError("");
-                      setDeleteTarget(p);
-                    }}
-                    disabled={p.name?.toLowerCase() === currentUser?.name?.toLowerCase() || p.id === currentUser?.id}
-                    title={p.name?.toLowerCase() === currentUser?.name?.toLowerCase() ? "Cannot delete self" : "Delete representative"}
-                    className="p-1.5 text-zinc-500 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-zinc-500"
-                  >
-                    <Trash2 size={18} />
-                  </button>
+                  <div className="flex items-center justify-center gap-2">
+                    <button
+                      onClick={() => navigate(`/salesperson/${encodeURIComponent(p.name)}`)}
+                      className="p-1.5 text-zinc-500 hover:text-teal-500 hover:bg-teal-500/10 rounded-lg transition-colors"
+                      title="View Representative Details"
+                    >
+                      <Eye size={18} />
+                    </button>
+                    <button
+                      onClick={() => {
+                        setDeleteError("");
+                        setDeleteTarget(p);
+                      }}
+                      disabled={p.name?.toLowerCase() === currentUser?.name?.toLowerCase() || p.id === currentUser?.id}
+                      title={p.name?.toLowerCase() === currentUser?.name?.toLowerCase() ? "Cannot delete self" : "Delete representative"}
+                      className="p-1.5 text-zinc-500 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-zinc-500"
+                    >
+                      <Trash2 size={18} />
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}

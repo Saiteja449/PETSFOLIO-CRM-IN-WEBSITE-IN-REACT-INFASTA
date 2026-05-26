@@ -22,6 +22,7 @@ import TeamPerformance from "./pages/TeamPerformance.jsx";
 import NotificationsPage from "./pages/NotificationsPage.jsx";
 import Settings from "./pages/Settings.jsx";
 import FollowUpReport from "./pages/FollowUpReport.jsx";
+import SalesPersonDetails from "./pages/SalesPersonDetails.jsx";
 
 // Reusable Layout Components
 import Sidebar from "./components/Sidebar.jsx";
@@ -89,6 +90,7 @@ export default function App() {
                     element={<FollowUpReport />}
                   />
                   <Route path="/performance" element={<TeamPerformance />} />
+                  <Route path="/salesperson/:name" element={<SalesPersonDetails />} />
                   <Route
                     path="/notifications"
                     element={<NotificationsPage />}
