@@ -340,9 +340,24 @@ export default function LeadDetails() {
                   <span className="text-xs text-zinc-500 block mb-0.5">
                     Sales Representative
                   </span>
-                  <span className="text-sm font-semibold text-zinc-200 truncate block">
-                    {currentLead.assignedTo}
-                  </span>
+                  {currentUser?.role === "Sales Manager" ? (
+                    <select
+                      value={currentLead.assignedTo || ""}
+                      onChange={handleAssigneeChange}
+                      className="bg-zinc-950 border border-zinc-800 text-sm font-semibold text-zinc-200 rounded px-2 py-1 focus:outline-none focus:border-teal-500 cursor-pointer w-full max-w-[200px]"
+                    >
+                      <option value="">Unassigned</option>
+                      {allUsers.map((u) => (
+                        <option key={u.id} value={u.name}>
+                          {u.name}
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    <span className="text-sm font-semibold text-zinc-200 truncate block">
+                      {currentLead.assignedTo}
+                    </span>
+                  )}
                 </div>
               </div>
               <div className="flex items-start gap-3">

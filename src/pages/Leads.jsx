@@ -444,7 +444,23 @@ export default function Leads() {
                         </div>
                       </td>
                       <td className="px-4 py-3 text-sm text-zinc-300">
-                        {lead.assignedTo}
+                        {currentUser?.role === "Sales Manager" ? (
+                          <select
+                            value={lead.assignedTo || ""}
+                            onChange={(e) => updateLead(lead.id, { assignedTo: e.target.value }, currentUser?.name)}
+                            className="bg-transparent border border-zinc-700 rounded px-2 py-1 text-sm focus:outline-none focus:border-teal-500 cursor-pointer w-full max-w-[150px]"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <option value="">Unassigned</option>
+                            {allUsers.map((u) => (
+                              <option key={u.id} value={u.name}>
+                                {u.name}
+                              </option>
+                            ))}
+                          </select>
+                        ) : (
+                          lead.assignedTo
+                        )}
                       </td>
                       <td className="px-4 py-3 text-sm">
                         {lead.joinedAt ? (
