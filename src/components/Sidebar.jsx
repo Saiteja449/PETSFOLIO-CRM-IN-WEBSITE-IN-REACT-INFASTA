@@ -81,7 +81,7 @@ export default function Sidebar({ mobileOpen, handleDrawerToggle }) {
       <nav className="flex-1 px-3">
         <ul className="space-y-1">
           {menuItems.map((item) => {
-            const isActive = location.pathname === item.path || (item.path === "/leads" && location.pathname.startsWith("/lead-detail"));
+            const isActive = location.pathname === item.path || (item.path === "/leads" && location.pathname.startsWith("/lead-details"));
             return (
               <li key={item.text}>
                 <button
