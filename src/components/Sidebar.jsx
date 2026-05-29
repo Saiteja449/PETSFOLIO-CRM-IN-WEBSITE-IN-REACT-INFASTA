@@ -8,7 +8,7 @@ import {
   Settings,
   LogOut,
   PawPrint,
-  ClipboardList
+  ClipboardList,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext.jsx";
 import { useNotifications } from "../context/NotificationContext.jsx";
@@ -22,16 +22,41 @@ export default function Sidebar({ mobileOpen, handleDrawerToggle }) {
   const { unreadCount } = useNotifications();
 
   const menuItems = [
-    { text: "Dashboard", icon: <LayoutDashboard className="w-5 h-5" />, path: "/dashboard" },
+    {
+      text: "Dashboard",
+      icon: <LayoutDashboard className="w-5 h-5" />,
+      path: "/dashboard",
+    },
     { text: "Leads", icon: <Users className="w-5 h-5" />, path: "/leads" },
-    ...(currentUser?.role === "Sales Manager" ? [
-      { text: "Recent Follow-ups", icon: <ClipboardList className="w-5 h-5" />, path: "/followups" }
-    ] : []),
-    ...(currentUser?.role === "Sales Manager" ? [
-      { text: "Team Performance", icon: <BarChart2 className="w-5 h-5" />, path: "/performance" }
-    ] : []),
-    { text: "Notifications", icon: <Bell className="w-5 h-5" />, path: "/notifications", badge: unreadCount },
-    { text: "Settings", icon: <Settings className="w-5 h-5" />, path: "/settings" }
+    ...(currentUser?.role === "Sales Manager"
+      ? [
+          {
+            text: "Recent Follow-ups",
+            icon: <ClipboardList className="w-5 h-5" />,
+            path: "/followups",
+          },
+        ]
+      : []),
+    ...(currentUser?.role === "Sales Manager"
+      ? [
+          {
+            text: "Team Performance",
+            icon: <BarChart2 className="w-5 h-5" />,
+            path: "/performance",
+          },
+        ]
+      : []),
+    {
+      text: "Notifications",
+      icon: <Bell className="w-5 h-5" />,
+      path: "/notifications",
+      badge: unreadCount,
+    },
+    {
+      text: "Settings",
+      icon: <Settings className="w-5 h-5" />,
+      path: "/settings",
+    },
   ];
 
   const handleNav = (path) => {
@@ -81,7 +106,10 @@ export default function Sidebar({ mobileOpen, handleDrawerToggle }) {
       <nav className="flex-1 px-3">
         <ul className="space-y-1">
           {menuItems.map((item) => {
-            const isActive = location.pathname === item.path || (item.path === "/leads" && location.pathname.startsWith("/lead-details"));
+            const isActive =
+              location.pathname === item.path ||
+              (item.path === "/leads" &&
+                location.pathname.startsWith("/lead-details"));
             return (
               <li key={item.text}>
                 <button
@@ -94,7 +122,9 @@ export default function Sidebar({ mobileOpen, handleDrawerToggle }) {
                   }`}
                 >
                   <span className="shrink-0">{item.icon}</span>
-                  <span className={`text-sm flex-1 text-left ${isActive ? "font-bold" : "font-medium"}`}>
+                  <span
+                    className={`text-sm flex-1 text-left ${isActive ? "font-bold" : "font-medium"}`}
+                  >
                     {item.text}
                   </span>
                   {item.badge !== undefined && item.badge > 0 && (

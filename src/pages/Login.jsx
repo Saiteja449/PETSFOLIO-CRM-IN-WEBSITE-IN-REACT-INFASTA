@@ -1,11 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Cat,
-  Eye,
-  EyeOff,
-  Lock,
-} from "lucide-react";
+import { Cat, Eye, EyeOff, Lock } from "lucide-react";
 import { useAuth } from "../context/AuthContext.jsx";
 
 export default function Login() {
@@ -43,7 +38,13 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-zinc-950 p-4" style={{ backgroundImage: "radial-gradient(circle at 50% 50%, rgba(20, 184, 166, 0.08) 0%, transparent 60%)" }}>
+    <div
+      className="min-h-screen flex items-center justify-center bg-zinc-950 p-4"
+      style={{
+        backgroundImage:
+          "radial-gradient(circle at 50% 50%, rgba(20, 184, 166, 0.08) 0%, transparent 60%)",
+      }}
+    >
       <div className="max-w-md w-full bg-zinc-900 border border-zinc-800 rounded-2xl shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] overflow-hidden">
         <div className="p-6 sm:p-10">
           {/* Logo & Subtitle */}
@@ -76,8 +77,12 @@ export default function Login() {
                 onChange={(e) => setRole(e.target.value)}
                 className="w-full bg-zinc-950 border border-zinc-800 text-white text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block p-3 outline-none"
               >
-                <option value="Sales Manager">Sales Manager (Alex Mercer)</option>
-                <option value="Sales Representative">Sales Representative</option>
+                <option value="Sales Manager">
+                  Sales Manager (Alex Mercer)
+                </option>
+                <option value="Sales Representative">
+                  Sales Representative
+                </option>
               </select>
             </div>
 
@@ -138,14 +143,18 @@ export default function Login() {
             <div className="flex gap-3">
               <button
                 type="button"
-                onClick={() => handleDemoFill("alex@petsfolio.com", "Sales Manager")}
+                onClick={() =>
+                  handleDemoFill("alex@petsfolio.com", "Sales Manager")
+                }
                 className="flex-1 py-2 px-3 border border-zinc-700 text-zinc-300 hover:bg-zinc-800 rounded-lg text-xs font-medium transition-colors"
               >
                 Sales Manager
               </button>
               <button
                 type="button"
-                onClick={() => handleDemoFill("sarah@petsfolio.com", "Sales Representative")}
+                onClick={() =>
+                  handleDemoFill("sarah@petsfolio.com", "Sales Representative")
+                }
                 className="flex-1 py-2 px-3 border border-zinc-700 text-zinc-300 hover:bg-zinc-800 rounded-lg text-xs font-medium transition-colors"
               >
                 Sales Rep

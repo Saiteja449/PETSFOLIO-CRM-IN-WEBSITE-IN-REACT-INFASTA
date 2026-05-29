@@ -389,7 +389,9 @@ export default function LeadDetails() {
                     Joined At
                   </span>
                   <span className="text-sm font-semibold text-zinc-200 truncate block">
-                    {currentLead.joinedAt ? formatDate(currentLead.joinedAt) : "-"}
+                    {currentLead.joinedAt
+                      ? formatDate(currentLead.joinedAt)
+                      : "-"}
                   </span>
                 </div>
               </div>

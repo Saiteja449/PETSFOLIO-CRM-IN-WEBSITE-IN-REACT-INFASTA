@@ -1,49 +1,97 @@
 export const users = [
-  { id: "u1", name: "Alex Mercer", role: "Sales Manager", email: "alex@petsfolio.com", avatar: "AM" },
-  { id: "u2", name: "Sarah Connor", role: "Sales Representative", email: "sarah@petsfolio.com", avatar: "SC" },
-  { id: "u3", name: "David Miller", role: "Sales Representative", email: "david@petsfolio.com", avatar: "DM" },
-  { id: "u4", name: "Emily Davis", role: "Sales Representative", email: "emily@petsfolio.com", avatar: "ED" }
+  {
+    id: "u1",
+    name: "Alex Mercer",
+    role: "Sales Manager",
+    email: "alex@petsfolio.com",
+    avatar: "AM",
+  },
+  {
+    id: "u2",
+    name: "Sarah Connor",
+    role: "Sales Representative",
+    email: "sarah@petsfolio.com",
+    avatar: "SC",
+  },
+  {
+    id: "u3",
+    name: "David Miller",
+    role: "Sales Representative",
+    email: "david@petsfolio.com",
+    avatar: "DM",
+  },
+  {
+    id: "u4",
+    name: "Emily Davis",
+    role: "Sales Representative",
+    email: "emily@petsfolio.com",
+    avatar: "ED",
+  },
 ];
 
 export const services = [
-  { id: "s1", name: "Grooming", code: "Grooming", active: true, color: "#2563eb" },
-  { id: "s2", name: "Training", code: "Training", active: true, color: "#16a34a" },
-  { id: "s3", name: "Walking", code: "Walking", active: true, color: "#ea580c" },
-  { id: "s4", name: "Pet Sitting", code: "Pet Sitting", active: true, color: "#db2777" },
-  { id: "s5", name: "Pet Insurance", code: "Pet Insurance", active: true, color: "#7c3aed" }
+  {
+    id: "s1",
+    name: "Grooming",
+    code: "Grooming",
+    active: true,
+    color: "#2563eb",
+  },
+  {
+    id: "s2",
+    name: "Training",
+    code: "Training",
+    active: true,
+    color: "#16a34a",
+  },
+  {
+    id: "s3",
+    name: "Walking",
+    code: "Walking",
+    active: true,
+    color: "#ea580c",
+  },
+  {
+    id: "s4",
+    name: "Pet Sitting",
+    code: "Pet Sitting",
+    active: true,
+    color: "#db2777",
+  },
+  {
+    id: "s5",
+    name: "Pet Insurance",
+    code: "Pet Insurance",
+    active: true,
+    color: "#7c3aed",
+  },
 ];
 
 export const stages = {
-  "Grooming": [
+  Grooming: [
     "New Lead",
     "Inquiry",
     "Appointment Scheduled",
     "Grooming Completed",
-    "Repeat Booking"
+    "Repeat Booking",
   ],
-  "Training": [
+  Training: [
     "New Lead",
     "Consultation",
     "Assessment",
     "Package Discussion",
     "Enrollment",
     "Training Active",
-    "Renewal"
+    "Renewal",
   ],
-  "Walking": [
-    "Lead",
-    "Trial Walk",
-    "Subscription",
-    "Active Customer",
-    "Renewal"
-  ],
+  Walking: ["Lead", "Trial Walk", "Subscription", "Active Customer", "Renewal"],
   "Pet Sitting": [
     "Lead",
     "Requirement Discussion",
     "Booking Planned",
     "Service Scheduled",
     "Service Completed",
-    "Repeat Booking"
+    "Repeat Booking",
   ],
   "Pet Insurance": [
     "Lead",
@@ -52,8 +100,8 @@ export const stages = {
     "Comparison",
     "Payment",
     "Policy Issued",
-    "Renewal"
-  ]
+    "Renewal",
+  ],
 };
 
 // Generate 32 Realistic Dummy Leads
@@ -74,13 +122,14 @@ export const initialLeads = [
     petName: "Max",
     petBreed: "Golden Retriever",
     petAge: "2 years",
-    notes: "Requires hypoallergenic shampoo. Slightly nervous during nail trimming.",
+    notes:
+      "Requires hypoallergenic shampoo. Slightly nervous during nail trimming.",
     createdAt: "2026-05-20",
     value: 120,
     city: "Phoenix",
     preferredContactMethod: "Email",
     petWeight: "23 lbs",
-    petMedicalConditions: "None"
+    petMedicalConditions: "None",
   },
   {
     id: "lead_2",
@@ -104,7 +153,7 @@ export const initialLeads = [
     city: "Dallas",
     preferredContactMethod: "SMS",
     petWeight: "22 lbs",
-    petMedicalConditions: "None"
+    petMedicalConditions: "None",
   },
   {
     id: "lead_3",
@@ -127,7 +176,7 @@ export const initialLeads = [
     city: "San Jose",
     preferredContactMethod: "Email",
     petWeight: "20 lbs",
-    petMedicalConditions: "None"
+    petMedicalConditions: "None",
   },
   {
     id: "lead_4",
@@ -144,13 +193,14 @@ export const initialLeads = [
     petName: "Daisy",
     petBreed: "Poodle",
     petAge: "4 years",
-    notes: "Super friendly. Loved the teddy bear cut. Will need a recall for repeat booking in 3 weeks.",
+    notes:
+      "Super friendly. Loved the teddy bear cut. Will need a recall for repeat booking in 3 weeks.",
     createdAt: "2026-05-15",
     value: 110,
     city: "Chicago",
     preferredContactMethod: "WhatsApp",
     petWeight: "50 lbs",
-    petMedicalConditions: "None"
+    petMedicalConditions: "None",
   },
   {
     id: "lead_5",
@@ -173,7 +223,7 @@ export const initialLeads = [
     city: "San Antonio",
     preferredContactMethod: "Email",
     petWeight: "17 lbs",
-    petMedicalConditions: "Allergies"
+    petMedicalConditions: "Allergies",
   },
   {
     id: "lead_6",
@@ -196,7 +246,7 @@ export const initialLeads = [
     city: "Chicago",
     preferredContactMethod: "Phone",
     petWeight: "46 lbs",
-    petMedicalConditions: "Arthritis"
+    petMedicalConditions: "Arthritis",
   },
   {
     id: "lead_7",
@@ -211,13 +261,14 @@ export const initialLeads = [
     petName: "Luna",
     petBreed: "Siberian Husky",
     petAge: "1.5 years",
-    notes: "High energy level, pulls excessively on leash. Consultation scheduled to align objectives.",
+    notes:
+      "High energy level, pulls excessively on leash. Consultation scheduled to align objectives.",
     createdAt: "2026-05-19",
     value: 600,
     city: "Chicago",
     preferredContactMethod: "Phone",
     petWeight: "33 lbs",
-    petMedicalConditions: "None"
+    petMedicalConditions: "None",
   },
   {
     id: "lead_8",
@@ -232,13 +283,14 @@ export const initialLeads = [
     petName: "Milo",
     petBreed: "Beagle",
     petAge: "8 months",
-    notes: "Completed basic initial assessment. Treats motivated but easily distracted.",
+    notes:
+      "Completed basic initial assessment. Treats motivated but easily distracted.",
     createdAt: "2026-05-16",
     value: 550,
     city: "Philadelphia",
     preferredContactMethod: "WhatsApp",
     petWeight: "12 lbs",
-    petMedicalConditions: "None"
+    petMedicalConditions: "None",
   },
   {
     id: "lead_9",
@@ -253,13 +305,14 @@ export const initialLeads = [
     petName: "Oliver",
     petBreed: "French Bulldog",
     petAge: "2 years",
-    notes: "Discussing the 6-week behavior modification package. Hesitant on pricing.",
+    notes:
+      "Discussing the 6-week behavior modification package. Hesitant on pricing.",
     createdAt: "2026-05-14",
     value: 800,
     city: "San Jose",
     preferredContactMethod: "Phone",
     petWeight: "31 lbs",
-    petMedicalConditions: "Anxiety"
+    petMedicalConditions: "Anxiety",
   },
   {
     id: "lead_10",
@@ -274,13 +327,14 @@ export const initialLeads = [
     petName: "Lola",
     petBreed: "Pug",
     petAge: "1 year",
-    notes: "Enrolled in puppy socialization classes. Payment structure finalized.",
+    notes:
+      "Enrolled in puppy socialization classes. Payment structure finalized.",
     createdAt: "2026-05-12",
     value: 350,
     city: "New York",
     preferredContactMethod: "SMS",
     petWeight: "47 lbs",
-    petMedicalConditions: "Diabetes"
+    petMedicalConditions: "Diabetes",
   },
   {
     id: "lead_11",
@@ -301,7 +355,7 @@ export const initialLeads = [
     city: "Houston",
     preferredContactMethod: "Email",
     petWeight: "22 lbs",
-    petMedicalConditions: "Diabetes"
+    petMedicalConditions: "Diabetes",
   },
   {
     id: "lead_12",
@@ -316,13 +370,14 @@ export const initialLeads = [
     petName: "Zeus",
     petBreed: "Rottweiler",
     petAge: "3 years",
-    notes: "Agility stage 1 completed. Offering 15% discount for Agility Stage 2 renewal.",
+    notes:
+      "Agility stage 1 completed. Offering 15% discount for Agility Stage 2 renewal.",
     createdAt: "2026-03-15",
     value: 450,
     city: "San Diego",
     preferredContactMethod: "WhatsApp",
     petWeight: "43 lbs",
-    petMedicalConditions: "Allergies"
+    petMedicalConditions: "Allergies",
   },
   {
     id: "lead_13",
@@ -337,13 +392,14 @@ export const initialLeads = [
     petName: "Winston",
     petBreed: "English Bulldog",
     petAge: "4 years",
-    notes: "Needs 30-minute slow paced daily walks due to breathing characteristics.",
+    notes:
+      "Needs 30-minute slow paced daily walks due to breathing characteristics.",
     createdAt: "2026-05-24",
     value: 180,
     city: "Dallas",
     preferredContactMethod: "WhatsApp",
     petWeight: "31 lbs",
-    petMedicalConditions: "Allergies"
+    petMedicalConditions: "Allergies",
   },
   {
     id: "lead_14",
@@ -358,13 +414,14 @@ export const initialLeads = [
     petName: "Coco",
     petBreed: "Chihuahua",
     petAge: "2 years",
-    notes: "Trial walk scheduled for tomorrow afternoon. Reactive to large dogs.",
+    notes:
+      "Trial walk scheduled for tomorrow afternoon. Reactive to large dogs.",
     createdAt: "2026-05-22",
     value: 20,
     city: "Chicago",
     preferredContactMethod: "WhatsApp",
     petWeight: "45 lbs",
-    petMedicalConditions: "Arthritis"
+    petMedicalConditions: "Arthritis",
   },
   {
     id: "lead_15",
@@ -385,7 +442,7 @@ export const initialLeads = [
     city: "Dallas",
     preferredContactMethod: "WhatsApp",
     petWeight: "18 lbs",
-    petMedicalConditions: "None"
+    petMedicalConditions: "None",
   },
   {
     id: "lead_16",
@@ -400,13 +457,14 @@ export const initialLeads = [
     petName: "Tucker",
     petBreed: "Australian Shepherd",
     petAge: "3 years",
-    notes: "Regular 5-day / week energetic walker customer. Handled by Walker Sam.",
+    notes:
+      "Regular 5-day / week energetic walker customer. Handled by Walker Sam.",
     createdAt: "2026-04-05",
     value: 360,
     city: "San Antonio",
     preferredContactMethod: "Phone",
     petWeight: "27 lbs",
-    petMedicalConditions: "None"
+    petMedicalConditions: "None",
   },
   {
     id: "lead_17",
@@ -421,13 +479,14 @@ export const initialLeads = [
     petName: "Ruby",
     petBreed: "Boxer",
     petAge: "4 years",
-    notes: "Monthly subscription ending on May 28. Needs review for renewal discount.",
+    notes:
+      "Monthly subscription ending on May 28. Needs review for renewal discount.",
     createdAt: "2026-04-20",
     value: 300,
     city: "Chicago",
     preferredContactMethod: "SMS",
     petWeight: "27 lbs",
-    petMedicalConditions: "Anxiety"
+    petMedicalConditions: "Anxiety",
   },
   {
     id: "lead_18",
@@ -442,13 +501,14 @@ export const initialLeads = [
     petName: "Simba",
     petBreed: "Maine Coon Cat",
     petAge: "2 years",
-    notes: "Needs feeding and litter cleaning twice daily from June 10 to June 15.",
+    notes:
+      "Needs feeding and litter cleaning twice daily from June 10 to June 15.",
     createdAt: "2026-05-24",
     value: 200,
     city: "Los Angeles",
     preferredContactMethod: "SMS",
     petWeight: "23 lbs",
-    petMedicalConditions: "None"
+    petMedicalConditions: "None",
   },
   {
     id: "lead_19",
@@ -463,13 +523,14 @@ export const initialLeads = [
     petName: "Chloe",
     petBreed: "Persian Cat",
     petAge: "5 years",
-    notes: "Requires administration of insulin shots in the evening. Discussing safety criteria.",
+    notes:
+      "Requires administration of insulin shots in the evening. Discussing safety criteria.",
     createdAt: "2026-05-21",
     value: 350,
     city: "San Antonio",
     preferredContactMethod: "WhatsApp",
     petWeight: "38 lbs",
-    petMedicalConditions: "None"
+    petMedicalConditions: "None",
   },
   {
     id: "lead_20",
@@ -484,13 +545,14 @@ export const initialLeads = [
     petName: "Ziggy",
     petBreed: "Border Collie",
     petAge: "2 years",
-    notes: "Overnight house sitting planned for 4 nights during 4th of July week.",
+    notes:
+      "Overnight house sitting planned for 4 nights during 4th of July week.",
     createdAt: "2026-05-18",
     value: 500,
     city: "Dallas",
     preferredContactMethod: "WhatsApp",
     petWeight: "54 lbs",
-    petMedicalConditions: "Diabetes"
+    petMedicalConditions: "Diabetes",
   },
   {
     id: "lead_21",
@@ -505,13 +567,14 @@ export const initialLeads = [
     petName: "Minnie",
     petBreed: "Maltese",
     petAge: "6 years",
-    notes: "Scheduled block of 3 days. Keys collected and home orientation done.",
+    notes:
+      "Scheduled block of 3 days. Keys collected and home orientation done.",
     createdAt: "2026-05-10",
     value: 180,
     city: "Philadelphia",
     preferredContactMethod: "WhatsApp",
     petWeight: "38 lbs",
-    petMedicalConditions: "Allergies"
+    petMedicalConditions: "Allergies",
   },
   {
     id: "lead_22",
@@ -532,7 +595,7 @@ export const initialLeads = [
     city: "Chicago",
     preferredContactMethod: "WhatsApp",
     petWeight: "55 lbs",
-    petMedicalConditions: "None"
+    petMedicalConditions: "None",
   },
   {
     id: "lead_23",
@@ -553,7 +616,7 @@ export const initialLeads = [
     city: "Dallas",
     preferredContactMethod: "WhatsApp",
     petWeight: "37 lbs",
-    petMedicalConditions: "None"
+    petMedicalConditions: "None",
   },
   {
     id: "lead_24",
@@ -568,13 +631,14 @@ export const initialLeads = [
     petName: "Nala",
     petBreed: "Ragdoll Cat",
     petAge: "5 months",
-    notes: "Young kitten, owner wants to lock in a premium coverage starting early.",
+    notes:
+      "Young kitten, owner wants to lock in a premium coverage starting early.",
     createdAt: "2026-05-24",
     value: 45,
     city: "Philadelphia",
     preferredContactMethod: "WhatsApp",
     petWeight: "20 lbs",
-    petMedicalConditions: "Anxiety"
+    petMedicalConditions: "Anxiety",
   },
   {
     id: "lead_25",
@@ -589,13 +653,14 @@ export const initialLeads = [
     petName: "Buster",
     petBreed: "Boxer",
     petAge: "5 years",
-    notes: "Shared quote for $5,000 annual coverage with $250 deductible. Waiting for response.",
+    notes:
+      "Shared quote for $5,000 annual coverage with $250 deductible. Waiting for response.",
     createdAt: "2026-05-19",
     value: 55,
     city: "Philadelphia",
     preferredContactMethod: "WhatsApp",
     petWeight: "31 lbs",
-    petMedicalConditions: "None"
+    petMedicalConditions: "None",
   },
   {
     id: "lead_26",
@@ -610,13 +675,14 @@ export const initialLeads = [
     petName: "Oreo",
     petBreed: "Border Collie",
     petAge: "2 years",
-    notes: "Owner uploading medical history documents to check for pre-existing conditions exclusions.",
+    notes:
+      "Owner uploading medical history documents to check for pre-existing conditions exclusions.",
     createdAt: "2026-05-14",
     value: 50,
     city: "Dallas",
     preferredContactMethod: "WhatsApp",
     petWeight: "59 lbs",
-    petMedicalConditions: "Arthritis"
+    petMedicalConditions: "Arthritis",
   },
   {
     id: "lead_27",
@@ -631,13 +697,14 @@ export const initialLeads = [
     petName: "Zoe",
     petBreed: "Yorkshire Terrier",
     petAge: "6 years",
-    notes: "Comparing our comprehensive premium cover against competitor's base-tier budget plan.",
+    notes:
+      "Comparing our comprehensive premium cover against competitor's base-tier budget plan.",
     createdAt: "2026-05-15",
     value: 65,
     city: "Chicago",
     preferredContactMethod: "SMS",
     petWeight: "30 lbs",
-    petMedicalConditions: "Allergies"
+    petMedicalConditions: "Allergies",
   },
   {
     id: "lead_28",
@@ -652,13 +719,14 @@ export const initialLeads = [
     petName: "Rex",
     petBreed: "Siberian Husky",
     petAge: "1 year",
-    notes: "Approved proposal. Sent secure payment link. Waiting for transaction execution.",
+    notes:
+      "Approved proposal. Sent secure payment link. Waiting for transaction execution.",
     createdAt: "2026-05-10",
     value: 70,
     city: "San Diego",
     preferredContactMethod: "SMS",
     petWeight: "23 lbs",
-    petMedicalConditions: "Anxiety"
+    petMedicalConditions: "Anxiety",
   },
   {
     id: "lead_29",
@@ -679,7 +747,7 @@ export const initialLeads = [
     city: "Phoenix",
     preferredContactMethod: "SMS",
     petWeight: "12 lbs",
-    petMedicalConditions: "Anxiety"
+    petMedicalConditions: "Anxiety",
   },
   {
     id: "lead_30",
@@ -694,13 +762,14 @@ export const initialLeads = [
     petName: "Bear",
     petBreed: "Newfoundland",
     petAge: "5 years",
-    notes: "Annual policy expiring soon on June 5th. Initiating renewal proposal with premium incentive.",
+    notes:
+      "Annual policy expiring soon on June 5th. Initiating renewal proposal with premium incentive.",
     createdAt: "2025-05-20",
     value: 90,
     city: "Los Angeles",
     preferredContactMethod: "Email",
     petWeight: "39 lbs",
-    petMedicalConditions: "None"
+    petMedicalConditions: "None",
   },
   {
     id: "lead_31",
@@ -715,13 +784,14 @@ export const initialLeads = [
     petName: "Rosie",
     petBreed: "Bichon Frise",
     petAge: "6 months",
-    notes: "Puppy's first grooming session. Owner is very protective, requested extra caring handling.",
+    notes:
+      "Puppy's first grooming session. Owner is very protective, requested extra caring handling.",
     createdAt: "2026-05-25",
     value: 85,
     city: "San Antonio",
     preferredContactMethod: "WhatsApp",
     petWeight: "24 lbs",
-    petMedicalConditions: "Diabetes"
+    petMedicalConditions: "Diabetes",
   },
   {
     id: "lead_32",
@@ -736,13 +806,14 @@ export const initialLeads = [
     petName: "Penny",
     petBreed: "Dachshund",
     petAge: "2 years",
-    notes: "Highly energetic. Closed won walking service with 3 rides per week.",
+    notes:
+      "Highly energetic. Closed won walking service with 3 rides per week.",
     createdAt: "2026-04-18",
     value: 120,
     city: "San Diego",
     preferredContactMethod: "WhatsApp",
     petWeight: "16 lbs",
-    petMedicalConditions: "Arthritis"
+    petMedicalConditions: "Arthritis",
   },
   {
     id: "lead_33",
@@ -765,7 +836,7 @@ export const initialLeads = [
     city: "San Diego",
     preferredContactMethod: "Phone",
     petWeight: "54 lbs",
-    petMedicalConditions: "Diabetes"
+    petMedicalConditions: "Diabetes",
   },
   {
     id: "lead_34",
@@ -782,13 +853,14 @@ export const initialLeads = [
     petName: "Sully",
     petBreed: "Boxer",
     petAge: "3 years",
-    notes: "Professional trainer applying to join the network as service partner.",
+    notes:
+      "Professional trainer applying to join the network as service partner.",
     createdAt: "2026-05-26",
     value: 0,
     city: "Chicago",
     preferredContactMethod: "Email",
     petWeight: "14 lbs",
-    petMedicalConditions: "Allergies"
+    petMedicalConditions: "Allergies",
   },
   {
     id: "lead_35",
@@ -811,7 +883,7 @@ export const initialLeads = [
     city: "San Diego",
     preferredContactMethod: "SMS",
     petWeight: "56 lbs",
-    petMedicalConditions: "None"
+    petMedicalConditions: "None",
   },
   {
     id: "lead_36",
@@ -828,13 +900,14 @@ export const initialLeads = [
     petName: "Buddy",
     petBreed: "Labrador",
     petAge: "2 years",
-    notes: "Looking to onboard as an experienced pet walker for premium routes.",
+    notes:
+      "Looking to onboard as an experienced pet walker for premium routes.",
     createdAt: "2026-05-26",
     value: 0,
     city: "San Antonio",
     preferredContactMethod: "Phone",
     petWeight: "24 lbs",
-    petMedicalConditions: "None"
+    petMedicalConditions: "None",
   },
   {
     id: "lead_37",
@@ -857,7 +930,7 @@ export const initialLeads = [
     city: "Los Angeles",
     preferredContactMethod: "SMS",
     petWeight: "54 lbs",
-    petMedicalConditions: "None"
+    petMedicalConditions: "None",
   },
   {
     id: "lead_38",
@@ -880,34 +953,188 @@ export const initialLeads = [
     city: "New York",
     preferredContactMethod: "WhatsApp",
     petWeight: "39 lbs",
-    petMedicalConditions: "Anxiety"
-  }
+    petMedicalConditions: "Anxiety",
+  },
 ];
 
 export const initialFollowups = [
-  { id: "fw1", leadId: "lead_1", leadName: "John Doe", type: "Call", date: "2026-05-26", time: "10:30 AM", priority: "High", done: false, notes: "Call to confirm Grooming appointment scheduled.", petName: "Max" },
-  { id: "fw2", leadId: "lead_6", leadName: "Jessica Wilson", type: "WhatsApp", date: "2026-05-26", time: "01:00 PM", priority: "Medium", done: false, notes: "Ping on WhatsApp about training schedules.", petName: "Cooper" },
-  { id: "fw3", leadId: "lead_13", leadName: "Kevin Martin", type: "Email", date: "2026-05-26", time: "03:00 PM", priority: "Medium", done: false, notes: "Send walking pricing matrix details.", petName: "Winston" },
-  { id: "fw4", leadId: "lead_7", leadName: "Matthew Martinez", type: "Meeting", date: "2026-05-25", time: "11:00 AM", priority: "High", done: false, notes: "Conduct Training Assessment consultation.", petName: "Luna" }, // Overdue
-  { id: "fw5", leadId: "lead_17", leadName: "Steven Walker", type: "Call", date: "2026-05-24", time: "04:30 PM", priority: "High", done: false, notes: "Call to discuss walking subscription renewal.", petName: "Ruby" }, // Overdue
-  { id: "fw6", leadId: "lead_2", leadName: "Alice Smith", type: "WhatsApp", date: "2026-05-27", time: "11:30 AM", priority: "Low", done: false, notes: "Check schedule for grooming haircut appointment.", petName: "Bella" },
-  { id: "fw7", leadId: "lead_22", leadName: "Katelyn Wright", type: "Email", date: "2026-05-10", time: "02:00 PM", priority: "Low", done: true, notes: "Sent thank you note and review prompt.", petName: "Duke" } // Completed
+  {
+    id: "fw1",
+    leadId: "lead_1",
+    leadName: "John Doe",
+    type: "Call",
+    date: "2026-05-26",
+    time: "10:30 AM",
+    priority: "High",
+    done: false,
+    notes: "Call to confirm Grooming appointment scheduled.",
+    petName: "Max",
+  },
+  {
+    id: "fw2",
+    leadId: "lead_6",
+    leadName: "Jessica Wilson",
+    type: "WhatsApp",
+    date: "2026-05-26",
+    time: "01:00 PM",
+    priority: "Medium",
+    done: false,
+    notes: "Ping on WhatsApp about training schedules.",
+    petName: "Cooper",
+  },
+  {
+    id: "fw3",
+    leadId: "lead_13",
+    leadName: "Kevin Martin",
+    type: "Email",
+    date: "2026-05-26",
+    time: "03:00 PM",
+    priority: "Medium",
+    done: false,
+    notes: "Send walking pricing matrix details.",
+    petName: "Winston",
+  },
+  {
+    id: "fw4",
+    leadId: "lead_7",
+    leadName: "Matthew Martinez",
+    type: "Meeting",
+    date: "2026-05-25",
+    time: "11:00 AM",
+    priority: "High",
+    done: false,
+    notes: "Conduct Training Assessment consultation.",
+    petName: "Luna",
+  }, // Overdue
+  {
+    id: "fw5",
+    leadId: "lead_17",
+    leadName: "Steven Walker",
+    type: "Call",
+    date: "2026-05-24",
+    time: "04:30 PM",
+    priority: "High",
+    done: false,
+    notes: "Call to discuss walking subscription renewal.",
+    petName: "Ruby",
+  }, // Overdue
+  {
+    id: "fw6",
+    leadId: "lead_2",
+    leadName: "Alice Smith",
+    type: "WhatsApp",
+    date: "2026-05-27",
+    time: "11:30 AM",
+    priority: "Low",
+    done: false,
+    notes: "Check schedule for grooming haircut appointment.",
+    petName: "Bella",
+  },
+  {
+    id: "fw7",
+    leadId: "lead_22",
+    leadName: "Katelyn Wright",
+    type: "Email",
+    date: "2026-05-10",
+    time: "02:00 PM",
+    priority: "Low",
+    done: true,
+    notes: "Sent thank you note and review prompt.",
+    petName: "Duke",
+  }, // Completed
 ];
 
 export const initialActivities = [
-  { id: "act1", leadId: "lead_1", leadName: "John Doe", type: "Stage Changed", content: "Stage updated from Inquiry to Appointment Scheduled by Alex Mercer", date: "2026-05-25T14:30:11Z", author: "Alex Mercer" },
-  { id: "act2", leadId: "lead_6", leadName: "Jessica Wilson", type: "Lead Created", content: "Lead created via Whatsapp ad integration.", date: "2026-05-25T09:12:00Z", author: "System" },
-  { id: "act3", leadId: "lead_29", leadName: "Donna Mitchell", type: "Policy Issued", content: "Policy documentation uploaded, policy active.", date: "2026-05-24T16:45:00Z", author: "Emily Davis" },
-  { id: "act4", leadId: "lead_3", leadName: "Robert Johnson", type: "Note Added", content: "Customer requested a warm air blow dryer instead of cage dryer.", date: "2026-05-24T11:20:00Z", author: "Sarah Connor" },
-  { id: "act5", leadId: "lead_15", leadName: "Brian Rodriguez", type: "Call Completed", content: "Discussed subscription pricing options. Client seems positive.", date: "2026-05-23T15:10:00Z", author: "David Miller" }
+  {
+    id: "act1",
+    leadId: "lead_1",
+    leadName: "John Doe",
+    type: "Stage Changed",
+    content:
+      "Stage updated from Inquiry to Appointment Scheduled by Alex Mercer",
+    date: "2026-05-25T14:30:11Z",
+    author: "Alex Mercer",
+  },
+  {
+    id: "act2",
+    leadId: "lead_6",
+    leadName: "Jessica Wilson",
+    type: "Lead Created",
+    content: "Lead created via Whatsapp ad integration.",
+    date: "2026-05-25T09:12:00Z",
+    author: "System",
+  },
+  {
+    id: "act3",
+    leadId: "lead_29",
+    leadName: "Donna Mitchell",
+    type: "Policy Issued",
+    content: "Policy documentation uploaded, policy active.",
+    date: "2026-05-24T16:45:00Z",
+    author: "Emily Davis",
+  },
+  {
+    id: "act4",
+    leadId: "lead_3",
+    leadName: "Robert Johnson",
+    type: "Note Added",
+    content: "Customer requested a warm air blow dryer instead of cage dryer.",
+    date: "2026-05-24T11:20:00Z",
+    author: "Sarah Connor",
+  },
+  {
+    id: "act5",
+    leadId: "lead_15",
+    leadName: "Brian Rodriguez",
+    type: "Call Completed",
+    content: "Discussed subscription pricing options. Client seems positive.",
+    date: "2026-05-23T15:10:00Z",
+    author: "David Miller",
+  },
 ];
 
 export const initialNotifications = [
-  { id: "nt1", type: "followup_overdue", title: "Follow-up Overdue", message: "Walk Renewal follow-up with Steven Walker (Ruby) is overdue since 2026-05-24.", time: "2 hours ago", read: false },
-  { id: "nt2", type: "lead_inactive", title: "Inactive Lead Warning", message: "Lead Kenneth Perez has had no activity for over 6 days.", time: "4 hours ago", read: false },
-  { id: "nt3", type: "insurance_renewal", title: "Insurance Renewal Due", message: "Kenneth Perez's Siberian Husky (Bear) policy expires in 10 days.", time: "1 day ago", read: false },
-  { id: "nt4", type: "grooming_reminder", title: "Grooming Appointment Reminder", message: "Robert Johnson (Rocky) tomorrow scheduled at 10:00 AM.", time: "1 day ago", read: true },
-  { id: "nt5", type: "walking_expiring", title: "Walking Subscription Expiring", message: "Steven Walker walking subscription expiring in 2 days.", time: "2 days ago", read: true }
+  {
+    id: "nt1",
+    type: "followup_overdue",
+    title: "Follow-up Overdue",
+    message:
+      "Walk Renewal follow-up with Steven Walker (Ruby) is overdue since 2026-05-24.",
+    time: "2 hours ago",
+    read: false,
+  },
+  {
+    id: "nt2",
+    type: "lead_inactive",
+    title: "Inactive Lead Warning",
+    message: "Lead Kenneth Perez has had no activity for over 6 days.",
+    time: "4 hours ago",
+    read: false,
+  },
+  {
+    id: "nt3",
+    type: "insurance_renewal",
+    title: "Insurance Renewal Due",
+    message: "Kenneth Perez's Siberian Husky (Bear) policy expires in 10 days.",
+    time: "1 day ago",
+    read: false,
+  },
+  {
+    id: "nt4",
+    type: "grooming_reminder",
+    title: "Grooming Appointment Reminder",
+    message: "Robert Johnson (Rocky) tomorrow scheduled at 10:00 AM.",
+    time: "1 day ago",
+    read: true,
+  },
+  {
+    id: "nt5",
+    type: "walking_expiring",
+    title: "Walking Subscription Expiring",
+    message: "Steven Walker walking subscription expiring in 2 days.",
+    time: "2 days ago",
+    read: true,
+  },
 ];
 
 export const leadSources = [
@@ -915,5 +1142,5 @@ export const leadSources = [
   { name: "Whatsapp", count: 9 },
   { name: "Social Media", count: 6 },
   { name: "Email", count: 3 },
-  { name: "Email", count: 2 }
+  { name: "Email", count: 2 },
 ];

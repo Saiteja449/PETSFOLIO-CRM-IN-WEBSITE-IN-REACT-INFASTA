@@ -5,11 +5,11 @@ export function formatDate(dateString) {
   if (!dateString) return "N/A";
   const date = new Date(dateString);
   if (isNaN(date.getTime())) return dateString;
-  
+
   return date.toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
-    year: "numeric"
+    year: "numeric",
   });
 }
 
@@ -19,13 +19,35 @@ export function formatDate(dateString) {
 export function getStageColor(stage) {
   if (!stage) return "default";
   const s = stage.toLowerCase();
-  
+
   if (s.includes("new") || s === "lead") return "info";
-  if (s.includes("schedule") || s.includes("planned") || s.includes("scheduled")) return "secondary";
-  if (s.includes("complete") || s.includes("enroll") || s.includes("active") || s.includes("client")) return "success";
-  if (s.includes("discussion") || s.includes("inquiry") || s.includes("consultation") || s.includes("assessment")) return "warning";
-  if (s.includes("renewal") || s.includes("subscription") || s.includes("payment")) return "primary";
-  
+  if (
+    s.includes("schedule") ||
+    s.includes("planned") ||
+    s.includes("scheduled")
+  )
+    return "secondary";
+  if (
+    s.includes("complete") ||
+    s.includes("enroll") ||
+    s.includes("active") ||
+    s.includes("client")
+  )
+    return "success";
+  if (
+    s.includes("discussion") ||
+    s.includes("inquiry") ||
+    s.includes("consultation") ||
+    s.includes("assessment")
+  )
+    return "warning";
+  if (
+    s.includes("renewal") ||
+    s.includes("subscription") ||
+    s.includes("payment")
+  )
+    return "primary";
+
   return "default";
 }
 
@@ -33,11 +55,11 @@ export function getStageColor(stage) {
  * Service to hex color dictionary and utility
  */
 export const serviceColors = {
-  "Grooming": "#2563eb",       // Sapphire Blue
-  "Training": "#16a34a",       // Forest Green
-  "Walking": "#ea580c",        // Sunset Orange
-  "Pet Sitting": "#db2777",    // Deep Pink
-  "Pet Insurance": "#7c3aed"   // Amethyst Purple
+  Grooming: "#2563eb", // Sapphire Blue
+  Training: "#16a34a", // Forest Green
+  Walking: "#ea580c", // Sunset Orange
+  "Pet Sitting": "#db2777", // Deep Pink
+  "Pet Insurance": "#7c3aed", // Amethyst Purple
 };
 
 export function getServiceColor(serviceName) {
@@ -54,7 +76,8 @@ export function getStatusColor(status) {
   if (st.includes("won")) return "success";
   if (st.includes("lost")) return "error";
   if (st === "new") return "info";
-  if (st === "follow up" || st === "followup" || st === "followups") return "primary";
+  if (st === "follow up" || st === "followup" || st === "followups")
+    return "primary";
   if (st === "not interested" || st === "not intersted") return "error";
   if (st === "not responding") return "warning";
   if (st === "price issue") return "error";
@@ -71,7 +94,12 @@ export function getSourceColor(source) {
   if (!source) return "default";
   const src = source.toLowerCase();
   if (src.includes("google")) return "primary";
-  if (src.includes("social") || src.includes("facebook") || src.includes("instagram")) return "secondary";
+  if (
+    src.includes("social") ||
+    src.includes("facebook") ||
+    src.includes("instagram")
+  )
+    return "secondary";
   if (src.includes("referral")) return "success";
   if (src.includes("email")) return "warning";
   return "default";
@@ -92,54 +120,72 @@ export function getLeadAge(createdAtString) {
 /**
  * Filter leads based on query inputs
  */
-export function filterLeads(leads, { search = "", service = "All", stage = "All", salesperson = "All", status = "All" }) {
-  return leads.filter(lead => {
+export function filterLeads(
+  leads,
+  {
+    search = "",
+    service = "All",
+    stage = "All",
+    salesperson = "All",
+    status = "All",
+  },
+) {
+  return leads.filter((lead) => {
     // Search filter (handles name, phone, email, pet breed, pet name)
     const matchSearch =
       !search ||
       lead.name.toLowerCase().includes(search.toLowerCase()) ||
       lead.phone.includes(search) ||
       (lead.email && lead.email.toLowerCase().includes(search.toLowerCase())) ||
-      (lead.petName && lead.petName.toLowerCase().includes(search.toLowerCase())) ||
-      (lead.petBreed && lead.petBreed.toLowerCase().includes(search.toLowerCase()));
+      (lead.petName &&
+        lead.petName.toLowerCase().includes(search.toLowerCase())) ||
+      (lead.petBreed &&
+        lead.petBreed.toLowerCase().includes(search.toLowerCase()));
 
     const matchService = service === "All" || lead.service === service;
     const matchStage = stage === "All" || lead.stage === stage;
-    const matchSalesperson = salesperson === "All" || lead.assignedTo === salesperson;
+    const matchSalesperson =
+      salesperson === "All" || lead.assignedTo === salesperson;
     const matchStatus = status === "All" || lead.status === status;
 
-    return matchSearch && matchService && matchStage && matchSalesperson && matchStatus;
+    return (
+      matchSearch &&
+      matchService &&
+      matchStage &&
+      matchSalesperson &&
+      matchStatus
+    );
   });
 }
 
 /**
  * Export data to CSV
  */
-export function exportToCSV(data, filename = 'export.csv') {
+export function exportToCSV(data, filename = "export.csv") {
   if (!data || !data.length) return;
   const headers = Object.keys(data[0]);
   const csvRows = [];
-  
+
   // Headers
-  csvRows.push(headers.join(','));
-  
+  csvRows.push(headers.join(","));
+
   // Rows
   for (const row of data) {
-    const values = headers.map(header => {
+    const values = headers.map((header) => {
       const val = row[header];
       if (val === null || val === undefined) return '""';
-      const escaped = ('' + val).replace(/"/g, '""');
+      const escaped = ("" + val).replace(/"/g, '""');
       return `"${escaped}"`;
     });
-    csvRows.push(values.join(','));
+    csvRows.push(values.join(","));
   }
-  
-  const blob = new Blob([csvRows.join('\n')], { type: 'text/csv' });
+
+  const blob = new Blob([csvRows.join("\n")], { type: "text/csv" });
   const url = window.URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.setAttribute('hidden', '');
-  a.setAttribute('href', url);
-  a.setAttribute('download', filename);
+  const a = document.createElement("a");
+  a.setAttribute("hidden", "");
+  a.setAttribute("href", url);
+  a.setAttribute("download", filename);
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);

@@ -8,24 +8,36 @@ import {
   Mail,
   Calendar,
   Frown,
-  CheckCheck
+  CheckCheck,
 } from "lucide-react";
 import { useNotifications } from "../context/NotificationContext.jsx";
 
 export default function NotificationsPage() {
-  const { notifications, markAsRead, markAllAsRead, deleteNotification, unreadCount } = useNotifications();
+  const {
+    notifications,
+    markAsRead,
+    markAllAsRead,
+    deleteNotification,
+    unreadCount,
+  } = useNotifications();
 
   const getAlertColor = (type) => {
-    if (type === "followup_overdue") return "text-red-500 bg-red-500/10 border-red-500/20";
-    if (type === "lead_inactive") return "text-orange-500 bg-orange-500/10 border-orange-500/20";
-    if (type === "insurance_renewal") return "text-purple-500 bg-purple-500/10 border-purple-500/20";
+    if (type === "followup_overdue")
+      return "text-red-500 bg-red-500/10 border-red-500/20";
+    if (type === "lead_inactive")
+      return "text-orange-500 bg-orange-500/10 border-orange-500/20";
+    if (type === "insurance_renewal")
+      return "text-purple-500 bg-purple-500/10 border-purple-500/20";
     return "text-blue-500 bg-blue-500/10 border-blue-500/20";
   };
 
   const getAlertIcon = (type) => {
-    if (type === "followup_overdue") return <AlertTriangle size={20} className="text-red-500" />;
-    if (type === "lead_inactive") return <BellRing size={20} className="text-orange-500" />;
-    if (type === "insurance_renewal") return <Mail size={20} className="text-purple-500" />;
+    if (type === "followup_overdue")
+      return <AlertTriangle size={20} className="text-red-500" />;
+    if (type === "lead_inactive")
+      return <BellRing size={20} className="text-orange-500" />;
+    if (type === "insurance_renewal")
+      return <Mail size={20} className="text-purple-500" />;
     return <Calendar size={20} className="text-blue-500" />;
   };
 
@@ -38,7 +50,8 @@ export default function NotificationsPage() {
             Alerts & System Notifications
           </h1>
           <p className="text-sm text-zinc-400">
-            Review pending system reminders, expiring subscription agreements, and salesperson call alerts.
+            Review pending system reminders, expiring subscription agreements,
+            and salesperson call alerts.
           </p>
         </div>
 
@@ -65,7 +78,9 @@ export default function NotificationsPage() {
             >
               {/* Visual Avatar */}
               <div className="mr-4 shrink-0 mt-1">
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center border ${getAlertColor(n.type)}`}>
+                <div
+                  className={`w-10 h-10 rounded-full flex items-center justify-center border ${getAlertColor(n.type)}`}
+                >
                   {getAlertIcon(n.type)}
                 </div>
               </div>
@@ -73,7 +88,9 @@ export default function NotificationsPage() {
               {/* Contents textual */}
               <div className="flex-grow min-w-0 pr-16 sm:pr-24">
                 <div className="flex items-center gap-2 flex-wrap mb-1">
-                  <h3 className={`text-sm ${n.read ? "font-semibold text-zinc-200" : "font-extrabold text-white"}`}>
+                  <h3
+                    className={`text-sm ${n.read ? "font-semibold text-zinc-200" : "font-extrabold text-white"}`}
+                  >
                     {n.title}
                   </h3>
                   {!n.read && (
@@ -115,7 +132,9 @@ export default function NotificationsPage() {
           {notifications.length === 0 && (
             <div className="text-center py-16 px-4">
               <Frown className="w-16 h-16 text-zinc-800 mx-auto mb-4" />
-              <h3 className="text-lg font-bold text-zinc-400 mb-1">Alert Feed is Empty</h3>
+              <h3 className="text-lg font-bold text-zinc-400 mb-1">
+                Alert Feed is Empty
+              </h3>
               <p className="text-sm text-zinc-500">
                 Hooray! No pending system notifications or warnings remain.
               </p>

@@ -85,12 +85,12 @@ export default function App() {
                     path="/services"
                     element={<Navigate to="/dashboard" replace />}
                   />
-                  <Route
-                    path="/followups"
-                    element={<FollowUpReport />}
-                  />
+                  <Route path="/followups" element={<FollowUpReport />} />
                   <Route path="/performance" element={<TeamPerformance />} />
-                  <Route path="/salesperson/:name" element={<SalesPersonDetails />} />
+                  <Route
+                    path="/salesperson/:name"
+                    element={<SalesPersonDetails />}
+                  />
                   <Route
                     path="/notifications"
                     element={<NotificationsPage />}

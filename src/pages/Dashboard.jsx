@@ -112,7 +112,9 @@ export default function Dashboard() {
             </div>
             <div
               className={`text-xs font-semibold flex items-center gap-1 mt-1 ${
-                stats.overdueFollowupsCount > 0 ? "text-red-500" : "text-zinc-400"
+                stats.overdueFollowupsCount > 0
+                  ? "text-red-500"
+                  : "text-zinc-400"
               }`}
             >
               {stats.overdueFollowupsCount > 0 ? (
@@ -191,7 +193,6 @@ export default function Dashboard() {
                         {numLeads}
                       </span>
                     </div>
-                    
                   </div>
                 </div>
               </div>
@@ -203,7 +204,9 @@ export default function Dashboard() {
       {/* Analytics Pie Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-5 h-[400px]">
-          <h3 className="text-base font-bold text-white mb-4">Leads by Service</h3>
+          <h3 className="text-base font-bold text-white mb-4">
+            Leads by Service
+          </h3>
           <ResponsiveContainer width="100%" height="85%">
             <PieChart>
               <Pie
@@ -215,24 +218,40 @@ export default function Dashboard() {
                 paddingAngle={2}
                 dataKey="value"
                 nameKey="name"
-                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                label={({ name, percent }) =>
+                  `${name} ${(percent * 100).toFixed(0)}%`
+                }
                 labelLine={false}
               >
                 {stats.leadsByServiceData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={CHART_COLORS[index % CHART_COLORS.length]}
+                  />
                 ))}
               </Pie>
-              <RechartsTooltip 
-                contentStyle={{ backgroundColor: "#18181b", borderColor: "#27272a", color: "#f4f4f5", borderRadius: "8px" }}
+              <RechartsTooltip
+                contentStyle={{
+                  backgroundColor: "#18181b",
+                  borderColor: "#27272a",
+                  color: "#f4f4f5",
+                  borderRadius: "8px",
+                }}
                 itemStyle={{ color: "#f4f4f5" }}
               />
-              <Legend verticalAlign="bottom" height={36} wrapperStyle={{ fontSize: "12px", color: "#a1a1aa" }} />
+              <Legend
+                verticalAlign="bottom"
+                height={36}
+                wrapperStyle={{ fontSize: "12px", color: "#a1a1aa" }}
+              />
             </PieChart>
           </ResponsiveContainer>
         </div>
 
         <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-5 h-[400px]">
-          <h3 className="text-base font-bold text-white mb-4">Leads by Source</h3>
+          <h3 className="text-base font-bold text-white mb-4">
+            Leads by Source
+          </h3>
           <ResponsiveContainer width="100%" height="85%">
             <PieChart>
               <Pie
@@ -244,18 +263,32 @@ export default function Dashboard() {
                 paddingAngle={2}
                 dataKey="value"
                 nameKey="name"
-                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                label={({ name, percent }) =>
+                  `${name} ${(percent * 100).toFixed(0)}%`
+                }
                 labelLine={false}
               >
                 {stats.leadSourceData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={CHART_COLORS[(index + 2) % CHART_COLORS.length]} />
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={CHART_COLORS[(index + 2) % CHART_COLORS.length]}
+                  />
                 ))}
               </Pie>
-              <RechartsTooltip 
-                contentStyle={{ backgroundColor: "#18181b", borderColor: "#27272a", color: "#f4f4f5", borderRadius: "8px" }}
+              <RechartsTooltip
+                contentStyle={{
+                  backgroundColor: "#18181b",
+                  borderColor: "#27272a",
+                  color: "#f4f4f5",
+                  borderRadius: "8px",
+                }}
                 itemStyle={{ color: "#f4f4f5" }}
               />
-              <Legend verticalAlign="bottom" height={36} wrapperStyle={{ fontSize: "12px", color: "#a1a1aa" }} />
+              <Legend
+                verticalAlign="bottom"
+                height={36}
+                wrapperStyle={{ fontSize: "12px", color: "#a1a1aa" }}
+              />
             </PieChart>
           </ResponsiveContainer>
         </div>
@@ -316,7 +349,6 @@ export default function Dashboard() {
                       <div className="font-bold text-emerald-500 text-sm">
                         {p.conversionRate}% Conv.
                       </div>
-                    
                     </div>
                   </div>
                 </li>

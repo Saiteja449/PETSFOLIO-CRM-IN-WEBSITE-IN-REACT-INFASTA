@@ -1,12 +1,21 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, ExternalLink, Eye, Edit2, Calendar, PawPrint, Download } from "lucide-react";
+import {
+  ArrowLeft,
+  ExternalLink,
+  Eye,
+  Edit2,
+  Calendar,
+  PawPrint,
+  Download,
+} from "lucide-react";
 import { useLeads } from "../context/LeadsContext.jsx";
 import { getServiceColor, formatDate, exportToCSV } from "../utils/helpers.js";
 
-
 const Badge = ({ children, colorClass, className = "" }) => (
-  <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold ${colorClass} ${className}`}>
+  <span
+    className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold ${colorClass} ${className}`}
+  >
     {children}
   </span>
 );
@@ -16,37 +25,52 @@ export default function SalesPersonDetails() {
   const navigate = useNavigate();
   const { leads } = useLeads();
   const [activeTab, setActiveTab] = useState("Clients");
-  
+
   const decodedName = decodeURIComponent(name);
-  const repLeads = leads.filter(l => l.assignedTo === decodedName);
+  const repLeads = leads.filter((l) => l.assignedTo === decodedName);
 
-  const clientLeads = repLeads.filter(l => l.leadType === "Client" || !l.leadType);
-  const providerLeads = repLeads.filter(l => l.leadType === "Service Provider");
-  const newLeads = repLeads.filter(l => l.status?.toLowerCase() === "new");
+  const clientLeads = repLeads.filter(
+    (l) => l.leadType === "Client" || !l.leadType,
+  );
+  const providerLeads = repLeads.filter(
+    (l) => l.leadType === "Service Provider",
+  );
+  const newLeads = repLeads.filter((l) => l.status?.toLowerCase() === "new");
 
-  const displayedLeads = activeTab === "Clients" ? clientLeads 
-                       : activeTab === "Service Providers" ? providerLeads 
-                       : newLeads;
+  const displayedLeads =
+    activeTab === "Clients"
+      ? clientLeads
+      : activeTab === "Service Providers"
+        ? providerLeads
+        : newLeads;
 
   const handleExport = () => {
-    exportToCSV(displayedLeads, `${decodedName.replace(/\s+/g, '_')}_leads.csv`);
+    exportToCSV(
+      displayedLeads,
+      `${decodedName.replace(/\s+/g, "_")}_leads.csv`,
+    );
   };
 
   const getTwStatusColorLocal = (statusName) => {
     switch (statusName?.toLowerCase()) {
-      case "new": return "bg-teal-500/10 text-teal-500 border border-teal-500/20";
-      case "follow up": return "bg-orange-500/10 text-orange-500 border border-orange-500/20";
-      case "joined": return "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20";
+      case "new":
+        return "bg-teal-500/10 text-teal-500 border border-teal-500/20";
+      case "follow up":
+        return "bg-orange-500/10 text-orange-500 border border-orange-500/20";
+      case "joined":
+        return "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20";
       case "not interested":
-      case "price issue": return "bg-red-500/10 text-red-500 border border-red-500/20";
-      default: return "bg-zinc-500/10 text-zinc-400 border border-zinc-500/20";
+      case "price issue":
+        return "bg-red-500/10 text-red-500 border border-red-500/20";
+      default:
+        return "bg-zinc-500/10 text-zinc-400 border border-zinc-500/20";
     }
   };
 
   return (
     <div className="p-4 md:p-6 space-y-6">
-      <button 
-        onClick={() => navigate(-1)} 
+      <button
+        onClick={() => navigate(-1)}
         className="flex items-center gap-2 text-zinc-400 hover:text-zinc-200 transition-colors font-medium mb-2"
       >
         <ArrowLeft size={18} />
@@ -59,7 +83,9 @@ export default function SalesPersonDetails() {
             {decodedName.substring(0, 1).toUpperCase()}
           </div>
           <div>
-            <h1 className="text-2xl font-extrabold text-white tracking-tight">{decodedName}'s Leads</h1>
+            <h1 className="text-2xl font-extrabold text-white tracking-tight">
+              {decodedName}'s Leads
+            </h1>
             <p className="text-sm text-zinc-400 mt-1">
               Total assigned leads: {repLeads.length}
             </p>
@@ -77,7 +103,7 @@ export default function SalesPersonDetails() {
         {[
           { name: "Clients", count: clientLeads.length },
           { name: "Service Providers", count: providerLeads.length },
-          { name: "New Assigned Leads", count: newLeads.length }
+          { name: "New Assigned Leads", count: newLeads.length },
         ].map((tab) => (
           <button
             key={tab.name}
@@ -116,16 +142,29 @@ export default function SalesPersonDetails() {
             <table className="w-full text-left border-collapse min-w-[800px]">
               <thead className="bg-zinc-950 border-b border-zinc-800">
                 <tr>
-                  <th className="px-4 py-3 text-xs font-bold text-zinc-300 uppercase tracking-wider">Client</th>
-                  <th className="px-4 py-3 text-xs font-bold text-zinc-300 uppercase tracking-wider">Phone Number</th>
-                  <th className="px-4 py-3 text-xs font-bold text-zinc-300 uppercase tracking-wider">Service</th>
-                  <th className="px-4 py-3 text-xs font-bold text-zinc-300 uppercase tracking-wider">Status</th>
-                  <th className="px-4 py-3 text-xs font-bold text-zinc-300 uppercase tracking-wider text-right">Actions</th>
+                  <th className="px-4 py-3 text-xs font-bold text-zinc-300 uppercase tracking-wider">
+                    Client
+                  </th>
+                  <th className="px-4 py-3 text-xs font-bold text-zinc-300 uppercase tracking-wider">
+                    Phone Number
+                  </th>
+                  <th className="px-4 py-3 text-xs font-bold text-zinc-300 uppercase tracking-wider">
+                    Service
+                  </th>
+                  <th className="px-4 py-3 text-xs font-bold text-zinc-300 uppercase tracking-wider">
+                    Status
+                  </th>
+                  <th className="px-4 py-3 text-xs font-bold text-zinc-300 uppercase tracking-wider text-right">
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-800">
                 {displayedLeads.map((lead) => (
-                  <tr key={lead.id} className="hover:bg-zinc-800/50 transition-colors">
+                  <tr
+                    key={lead.id}
+                    className="hover:bg-zinc-800/50 transition-colors"
+                  >
                     <td className="px-4 py-3">
                       <button
                         onClick={() => navigate(`/lead-details/${lead.id}`)}
@@ -134,15 +173,26 @@ export default function SalesPersonDetails() {
                         {lead.name}
                       </button>
                     </td>
-                    <td className="px-4 py-3 text-sm text-zinc-300">{lead.phone}</td>
+                    <td className="px-4 py-3 text-sm text-zinc-300">
+                      {lead.phone}
+                    </td>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full" style={{ backgroundColor: getServiceColor(lead.service) }}></div>
-                        <span className="text-sm font-semibold text-zinc-200">{lead.service}</span>
+                        <div
+                          className="w-2 h-2 rounded-full"
+                          style={{
+                            backgroundColor: getServiceColor(lead.service),
+                          }}
+                        ></div>
+                        <span className="text-sm font-semibold text-zinc-200">
+                          {lead.service}
+                        </span>
                       </div>
                     </td>
                     <td className="px-4 py-3">
-                      <Badge colorClass={getTwStatusColorLocal(lead.status || "New")}>
+                      <Badge
+                        colorClass={getTwStatusColorLocal(lead.status || "New")}
+                      >
                         {lead.status || "New"}
                       </Badge>
                     </td>

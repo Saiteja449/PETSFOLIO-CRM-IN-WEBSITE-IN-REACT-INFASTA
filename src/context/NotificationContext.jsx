@@ -8,15 +8,17 @@ export function NotificationProvider({ children }) {
   const [notifications, setNotifications] = useState(initialNotifications);
 
   const markAsRead = (id) => {
-    setNotifications(prev => prev.map(n => n.id === id ? { ...n, read: true } : n));
+    setNotifications((prev) =>
+      prev.map((n) => (n.id === id ? { ...n, read: true } : n)),
+    );
   };
 
   const markAllAsRead = () => {
-    setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
   };
 
   const deleteNotification = (id) => {
-    setNotifications(prev => prev.filter(n => n.id !== id));
+    setNotifications((prev) => prev.filter((n) => n.id !== id));
   };
 
   const addNotification = (title, message, type = "general") => {
@@ -26,22 +28,24 @@ export function NotificationProvider({ children }) {
       title,
       message,
       time: "Just now",
-      read: false
+      read: false,
     };
-    setNotifications(prev => [newNotice, ...prev]);
+    setNotifications((prev) => [newNotice, ...prev]);
   };
 
-  const unreadCount = notifications.filter(n => !n.read).length;
+  const unreadCount = notifications.filter((n) => !n.read).length;
 
   return (
-    <NotificationContext.Provider value={{
-      notifications,
-      unreadCount,
-      markAsRead,
-      markAllAsRead,
-      deleteNotification,
-      addNotification
-    }}>
+    <NotificationContext.Provider
+      value={{
+        notifications,
+        unreadCount,
+        markAsRead,
+        markAllAsRead,
+        deleteNotification,
+        addNotification,
+      }}
+    >
       {children}
     </NotificationContext.Provider>
   );
@@ -50,7 +54,9 @@ export function NotificationProvider({ children }) {
 export function useNotifications() {
   const context = useContext(NotificationContext);
   if (!context) {
-    throw new Error("useNotifications must be used within a NotificationProvider");
+    throw new Error(
+      "useNotifications must be used within a NotificationProvider",
+    );
   }
   return context;
 }
