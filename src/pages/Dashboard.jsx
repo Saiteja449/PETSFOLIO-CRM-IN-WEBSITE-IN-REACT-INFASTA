@@ -135,6 +135,24 @@ export default function Dashboard() {
             <CheckSquare className="w-6 h-6" />
           </div>
         </div>
+
+        {/* Jobs Assigned */}
+        <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 flex items-center justify-between">
+          <div>
+            <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-wider">
+              Jobs Assigned
+            </h3>
+            <div className="text-3xl font-extrabold text-purple-500 mt-1">
+              {stats.jobsAssignedCount}
+            </div>
+            <div className="text-xs font-semibold text-zinc-400 flex items-center mt-1">
+              Active assigned leads
+            </div>
+          </div>
+          <div className="w-12 h-12 rounded-full bg-purple-500/10 flex items-center justify-center">
+            <CheckCircle2 className="w-6 h-6 text-purple-500" />
+          </div>
+        </div>
       </div>
 
       {/* service level stats grid summaries */}

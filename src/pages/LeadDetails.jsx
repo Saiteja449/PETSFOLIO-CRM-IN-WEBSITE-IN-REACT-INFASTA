@@ -382,6 +382,17 @@ export default function LeadDetails() {
                   </span>
                 </div>
               </div>
+              <div className="flex items-start gap-3">
+                <Calendar className="text-zinc-500 mt-0.5" size={18} />
+                <div className="min-w-0">
+                  <span className="text-xs text-zinc-500 block mb-0.5">
+                    Joined At
+                  </span>
+                  <span className="text-sm font-semibold text-zinc-200 truncate block">
+                    {currentLead.joinedAt ? formatDate(currentLead.joinedAt) : "-"}
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
 

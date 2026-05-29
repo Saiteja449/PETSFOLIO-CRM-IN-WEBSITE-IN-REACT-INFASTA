@@ -57,6 +57,7 @@ export function DashboardProvider({ children }) {
 
     const wonLeads = leads.filter(isLeadWon);
     const totalWonCount = wonLeads.length;
+    const jobsAssignedCount = leads.filter(l => l.assignedTo && l.assignedTo.trim() !== "").length;
 
     // Conversion %
     const conversionRate = totalLeads > 0 ? Math.round((totalWonCount / totalLeads) * 100) : 0;
@@ -172,6 +173,7 @@ export function DashboardProvider({ children }) {
       revenueByServiceData,
       totalPipelineValue,
       totalWonRevenue,
+      jobsAssignedCount,
       todaysFollowupsCount: todaysFws.length,
       overdueFollowupsCount: overdueFws.length,
       leadSourceData,

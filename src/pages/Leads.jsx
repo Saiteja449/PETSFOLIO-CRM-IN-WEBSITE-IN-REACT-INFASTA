@@ -271,7 +271,7 @@ export default function Leads() {
       <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
           {/* Search Input */}
-          <div className="md:col-span-4 relative">
+          <div className="md:col-span-6 relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
             <input
               type="text"
@@ -301,7 +301,7 @@ export default function Leads() {
             </select>
           </div>
 
-          <div className="md:col-span-2">
+          {/* <div className="md:col-span-2">
             <select
               value={stage}
               onChange={(e) => setStage(e.target.value)}
@@ -315,7 +315,7 @@ export default function Leads() {
                   </option>
                 ))}
             </select>
-          </div>
+          </div> */}
 
           <div className="md:col-span-2">
             <select
@@ -447,7 +447,13 @@ export default function Leads() {
                         {currentUser?.role === "Sales Manager" ? (
                           <select
                             value={lead.assignedTo || ""}
-                            onChange={(e) => updateLead(lead.id, { assignedTo: e.target.value }, currentUser?.name)}
+                            onChange={(e) =>
+                              updateLead(
+                                lead.id,
+                                { assignedTo: e.target.value },
+                                currentUser?.name,
+                              )
+                            }
                             className="bg-transparent border border-zinc-700 rounded px-2 py-1 text-sm focus:outline-none focus:border-teal-500 cursor-pointer w-full max-w-[150px]"
                             onClick={(e) => e.stopPropagation()}
                           >
@@ -472,7 +478,7 @@ export default function Leads() {
                             }`}
                           >
                             <Calendar className="w-3.5 h-3.5" />
-                            {formatDate(lead.nextFollowUp)}
+                            {formatDate(lead.joinedAt)}
                           </div>
                         ) : (
                           <span className="text-zinc-500">-</span>
@@ -648,13 +654,23 @@ export default function Leads() {
                     </span>
                   </div>
                 </div>
-                
+
                 <div>
                   <span className="block text-xs text-zinc-400 mb-1">
                     Assigned Manager
                   </span>
                   <span className="font-semibold text-white">
                     {selectedLead.assignedTo}
+                  </span>
+                </div>
+                <div>
+                  <span className="block text-xs text-zinc-400 mb-1">
+                    Joined At
+                  </span>
+                  <span className="font-semibold text-white">
+                    {selectedLead.joinedAt
+                      ? formatDate(selectedLead.joinedAt)
+                      : "-"}
                   </span>
                 </div>
               </div>
@@ -859,7 +875,6 @@ export default function Leads() {
                       ))}
                     </select>
                   </div>
-                  
 
                   <div>
                     <label className="block text-xs font-bold text-zinc-400 mb-1">
