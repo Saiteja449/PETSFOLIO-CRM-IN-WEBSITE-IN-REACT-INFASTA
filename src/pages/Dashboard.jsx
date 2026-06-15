@@ -44,17 +44,17 @@ export default function Dashboard() {
       {/* Top Banner section */}
       <div className="flex flex-wrap justify-between items-center gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold text-white tracking-tight">
+          <h1 className="text-2xl font-extrabold text-brand-primary tracking-tight">
             Executive Dashboard
           </h1>
-          <p className="text-sm text-zinc-400 mt-1">
+          <p className="text-sm text-brand-primary/70 mt-1">
             Real-time analytical performance summary for Petsfolio sales
             pipelines.
           </p>
         </div>
         <button
           onClick={handleExport}
-          className="flex items-center gap-2 px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white text-sm font-bold rounded-lg transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-teal-600 hover:bg-teal-700 text-brand-primary text-sm font-bold rounded-lg transition-colors"
         >
           <Download className="w-4 h-4" /> Export Data
         </button>
@@ -63,12 +63,12 @@ export default function Dashboard() {
       {/* KPI Cards Row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Total Leads */}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 flex items-center justify-between">
+        <div className="bg-brand-light border border-brand-secondary rounded-2xl p-5 flex items-center justify-between">
           <div>
-            <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-wider">
+            <h3 className="text-xs font-bold text-brand-primary/70 uppercase tracking-wider">
               Total Leads
             </h3>
-            <div className="text-3xl font-extrabold text-white mt-1">
+            <div className="text-3xl font-extrabold text-brand-primary mt-1">
               {stats.totalLeads}
             </div>
             <div className="text-xs font-semibold text-teal-500 flex items-center mt-1">
@@ -79,13 +79,13 @@ export default function Dashboard() {
             <Users className="w-6 h-6 text-teal-500" />
           </div>
         </div>
-        <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5">
+        <div className="bg-brand-light border border-brand-secondary rounded-2xl p-5">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-wider">
+              <h3 className="text-xs font-bold text-brand-primary/70 uppercase tracking-wider">
                 Lead Conversion %
               </h3>
-              <div className="text-3xl font-extrabold text-white mt-1">
+              <div className="text-3xl font-extrabold text-brand-primary mt-1">
                 {stats.conversionRate}%
               </div>
             </div>
@@ -102,9 +102,9 @@ export default function Dashboard() {
         </div>
 
         {/* To-Do followup Index */}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 flex items-center justify-between">
+        <div className="bg-brand-light border border-brand-secondary rounded-2xl p-5 flex items-center justify-between">
           <div>
-            <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-wider">
+            <h3 className="text-xs font-bold text-brand-primary/70 uppercase tracking-wider">
               Today's Follow-ups
             </h3>
             <div className="text-3xl font-extrabold text-orange-500 mt-1">
@@ -114,7 +114,7 @@ export default function Dashboard() {
               className={`text-xs font-semibold flex items-center gap-1 mt-1 ${
                 stats.overdueFollowupsCount > 0
                   ? "text-red-500"
-                  : "text-zinc-400"
+                  : "text-brand-primary/70"
               }`}
             >
               {stats.overdueFollowupsCount > 0 ? (
@@ -139,15 +139,15 @@ export default function Dashboard() {
         </div>
 
         {/* Jobs Assigned */}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 flex items-center justify-between">
+        <div className="bg-brand-light border border-brand-secondary rounded-2xl p-5 flex items-center justify-between">
           <div>
-            <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-wider">
+            <h3 className="text-xs font-bold text-brand-primary/70 uppercase tracking-wider">
               Jobs Assigned
             </h3>
             <div className="text-3xl font-extrabold text-purple-500 mt-1">
               {stats.jobsAssignedCount}
             </div>
-            <div className="text-xs font-semibold text-zinc-400 flex items-center mt-1">
+            <div className="text-xs font-semibold text-brand-primary/70 flex items-center mt-1">
               Active assigned leads
             </div>
           </div>
@@ -159,21 +159,20 @@ export default function Dashboard() {
 
       {/* service level stats grid summaries */}
       <div>
-        <h2 className="text-lg font-bold text-white mb-4">
+        <h2 className="text-lg font-bold text-brand-primary mb-4">
           Service Performance Hubs
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {stats.revenueByServiceData.map((s, index) => {
-            const numLeads =
-              stats.leadsByServiceData.find((le) => le.name === s.name)
-                ?.value || 0;
+          {stats.wonLeadsByServiceData.map((s, index) => {
+            const numLeads = s.pipeline;
+            const wonLeads = s.won;
             const sColor = getServiceColor(s.name);
             return (
               <div
                 key={s.name}
-                className="relative bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden"
+                className="relative bg-brand-light border border-brand-secondary rounded-2xl overflow-hidden"
                 style={{
-                  background: `linear-gradient(135deg, #18181b 60%, ${sColor}0f 100%)`,
+                  background: `linear-gradient(135deg, #FFFFFF 60%, ${sColor}1a 100%)`,
                 }}
               >
                 <div
@@ -181,16 +180,24 @@ export default function Dashboard() {
                   style={{ backgroundColor: sColor }}
                 />
                 <div className="p-4 pl-6">
-                  <h3 className="text-base font-bold text-white leading-tight">
+                  <h3 className="text-base font-bold text-brand-primary leading-tight">
                     {s.name}
                   </h3>
                   <div className="flex justify-between items-end mt-4">
                     <div>
-                      <span className="block text-xs font-medium text-zinc-400">
-                        Leads Count:
+                      <span className="block text-xs font-medium text-brand-primary/70">
+                        Total Leads:
                       </span>
-                      <span className="block text-lg font-extrabold text-zinc-100 leading-tight mt-0.5">
+                      <span className="block text-lg font-extrabold text-brand-primary leading-tight mt-0.5">
                         {numLeads}
+                      </span>
+                    </div>
+                    <div className="text-right">
+                      <span className="block text-xs font-medium text-brand-primary/70">
+                        Won Leads:
+                      </span>
+                      <span className="block text-lg font-extrabold text-emerald-500 leading-tight mt-0.5">
+                        {wonLeads}
                       </span>
                     </div>
                   </div>
@@ -203,8 +210,8 @@ export default function Dashboard() {
 
       {/* Analytics Pie Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-5 h-[400px]">
-          <h3 className="text-base font-bold text-white mb-4">
+        <div className="bg-brand-light border border-brand-secondary rounded-3xl p-5 h-[400px]">
+          <h3 className="text-base font-bold text-brand-primary mb-4">
             Leads by Service
           </h3>
           <ResponsiveContainer width="100%" height="85%">
@@ -232,24 +239,24 @@ export default function Dashboard() {
               </Pie>
               <RechartsTooltip
                 contentStyle={{
-                  backgroundColor: "#18181b",
-                  borderColor: "#27272a",
-                  color: "#f4f4f5",
+                  backgroundColor: "#FFFFFF",
+                  borderColor: "#CADCFC",
+                  color: "#00246B",
                   borderRadius: "8px",
                 }}
-                itemStyle={{ color: "#f4f4f5" }}
+                itemStyle={{ color: "#00246B" }}
               />
               <Legend
                 verticalAlign="bottom"
                 height={36}
-                wrapperStyle={{ fontSize: "12px", color: "#a1a1aa" }}
+                wrapperStyle={{ fontSize: "12px", color: "#00246B" }}
               />
             </PieChart>
           </ResponsiveContainer>
         </div>
 
-        <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-5 h-[400px]">
-          <h3 className="text-base font-bold text-white mb-4">
+        <div className="bg-brand-light border border-brand-secondary rounded-3xl p-5 h-[400px]">
+          <h3 className="text-base font-bold text-brand-primary mb-4">
             Leads by Source
           </h3>
           <ResponsiveContainer width="100%" height="85%">
@@ -277,26 +284,26 @@ export default function Dashboard() {
               </Pie>
               <RechartsTooltip
                 contentStyle={{
-                  backgroundColor: "#18181b",
-                  borderColor: "#27272a",
-                  color: "#f4f4f5",
+                  backgroundColor: "#FFFFFF",
+                  borderColor: "#CADCFC",
+                  color: "#00246B",
                   borderRadius: "8px",
                 }}
-                itemStyle={{ color: "#f4f4f5" }}
+                itemStyle={{ color: "#00246B" }}
               />
               <Legend
                 verticalAlign="bottom"
                 height={36}
-                wrapperStyle={{ fontSize: "12px", color: "#a1a1aa" }}
+                wrapperStyle={{ fontSize: "12px", color: "#00246B" }}
               />
             </PieChart>
           </ResponsiveContainer>
         </div>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-5 min-h-[400px]">
+        <div className="bg-brand-light border border-brand-secondary rounded-3xl p-5 min-h-[400px]">
           <div className="flex justify-between items-center mb-6 px-2">
-            <h3 className="text-base font-bold text-white flex items-center gap-2">
+            <h3 className="text-base font-bold text-brand-primary flex items-center gap-2">
               <Star className="w-5 h-5 text-yellow-500" fill="currentColor" />{" "}
               Sales Leaderboard
             </h3>
@@ -311,12 +318,12 @@ export default function Dashboard() {
           <ul className="space-y-0">
             {stats.performersList.map((p, index) => (
               <React.Fragment key={p.name}>
-                {index > 0 && <li className="h-px bg-zinc-800 my-2" />}
+                {index > 0 && <li className="h-px bg-brand-secondary/30 my-2" />}
                 <li className="flex items-center px-2 py-3">
                   <div className="relative shrink-0 mr-4">
                     <div
-                      className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-zinc-950 ${
-                        index === 0 ? "bg-teal-500" : "bg-zinc-700 text-white"
+                      className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-brand-light ${
+                        index === 0 ? "bg-teal-500" : "bg-brand-secondary/30 text-brand-primary"
                       }`}
                     >
                       {p.name
@@ -325,11 +332,11 @@ export default function Dashboard() {
                         .join("")}
                     </div>
                     <div
-                      className={`absolute -bottom-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-zinc-950 border-2 border-zinc-900 ${
+                      className={`absolute -bottom-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-brand-light border-2 border-brand-secondary ${
                         index === 0
                           ? "bg-yellow-500"
                           : index === 1
-                            ? "bg-zinc-400"
+                            ? "bg-brand-primary/50"
                             : "bg-amber-700"
                       }`}
                     >
@@ -338,10 +345,10 @@ export default function Dashboard() {
                   </div>
                   <div className="flex-1 flex items-center justify-between min-w-0">
                     <div className="min-w-0 truncate pr-4">
-                      <div className="font-bold text-white text-sm truncate">
+                      <div className="font-bold text-brand-primary text-sm truncate">
                         {p.name}
                       </div>
-                      <div className="text-xs text-zinc-400 mt-0.5 truncate">
+                      <div className="text-xs text-brand-primary/70 mt-0.5 truncate">
                         {p.assigned} assigned • {p.won} converted
                       </div>
                     </div>
@@ -358,15 +365,15 @@ export default function Dashboard() {
         </div>
 
         {/* Recent timeline feed */}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-5 min-h-[400px]">
-          <h3 className="text-base font-bold text-white mb-6 px-2">
+        <div className="bg-brand-light border border-brand-secondary rounded-3xl p-5 min-h-[400px]">
+          <h3 className="text-base font-bold text-brand-primary mb-6 px-2">
             Recent Action timeline
           </h3>
 
           <ul className="space-y-0">
             {stats.recentActivities.slice(0, 5).map((act, index) => (
               <React.Fragment key={act.id}>
-                {index > 0 && <li className="h-px bg-zinc-800 my-2" />}
+                {index > 0 && <li className="h-px bg-brand-secondary/30 my-2" />}
                 <li className="flex items-start px-2 py-3">
                   <div className="shrink-0 mr-4 mt-1">
                     <div
@@ -389,14 +396,14 @@ export default function Dashboard() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex justify-between items-start flex-wrap gap-1">
-                      <div className="font-bold text-white text-sm truncate pr-2">
+                      <div className="font-bold text-brand-primary text-sm truncate pr-2">
                         {act.leadName} ({act.author})
                       </div>
-                      <div className="text-xs text-zinc-400 whitespace-nowrap">
+                      <div className="text-xs text-brand-primary/70 whitespace-nowrap">
                         {formatDate(act.date)}
                       </div>
                     </div>
-                    <div className="text-sm text-zinc-400 mt-1">
+                    <div className="text-sm text-brand-primary/70 mt-1">
                       {act.content}
                     </div>
                   </div>
@@ -406,7 +413,7 @@ export default function Dashboard() {
           </ul>
           {stats.recentActivities.length === 0 && (
             <div className="flex flex-col items-center justify-center py-10">
-              <p className="text-sm text-zinc-400">
+              <p className="text-sm text-brand-primary/70">
                 No recent audit events logged.
               </p>
             </div>

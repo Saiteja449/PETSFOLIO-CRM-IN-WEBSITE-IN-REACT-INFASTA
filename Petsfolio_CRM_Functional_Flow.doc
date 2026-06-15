@@ -1,0 +1,103 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="utf-8">
+<style>
+  body { font-family: 'Calibri', 'Arial', sans-serif; line-height: 1.5; color: #333; }
+  h1 { color: #00246B; border-bottom: 2px solid #CADCFC; padding-bottom: 5px; }
+  h2 { color: #00246B; margin-top: 20px; }
+  h3 { color: #005A9C; }
+  table { border-collapse: collapse; width: 100%; margin: 15px 0; }
+  th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+  th { background-color: #f4f4f4; color: #00246B; }
+  ul { margin-bottom: 15px; }
+  li { margin-bottom: 5px; }
+</style>
+</head>
+<body>
+
+<h1>Petsfolio CRM: Functional Workflow & Role Matrix</h1>
+<p>This document outlines the business logic, daily workflows, and permission structures of the Petsfolio CRM. It focuses purely on <strong>functionality</strong> rather than technical architecture.</p>
+
+<h2>1. Role Definitions</h2>
+<p>The system is built around two primary user personas:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Role</th>
+      <th>Primary Objective</th>
+      <th>Key Capabilities</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Sales Manager</strong></td>
+      <td>Oversee company-wide sales operations, monitor team efficiency, and manage team members.</td>
+      <td>Global visibility across all leads, access to team performance reports, ability to assign leads, and ability to add/remove representatives.</td>
+    </tr>
+    <tr>
+      <td><strong>Sales Representative</strong></td>
+      <td>Convert assigned leads into active clients and log historical communications.</td>
+      <td>Restricted visibility (only sees assigned leads), updates lead stages, and logs interaction history.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>2. The Core Lead Lifecycle (Functional Flow)</h2>
+<p>The fundamental workflow of the CRM revolves around the lifecycle of a Lead.</p>
+<ol>
+  <li><strong>Lead Creation:</strong> A lead enters the system (either a potential Client or Service Provider).</li>
+  <li><strong>Assignment:</strong> A Sales Manager assigns the lead to a specific Sales Representative.</li>
+  <li><strong>Engagement:</strong> The Representative views their newly assigned lead on their Dashboard and initiates contact.</li>
+  <li><strong>Historical Logging:</strong> The Representative logs the interaction (e.g., "Called client, sent pricing email") into the Lead's historical audit trail.</li>
+  <li><strong>Conversion:</strong> The Representative updates the lead's status to <strong>Joined</strong>. The lead counts towards their Conversion Rate.</li>
+</ol>
+
+<h2>3. Screen-by-Screen Functionality</h2>
+
+<h3>Executive Dashboard</h3>
+<p>The landing page serves as the daily operational hub, dynamically adjusting based on the user's role.</p>
+<ul>
+  <li><strong>For Managers:</strong> Displays company-wide KPIs (Total Leads, Global Conversion Rate). Shows a global timeline of every action taken by any representative.</li>
+  <li><strong>For Representatives:</strong> Displays isolated KPIs (Only <em>their</em> assigned leads, <em>their</em> personal conversion rate). Shows where they stand on the peer leaderboard to encourage healthy competition.</li>
+</ul>
+
+<h3>Leads Directory</h3>
+<p>The main database of contacts.</p>
+<ul>
+  <li><strong>For Managers:</strong> A master list of all contacts in the database. Managers can re-assign leads from one rep to another.</li>
+  <li><strong>For Representatives:</strong> A filtered list showing only the contacts they are responsible for.</li>
+</ul>
+
+<h3>Lead Details & Audit Trail</h3>
+<p>The deep dive into a single contact's history.</p>
+<ul>
+  <li><strong>Functionality:</strong> Users can update contact info, change the lead's status (New -> Follow Up -> Joined), and log historical interactions.</li>
+  <li><strong>Note:</strong> <em>Schedule Task</em> functionality was removed. This area now acts purely as a historical ledger of past communications.</li>
+</ul>
+
+<h3>Team Performance (Manager Exclusive)</h3>
+<p>A managerial tool to evaluate staff.</p>
+<ul>
+  <li><strong>Functionality:</strong> Ranks sales representatives by the number of leads they have successfully won.</li>
+  <li><strong>Manager Actions:</strong> Managers can drill down into a specific representative's profile to view their pipeline. Managers can also create new representative accounts or delete underperforming ones.</li>
+  <li><strong>Representatives:</strong> Blocked from accessing this page.</li>
+</ul>
+
+<h3>Recent Follow-up Report (Manager Exclusive)</h3>
+<p>An accountability tool.</p>
+<ul>
+  <li><strong>Functionality:</strong> Groups active leads by Sales Representative, showing exactly who has been contacted within the <strong>last 5 days</strong>. Helps managers ensure leads aren't going stale.</li>
+</ul>
+
+<h2>4. Planned Expansion: Renewals Workflow</h2>
+<p><em>(Currently pending implementation approval)</em></p>
+<p>A new workflow is being introduced to handle existing clients whose services are nearing expiration.</p>
+<ul>
+  <li><strong>Trigger:</strong> A "Joined" client's serviceEndDate approaches within 30 days.</li>
+  <li><strong>Manager View:</strong> Sees a master list of all expiring services to forecast retention.</li>
+  <li><strong>Representative View:</strong> A dedicated sidebar tab alerts them to call their specific assigned clients to secure a renewal.</li>
+</ul>
+
+</body>
+</html>

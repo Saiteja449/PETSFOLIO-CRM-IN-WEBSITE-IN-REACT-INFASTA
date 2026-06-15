@@ -116,7 +116,7 @@ export const initialLeads = [
     stage: "New Lead",
     assignedTo: "Alex Mercer",
     joinedAt: "2026-05-26",
-    status: "New",
+    status: "Follow Up",
     leadType: "Client",
     providerService: "",
     petName: "Max",
@@ -125,7 +125,6 @@ export const initialLeads = [
     notes:
       "Requires hypoallergenic shampoo. Slightly nervous during nail trimming.",
     createdAt: "2026-05-20",
-    value: 120,
     city: "Phoenix",
     preferredContactMethod: "Email",
     petWeight: "23 lbs",
@@ -141,7 +140,7 @@ export const initialLeads = [
     stage: "Inquiry",
     assignedTo: "Sarah Connor",
     joinedAt: "2026-05-27",
-    status: "Follow Up",
+    status: "Joined",
     leadType: "Service Provider",
     providerService: "Grooming",
     petName: "Bella",
@@ -149,7 +148,6 @@ export const initialLeads = [
     petAge: "1 year",
     notes: "Inquired about full haircut and de-tangling treatment.",
     createdAt: "2026-05-21",
-    value: 95,
     city: "Dallas",
     preferredContactMethod: "SMS",
     petWeight: "22 lbs",
@@ -172,7 +170,6 @@ export const initialLeads = [
     petAge: "3 years",
     notes: "Appointment set for Saturday morning. Needs deshedding treatment.",
     createdAt: "2026-05-18",
-    value: 150,
     city: "San Jose",
     preferredContactMethod: "Email",
     petWeight: "20 lbs",
@@ -196,7 +193,6 @@ export const initialLeads = [
     notes:
       "Super friendly. Loved the teddy bear cut. Will need a recall for repeat booking in 3 weeks.",
     createdAt: "2026-05-15",
-    value: 110,
     city: "Chicago",
     preferredContactMethod: "WhatsApp",
     petWeight: "50 lbs",
@@ -211,7 +207,7 @@ export const initialLeads = [
     service: "Grooming",
     assignedTo: "Sarah Connor",
     joinedAt: "2026-05-28",
-    status: "Job Assigned",
+    status: "Joined",
     leadType: "Service Provider",
     providerService: "Walking",
     petName: "Charlie",
@@ -219,7 +215,6 @@ export const initialLeads = [
     petAge: "5 years",
     notes: "Monthly regular grooming customer.",
     createdAt: "2026-04-10",
-    value: 100,
     city: "San Antonio",
     preferredContactMethod: "Email",
     petWeight: "17 lbs",
@@ -234,7 +229,7 @@ export const initialLeads = [
     service: "Training",
     assignedTo: "David Miller",
     joinedAt: "2026-05-26",
-    status: "New",
+    status: "Joined",
     leadType: "Service Provider",
     providerService: "Training",
     petName: "Cooper",
@@ -242,7 +237,6 @@ export const initialLeads = [
     petAge: "6 months",
     notes: "Owner is struggling with potty training and basic crate training.",
     createdAt: "2026-05-25",
-    value: 450,
     city: "Chicago",
     preferredContactMethod: "Phone",
     petWeight: "46 lbs",
@@ -257,14 +251,13 @@ export const initialLeads = [
     service: "Training",
     assignedTo: "David Miller",
     joinedAt: "2026-05-25", // Overdue for today's followups helper
-    status: "Active",
+    status: "Follow Up",
     petName: "Luna",
     petBreed: "Siberian Husky",
     petAge: "1.5 years",
     notes:
       "High energy level, pulls excessively on leash. Consultation scheduled to align objectives.",
     createdAt: "2026-05-19",
-    value: 600,
     city: "Chicago",
     preferredContactMethod: "Phone",
     petWeight: "33 lbs",
@@ -279,14 +272,13 @@ export const initialLeads = [
     service: "Training",
     assignedTo: "David Miller",
     joinedAt: "2026-05-29",
-    status: "Active",
+    status: "Follow Up",
     petName: "Milo",
     petBreed: "Beagle",
     petAge: "8 months",
     notes:
       "Completed basic initial assessment. Treats motivated but easily distracted.",
     createdAt: "2026-05-16",
-    value: 550,
     city: "Philadelphia",
     preferredContactMethod: "WhatsApp",
     petWeight: "12 lbs",
@@ -301,14 +293,13 @@ export const initialLeads = [
     service: "Training",
     assignedTo: "Alex Mercer",
     joinedAt: "2026-05-27",
-    status: "Active",
+    status: "Follow Up",
     petName: "Oliver",
     petBreed: "French Bulldog",
     petAge: "2 years",
     notes:
       "Discussing the 6-week behavior modification package. Hesitant on pricing.",
     createdAt: "2026-05-14",
-    value: 800,
     city: "San Jose",
     preferredContactMethod: "Phone",
     petWeight: "31 lbs",
@@ -323,14 +314,13 @@ export const initialLeads = [
     service: "Training",
     assignedTo: "David Miller",
     joinedAt: "2026-05-30",
-    status: "Active",
+    status: "Follow Up",
     petName: "Lola",
     petBreed: "Pug",
     petAge: "1 year",
     notes:
       "Enrolled in puppy socialization classes. Payment structure finalized.",
     createdAt: "2026-05-12",
-    value: 350,
     city: "New York",
     preferredContactMethod: "SMS",
     petWeight: "47 lbs",
@@ -351,7 +341,6 @@ export const initialLeads = [
     petAge: "10 months",
     notes: "Active in Group Canine Good Citizen course. Making fast progress.",
     createdAt: "2026-05-01",
-    value: 500,
     city: "Houston",
     preferredContactMethod: "Email",
     petWeight: "22 lbs",
@@ -373,7 +362,6 @@ export const initialLeads = [
     notes:
       "Agility stage 1 completed. Offering 15% discount for Agility Stage 2 renewal.",
     createdAt: "2026-03-15",
-    value: 450,
     city: "San Diego",
     preferredContactMethod: "WhatsApp",
     petWeight: "43 lbs",
@@ -395,7 +383,6 @@ export const initialLeads = [
     notes:
       "Needs 30-minute slow paced daily walks due to breathing characteristics.",
     createdAt: "2026-05-24",
-    value: 180,
     city: "Dallas",
     preferredContactMethod: "WhatsApp",
     petWeight: "31 lbs",
@@ -417,7 +404,6 @@ export const initialLeads = [
     notes:
       "Trial walk scheduled for tomorrow afternoon. Reactive to large dogs.",
     createdAt: "2026-05-22",
-    value: 20,
     city: "Chicago",
     preferredContactMethod: "WhatsApp",
     petWeight: "45 lbs",
@@ -438,7 +424,6 @@ export const initialLeads = [
     petAge: "1.5 years",
     notes: "Enrolling in Mon-Wed-Fri walker subscription package.",
     createdAt: "2026-05-18",
-    value: 240,
     city: "Dallas",
     preferredContactMethod: "WhatsApp",
     petWeight: "18 lbs",
@@ -460,7 +445,6 @@ export const initialLeads = [
     notes:
       "Regular 5-day / week energetic walker customer. Handled by Walker Sam.",
     createdAt: "2026-04-05",
-    value: 360,
     city: "San Antonio",
     preferredContactMethod: "Phone",
     petWeight: "27 lbs",
@@ -482,7 +466,6 @@ export const initialLeads = [
     notes:
       "Monthly subscription ending on May 28. Needs review for renewal discount.",
     createdAt: "2026-04-20",
-    value: 300,
     city: "Chicago",
     preferredContactMethod: "SMS",
     petWeight: "27 lbs",
@@ -504,7 +487,6 @@ export const initialLeads = [
     notes:
       "Needs feeding and litter cleaning twice daily from June 10 to June 15.",
     createdAt: "2026-05-24",
-    value: 200,
     city: "Los Angeles",
     preferredContactMethod: "SMS",
     petWeight: "23 lbs",
@@ -526,7 +508,6 @@ export const initialLeads = [
     notes:
       "Requires administration of insulin shots in the evening. Discussing safety criteria.",
     createdAt: "2026-05-21",
-    value: 350,
     city: "San Antonio",
     preferredContactMethod: "WhatsApp",
     petWeight: "38 lbs",
@@ -548,7 +529,6 @@ export const initialLeads = [
     notes:
       "Overnight house sitting planned for 4 nights during 4th of July week.",
     createdAt: "2026-05-18",
-    value: 500,
     city: "Dallas",
     preferredContactMethod: "WhatsApp",
     petWeight: "54 lbs",
@@ -570,7 +550,6 @@ export const initialLeads = [
     notes:
       "Scheduled block of 3 days. Keys collected and home orientation done.",
     createdAt: "2026-05-10",
-    value: 180,
     city: "Philadelphia",
     preferredContactMethod: "WhatsApp",
     petWeight: "38 lbs",
@@ -591,7 +570,6 @@ export const initialLeads = [
     petAge: "4 years",
     notes: "Pet sitting successfully completed. Owner left 5-star review.",
     createdAt: "2026-05-05",
-    value: 400,
     city: "Chicago",
     preferredContactMethod: "WhatsApp",
     petWeight: "55 lbs",
@@ -612,7 +590,6 @@ export const initialLeads = [
     petAge: "3 years",
     notes: "Regular vacation sitter. Booking again for mid-June weekend.",
     createdAt: "2026-04-12",
-    value: 300,
     city: "Dallas",
     preferredContactMethod: "WhatsApp",
     petWeight: "37 lbs",
@@ -634,7 +611,6 @@ export const initialLeads = [
     notes:
       "Young kitten, owner wants to lock in a premium coverage starting early.",
     createdAt: "2026-05-24",
-    value: 45,
     city: "Philadelphia",
     preferredContactMethod: "WhatsApp",
     petWeight: "20 lbs",
@@ -656,7 +632,6 @@ export const initialLeads = [
     notes:
       "Shared quote for $5,000 annual coverage with $250 deductible. Waiting for response.",
     createdAt: "2026-05-19",
-    value: 55,
     city: "Philadelphia",
     preferredContactMethod: "WhatsApp",
     petWeight: "31 lbs",
@@ -678,7 +653,6 @@ export const initialLeads = [
     notes:
       "Owner uploading medical history documents to check for pre-existing conditions exclusions.",
     createdAt: "2026-05-14",
-    value: 50,
     city: "Dallas",
     preferredContactMethod: "WhatsApp",
     petWeight: "59 lbs",
@@ -700,7 +674,6 @@ export const initialLeads = [
     notes:
       "Comparing our comprehensive premium cover against competitor's base-tier budget plan.",
     createdAt: "2026-05-15",
-    value: 65,
     city: "Chicago",
     preferredContactMethod: "SMS",
     petWeight: "30 lbs",
@@ -722,7 +695,6 @@ export const initialLeads = [
     notes:
       "Approved proposal. Sent secure payment link. Waiting for transaction execution.",
     createdAt: "2026-05-10",
-    value: 70,
     city: "San Diego",
     preferredContactMethod: "SMS",
     petWeight: "23 lbs",
@@ -743,7 +715,6 @@ export const initialLeads = [
     petAge: "3 years",
     notes: "Policy PI-99238 issued. Customer onboarding packet dispatched.",
     createdAt: "2026-05-05",
-    value: 80,
     city: "Phoenix",
     preferredContactMethod: "SMS",
     petWeight: "12 lbs",
@@ -765,7 +736,6 @@ export const initialLeads = [
     notes:
       "Annual policy expiring soon on June 5th. Initiating renewal proposal with premium incentive.",
     createdAt: "2025-05-20",
-    value: 90,
     city: "Los Angeles",
     preferredContactMethod: "Email",
     petWeight: "39 lbs",
@@ -787,7 +757,6 @@ export const initialLeads = [
     notes:
       "Puppy's first grooming session. Owner is very protective, requested extra caring handling.",
     createdAt: "2026-05-25",
-    value: 85,
     city: "San Antonio",
     preferredContactMethod: "WhatsApp",
     petWeight: "24 lbs",
@@ -809,7 +778,6 @@ export const initialLeads = [
     notes:
       "Highly energetic. Closed won walking service with 3 rides per week.",
     createdAt: "2026-04-18",
-    value: 120,
     city: "San Diego",
     preferredContactMethod: "WhatsApp",
     petWeight: "16 lbs",
@@ -832,7 +800,6 @@ export const initialLeads = [
     petAge: "10 months",
     notes: "Client needs standard breed cut for puppy.",
     createdAt: "2026-05-26",
-    value: 90,
     city: "San Diego",
     preferredContactMethod: "Phone",
     petWeight: "54 lbs",
@@ -847,7 +814,7 @@ export const initialLeads = [
     service: "Training",
     assignedTo: "Sarah Connor",
     joinedAt: "2026-05-29",
-    status: "New",
+    status: "Joined",
     leadType: "Service Provider",
     providerService: "Training",
     petName: "Sully",
@@ -856,7 +823,6 @@ export const initialLeads = [
     notes:
       "Professional trainer applying to join the network as service partner.",
     createdAt: "2026-05-26",
-    value: 0,
     city: "Chicago",
     preferredContactMethod: "Email",
     petWeight: "14 lbs",
@@ -879,7 +845,6 @@ export const initialLeads = [
     petAge: "4 years",
     notes: "Client requesting 2 morning walks per day starting next week.",
     createdAt: "2026-05-26",
-    value: 180,
     city: "San Diego",
     preferredContactMethod: "SMS",
     petWeight: "56 lbs",
@@ -894,7 +859,7 @@ export const initialLeads = [
     service: "Walking",
     assignedTo: "David Miller",
     joinedAt: "2026-05-28",
-    status: "New",
+    status: "Joined",
     leadType: "Service Provider",
     providerService: "Walking",
     petName: "Buddy",
@@ -903,7 +868,6 @@ export const initialLeads = [
     notes:
       "Looking to onboard as an experienced pet walker for premium routes.",
     createdAt: "2026-05-26",
-    value: 0,
     city: "San Antonio",
     preferredContactMethod: "Phone",
     petWeight: "24 lbs",
@@ -926,7 +890,6 @@ export const initialLeads = [
     petAge: "6 years",
     notes: "In-home pet parenting requested for 5 days of vacation.",
     createdAt: "2026-05-26",
-    value: 250,
     city: "Los Angeles",
     preferredContactMethod: "SMS",
     petWeight: "54 lbs",
@@ -941,7 +904,7 @@ export const initialLeads = [
     service: "Grooming",
     assignedTo: "Emily Davis",
     joinedAt: "2026-05-29",
-    status: "New",
+    status: "Joined",
     leadType: "Service Provider",
     providerService: "Grooming",
     petName: "Leaks",
@@ -949,7 +912,6 @@ export const initialLeads = [
     petAge: "5 years",
     notes: "Part-time self-employed groomer seeking subcontract shifts.",
     createdAt: "2026-05-26",
-    value: 0,
     city: "New York",
     preferredContactMethod: "WhatsApp",
     petWeight: "39 lbs",
@@ -959,138 +921,660 @@ export const initialLeads = [
 
 export const initialFollowups = [
   {
-    id: "fw1",
+    id: "fw_1",
+    leadId: "lead_1",
+    leadName: "John Doe",
+    type: "WhatsApp",
+    date: "2026-06-08",
+    time: "10:00 AM",
+    priority: "Medium",
+    done: false,
+    notes: "Ping regarding pricing structure options.",
+    petName: "Max"
+  },
+  {
+    id: "fw_2",
     leadId: "lead_1",
     leadName: "John Doe",
     type: "Call",
-    date: "2026-05-26",
-    time: "10:30 AM",
+    date: "2026-06-07",
+    time: "10:00 AM",
+    priority: "Low",
+    done: false,
+    notes: "Call to confirm scheduling and availability.",
+    petName: "Max"
+  },
+  {
+    id: "fw_3",
+    leadId: "lead_1",
+    leadName: "John Doe",
+    type: "Call",
+    date: "2026-05-28",
+    time: "10:00 AM",
     priority: "High",
-    done: false,
-    notes: "Call to confirm Grooming appointment scheduled.",
-    petName: "Max",
+    done: true,
+    notes: "Call to confirm scheduling and availability.",
+    petName: "Max"
   },
   {
-    id: "fw2",
-    leadId: "lead_6",
-    leadName: "Jessica Wilson",
-    type: "WhatsApp",
-    date: "2026-05-26",
-    time: "01:00 PM",
-    priority: "Medium",
-    done: false,
-    notes: "Ping on WhatsApp about training schedules.",
-    petName: "Cooper",
-  },
-  {
-    id: "fw3",
-    leadId: "lead_13",
-    leadName: "Kevin Martin",
-    type: "Email",
-    date: "2026-05-26",
-    time: "03:00 PM",
-    priority: "Medium",
-    done: false,
-    notes: "Send walking pricing matrix details.",
-    petName: "Winston",
-  },
-  {
-    id: "fw4",
+    id: "fw_4",
     leadId: "lead_7",
     leadName: "Matthew Martinez",
-    type: "Meeting",
-    date: "2026-05-25",
-    time: "11:00 AM",
-    priority: "High",
-    done: false,
-    notes: "Conduct Training Assessment consultation.",
-    petName: "Luna",
-  }, // Overdue
-  {
-    id: "fw5",
-    leadId: "lead_17",
-    leadName: "Steven Walker",
-    type: "Call",
-    date: "2026-05-24",
-    time: "04:30 PM",
-    priority: "High",
-    done: false,
-    notes: "Call to discuss walking subscription renewal.",
-    petName: "Ruby",
-  }, // Overdue
-  {
-    id: "fw6",
-    leadId: "lead_2",
-    leadName: "Alice Smith",
     type: "WhatsApp",
-    date: "2026-05-27",
-    time: "11:30 AM",
-    priority: "Low",
-    done: false,
-    notes: "Check schedule for grooming haircut appointment.",
-    petName: "Bella",
+    date: "2026-06-04",
+    time: "10:00 AM",
+    priority: "Medium",
+    done: true,
+    notes: "Ping regarding pricing structure options.",
+    petName: "Luna"
   },
   {
-    id: "fw7",
-    leadId: "lead_22",
-    leadName: "Katelyn Wright",
+    id: "fw_5",
+    leadId: "lead_7",
+    leadName: "Matthew Martinez",
+    type: "Call",
+    date: "2026-06-06",
+    time: "10:00 AM",
+    priority: "Medium",
+    done: false,
+    notes: "Call to confirm scheduling and availability.",
+    petName: "Luna"
+  },
+  {
+    id: "fw_6",
+    leadId: "lead_8",
+    leadName: "Amanda Thomas",
+    type: "WhatsApp",
+    date: "2026-05-20",
+    time: "10:00 AM",
+    priority: "High",
+    done: true,
+    notes: "Ping regarding pricing structure options.",
+    petName: "Milo"
+  },
+  {
+    id: "fw_7",
+    leadId: "lead_8",
+    leadName: "Amanda Thomas",
+    type: "Call",
+    date: "2026-06-04",
+    time: "10:00 AM",
+    priority: "High",
+    done: true,
+    notes: "Call to confirm scheduling and availability.",
+    petName: "Milo"
+  },
+  {
+    id: "fw_8",
+    leadId: "lead_8",
+    leadName: "Amanda Thomas",
     type: "Email",
-    date: "2026-05-10",
-    time: "02:00 PM",
+    date: "2026-06-07",
+    time: "10:00 AM",
+    priority: "Medium",
+    done: false,
+    notes: "Send follow up marketing materials and brochures.",
+    petName: "Milo"
+  },
+  {
+    id: "fw_9",
+    leadId: "lead_9",
+    leadName: "James Taylor",
+    type: "Email",
+    date: "2026-05-23",
+    time: "10:00 AM",
+    priority: "Medium",
+    done: false,
+    notes: "Send follow up marketing materials and brochures.",
+    petName: "Oliver"
+  },
+  {
+    id: "fw_10",
+    leadId: "lead_9",
+    leadName: "James Taylor",
+    type: "Call",
+    date: "2026-06-08",
+    time: "10:00 AM",
+    priority: "Medium",
+    done: false,
+    notes: "Call to confirm scheduling and availability.",
+    petName: "Oliver"
+  },
+  {
+    id: "fw_11",
+    leadId: "lead_9",
+    leadName: "James Taylor",
+    type: "Call",
+    date: "2026-05-22",
+    time: "10:00 AM",
     priority: "Low",
     done: true,
-    notes: "Sent thank you note and review prompt.",
-    petName: "Duke",
-  }, // Completed
+    notes: "Call to confirm scheduling and availability.",
+    petName: "Oliver"
+  },
+  {
+    id: "fw_12",
+    leadId: "lead_10",
+    leadName: "Sarah Jenkins",
+    type: "Call",
+    date: "2026-05-26",
+    time: "10:00 AM",
+    priority: "Medium",
+    done: false,
+    notes: "Call to confirm scheduling and availability.",
+    petName: "Lola"
+  },
+  {
+    id: "fw_13",
+    leadId: "lead_10",
+    leadName: "Sarah Jenkins",
+    type: "Email",
+    date: "2026-06-08",
+    time: "10:00 AM",
+    priority: "Medium",
+    done: false,
+    notes: "Send follow up marketing materials and brochures.",
+    petName: "Lola"
+  }
 ];
 
 export const initialActivities = [
   {
-    id: "act1",
+    id: "act_1",
     leadId: "lead_1",
-    leadName: "John Doe",
-    type: "Stage Changed",
-    content:
-      "Stage updated from Inquiry to Appointment Scheduled by Alex Mercer",
-    date: "2026-05-25T14:30:11Z",
+    type: "Email Sent",
+    content: "Sent introductory email with service brochure.",
+    author: "John Doe",
+    date: "2026-05-18T14:30:00Z"
+  },
+  {
+    id: "act_2",
+    leadId: "lead_2",
+    type: "Status Update",
+    content: "Updated lead status to follow up required.",
     author: "Alex Mercer",
+    date: "2026-06-06T14:30:00Z"
   },
   {
-    id: "act2",
-    leadId: "lead_6",
-    leadName: "Jessica Wilson",
-    type: "Lead Created",
-    content: "Lead created via Whatsapp ad integration.",
-    date: "2026-05-25T09:12:00Z",
-    author: "System",
+    id: "act_3",
+    leadId: "lead_2",
+    type: "Status Update",
+    content: "Updated lead status to follow up required.",
+    author: "Alex Mercer",
+    date: "2026-05-12T14:30:00Z"
   },
   {
-    id: "act3",
-    leadId: "lead_29",
-    leadName: "Donna Mitchell",
-    type: "Policy Issued",
-    content: "Policy documentation uploaded, policy active.",
-    date: "2026-05-24T16:45:00Z",
-    author: "Emily Davis",
-  },
-  {
-    id: "act4",
+    id: "act_4",
     leadId: "lead_3",
-    leadName: "Robert Johnson",
-    type: "Note Added",
-    content: "Customer requested a warm air blow dryer instead of cage dryer.",
-    date: "2026-05-24T11:20:00Z",
+    type: "Call Made",
+    content: "Called the client but no answer. Left a voicemail.",
     author: "Sarah Connor",
+    date: "2026-05-14T14:30:00Z"
   },
   {
-    id: "act5",
-    leadId: "lead_15",
-    leadName: "Brian Rodriguez",
-    type: "Call Completed",
-    content: "Discussed subscription pricing options. Client seems positive.",
-    date: "2026-05-23T15:10:00Z",
-    author: "David Miller",
+    id: "act_5",
+    leadId: "lead_3",
+    type: "Status Update",
+    content: "Updated lead status to follow up required.",
+    author: "John Doe",
+    date: "2026-06-06T14:30:00Z"
   },
+  {
+    id: "act_6",
+    leadId: "lead_4",
+    type: "Email Sent",
+    content: "Sent introductory email with service brochure.",
+    author: "Sarah Connor",
+    date: "2026-05-12T14:30:00Z"
+  },
+  {
+    id: "act_7",
+    leadId: "lead_4",
+    type: "Follow Up Set",
+    content: "Scheduled a follow-up call for next week.",
+    author: "Sarah Connor",
+    date: "2026-05-10T14:30:00Z"
+  },
+  {
+    id: "act_8",
+    leadId: "lead_5",
+    type: "Call Made",
+    content: "Called the client but no answer. Left a voicemail.",
+    author: "Alex Mercer",
+    date: "2026-05-12T14:30:00Z"
+  },
+  {
+    id: "act_9",
+    leadId: "lead_5",
+    type: "Email Sent",
+    content: "Sent introductory email with service brochure.",
+    author: "Alex Mercer",
+    date: "2026-06-04T14:30:00Z"
+  },
+  {
+    id: "act_10",
+    leadId: "lead_6",
+    type: "Status Update",
+    content: "Updated lead status to follow up required.",
+    author: "Sarah Connor",
+    date: "2026-05-14T14:30:00Z"
+  },
+  {
+    id: "act_11",
+    leadId: "lead_7",
+    type: "Status Update",
+    content: "Updated lead status to follow up required.",
+    author: "Alex Mercer",
+    date: "2026-05-12T14:30:00Z"
+  },
+  {
+    id: "act_12",
+    leadId: "lead_8",
+    type: "Email Sent",
+    content: "Sent introductory email with service brochure.",
+    author: "Sarah Connor",
+    date: "2026-06-06T14:30:00Z"
+  },
+  {
+    id: "act_13",
+    leadId: "lead_8",
+    type: "Follow Up Set",
+    content: "Scheduled a follow-up call for next week.",
+    author: "Alex Mercer",
+    date: "2026-06-05T14:30:00Z"
+  },
+  {
+    id: "act_14",
+    leadId: "lead_9",
+    type: "Call Made",
+    content: "Called the client but no answer. Left a voicemail.",
+    author: "Sarah Connor",
+    date: "2026-06-08T14:30:00Z"
+  },
+  {
+    id: "act_15",
+    leadId: "lead_10",
+    type: "Note Added",
+    content: "Added some context regarding the client's availability and preferences.",
+    author: "Alex Mercer",
+    date: "2026-05-13T14:30:00Z"
+  },
+  {
+    id: "act_16",
+    leadId: "lead_10",
+    type: "Call Made",
+    content: "Called the client but no answer. Left a voicemail.",
+    author: "Alex Mercer",
+    date: "2026-05-11T14:30:00Z"
+  },
+  {
+    id: "act_17",
+    leadId: "lead_11",
+    type: "Email Sent",
+    content: "Sent introductory email with service brochure.",
+    author: "Sarah Connor",
+    date: "2026-06-04T14:30:00Z"
+  },
+  {
+    id: "act_18",
+    leadId: "lead_11",
+    type: "Email Sent",
+    content: "Sent introductory email with service brochure.",
+    author: "Alex Mercer",
+    date: "2026-05-19T14:30:00Z"
+  },
+  {
+    id: "act_19",
+    leadId: "lead_12",
+    type: "Status Update",
+    content: "Updated lead status to follow up required.",
+    author: "Sarah Connor",
+    date: "2026-05-19T14:30:00Z"
+  },
+  {
+    id: "act_20",
+    leadId: "lead_12",
+    type: "Call Made",
+    content: "Called the client but no answer. Left a voicemail.",
+    author: "Alex Mercer",
+    date: "2026-05-13T14:30:00Z"
+  },
+  {
+    id: "act_21",
+    leadId: "lead_13",
+    type: "Email Sent",
+    content: "Sent introductory email with service brochure.",
+    author: "John Doe",
+    date: "2026-05-18T14:30:00Z"
+  },
+  {
+    id: "act_22",
+    leadId: "lead_13",
+    type: "Email Sent",
+    content: "Sent introductory email with service brochure.",
+    author: "Sarah Connor",
+    date: "2026-06-05T14:30:00Z"
+  },
+  {
+    id: "act_23",
+    leadId: "lead_14",
+    type: "Note Added",
+    content: "Added some context regarding the client's availability and preferences.",
+    author: "Alex Mercer",
+    date: "2026-06-07T14:30:00Z"
+  },
+  {
+    id: "act_24",
+    leadId: "lead_14",
+    type: "Follow Up Set",
+    content: "Scheduled a follow-up call for next week.",
+    author: "John Doe",
+    date: "2026-06-04T14:30:00Z"
+  },
+  {
+    id: "act_25",
+    leadId: "lead_15",
+    type: "Status Update",
+    content: "Updated lead status to follow up required.",
+    author: "John Doe",
+    date: "2026-06-04T14:30:00Z"
+  },
+  {
+    id: "act_26",
+    leadId: "lead_15",
+    type: "Email Sent",
+    content: "Sent introductory email with service brochure.",
+    author: "Alex Mercer",
+    date: "2026-05-12T14:30:00Z"
+  },
+  {
+    id: "act_27",
+    leadId: "lead_16",
+    type: "Note Added",
+    content: "Added some context regarding the client's availability and preferences.",
+    author: "Alex Mercer",
+    date: "2026-05-15T14:30:00Z"
+  },
+  {
+    id: "act_28",
+    leadId: "lead_17",
+    type: "Call Made",
+    content: "Called the client but no answer. Left a voicemail.",
+    author: "Alex Mercer",
+    date: "2026-06-05T14:30:00Z"
+  },
+  {
+    id: "act_29",
+    leadId: "lead_17",
+    type: "Call Made",
+    content: "Called the client but no answer. Left a voicemail.",
+    author: "John Doe",
+    date: "2026-05-16T14:30:00Z"
+  },
+  {
+    id: "act_30",
+    leadId: "lead_18",
+    type: "Status Update",
+    content: "Updated lead status to follow up required.",
+    author: "John Doe",
+    date: "2026-05-11T14:30:00Z"
+  },
+  {
+    id: "act_31",
+    leadId: "lead_18",
+    type: "Email Sent",
+    content: "Sent introductory email with service brochure.",
+    author: "John Doe",
+    date: "2026-05-16T14:30:00Z"
+  },
+  {
+    id: "act_32",
+    leadId: "lead_19",
+    type: "Note Added",
+    content: "Added some context regarding the client's availability and preferences.",
+    author: "Sarah Connor",
+    date: "2026-05-11T14:30:00Z"
+  },
+  {
+    id: "act_33",
+    leadId: "lead_19",
+    type: "Email Sent",
+    content: "Sent introductory email with service brochure.",
+    author: "Sarah Connor",
+    date: "2026-06-08T14:30:00Z"
+  },
+  {
+    id: "act_34",
+    leadId: "lead_20",
+    type: "Email Sent",
+    content: "Sent introductory email with service brochure.",
+    author: "John Doe",
+    date: "2026-06-04T14:30:00Z"
+  },
+  {
+    id: "act_35",
+    leadId: "lead_20",
+    type: "Follow Up Set",
+    content: "Scheduled a follow-up call for next week.",
+    author: "John Doe",
+    date: "2026-06-08T14:30:00Z"
+  },
+  {
+    id: "act_36",
+    leadId: "lead_21",
+    type: "Email Sent",
+    content: "Sent introductory email with service brochure.",
+    author: "John Doe",
+    date: "2026-06-06T14:30:00Z"
+  },
+  {
+    id: "act_37",
+    leadId: "lead_22",
+    type: "Note Added",
+    content: "Added some context regarding the client's availability and preferences.",
+    author: "Alex Mercer",
+    date: "2026-05-19T14:30:00Z"
+  },
+  {
+    id: "act_38",
+    leadId: "lead_22",
+    type: "Email Sent",
+    content: "Sent introductory email with service brochure.",
+    author: "Sarah Connor",
+    date: "2026-05-19T14:30:00Z"
+  },
+  {
+    id: "act_39",
+    leadId: "lead_23",
+    type: "Status Update",
+    content: "Updated lead status to follow up required.",
+    author: "Sarah Connor",
+    date: "2026-06-07T14:30:00Z"
+  },
+  {
+    id: "act_40",
+    leadId: "lead_24",
+    type: "Call Made",
+    content: "Called the client but no answer. Left a voicemail.",
+    author: "Alex Mercer",
+    date: "2026-06-06T14:30:00Z"
+  },
+  {
+    id: "act_41",
+    leadId: "lead_24",
+    type: "Status Update",
+    content: "Updated lead status to follow up required.",
+    author: "John Doe",
+    date: "2026-06-08T14:30:00Z"
+  },
+  {
+    id: "act_42",
+    leadId: "lead_25",
+    type: "Email Sent",
+    content: "Sent introductory email with service brochure.",
+    author: "Sarah Connor",
+    date: "2026-06-06T14:30:00Z"
+  },
+  {
+    id: "act_43",
+    leadId: "lead_26",
+    type: "Call Made",
+    content: "Called the client but no answer. Left a voicemail.",
+    author: "Sarah Connor",
+    date: "2026-05-19T14:30:00Z"
+  },
+  {
+    id: "act_44",
+    leadId: "lead_27",
+    type: "Status Update",
+    content: "Updated lead status to follow up required.",
+    author: "John Doe",
+    date: "2026-05-18T14:30:00Z"
+  },
+  {
+    id: "act_45",
+    leadId: "lead_27",
+    type: "Note Added",
+    content: "Added some context regarding the client's availability and preferences.",
+    author: "John Doe",
+    date: "2026-05-16T14:30:00Z"
+  },
+  {
+    id: "act_46",
+    leadId: "lead_28",
+    type: "Email Sent",
+    content: "Sent introductory email with service brochure.",
+    author: "John Doe",
+    date: "2026-06-05T14:30:00Z"
+  },
+  {
+    id: "act_47",
+    leadId: "lead_28",
+    type: "Status Update",
+    content: "Updated lead status to follow up required.",
+    author: "John Doe",
+    date: "2026-06-08T14:30:00Z"
+  },
+  {
+    id: "act_48",
+    leadId: "lead_29",
+    type: "Status Update",
+    content: "Updated lead status to follow up required.",
+    author: "Alex Mercer",
+    date: "2026-05-18T14:30:00Z"
+  },
+  {
+    id: "act_49",
+    leadId: "lead_29",
+    type: "Note Added",
+    content: "Added some context regarding the client's availability and preferences.",
+    author: "Sarah Connor",
+    date: "2026-05-19T14:30:00Z"
+  },
+  {
+    id: "act_50",
+    leadId: "lead_30",
+    type: "Email Sent",
+    content: "Sent introductory email with service brochure.",
+    author: "Alex Mercer",
+    date: "2026-06-08T14:30:00Z"
+  },
+  {
+    id: "act_51",
+    leadId: "lead_31",
+    type: "Note Added",
+    content: "Added some context regarding the client's availability and preferences.",
+    author: "Sarah Connor",
+    date: "2026-05-11T14:30:00Z"
+  },
+  {
+    id: "act_52",
+    leadId: "lead_32",
+    type: "Email Sent",
+    content: "Sent introductory email with service brochure.",
+    author: "Sarah Connor",
+    date: "2026-06-05T14:30:00Z"
+  },
+  {
+    id: "act_53",
+    leadId: "lead_32",
+    type: "Follow Up Set",
+    content: "Scheduled a follow-up call for next week.",
+    author: "Sarah Connor",
+    date: "2026-06-06T14:30:00Z"
+  },
+  {
+    id: "act_54",
+    leadId: "lead_33",
+    type: "Call Made",
+    content: "Called the client but no answer. Left a voicemail.",
+    author: "Sarah Connor",
+    date: "2026-05-15T14:30:00Z"
+  },
+  {
+    id: "act_55",
+    leadId: "lead_34",
+    type: "Status Update",
+    content: "Updated lead status to follow up required.",
+    author: "Alex Mercer",
+    date: "2026-06-06T14:30:00Z"
+  },
+  {
+    id: "act_56",
+    leadId: "lead_35",
+    type: "Call Made",
+    content: "Called the client but no answer. Left a voicemail.",
+    author: "John Doe",
+    date: "2026-06-05T14:30:00Z"
+  },
+  {
+    id: "act_57",
+    leadId: "lead_36",
+    type: "Email Sent",
+    content: "Sent introductory email with service brochure.",
+    author: "Alex Mercer",
+    date: "2026-05-17T14:30:00Z"
+  },
+  {
+    id: "act_58",
+    leadId: "lead_36",
+    type: "Note Added",
+    content: "Added some context regarding the client's availability and preferences.",
+    author: "Alex Mercer",
+    date: "2026-05-16T14:30:00Z"
+  },
+  {
+    id: "act_59",
+    leadId: "lead_37",
+    type: "Status Update",
+    content: "Updated lead status to follow up required.",
+    author: "John Doe",
+    date: "2026-05-18T14:30:00Z"
+  },
+  {
+    id: "act_60",
+    leadId: "lead_37",
+    type: "Call Made",
+    content: "Called the client but no answer. Left a voicemail.",
+    author: "Sarah Connor",
+    date: "2026-05-15T14:30:00Z"
+  },
+  {
+    id: "act_61",
+    leadId: "lead_38",
+    type: "Note Added",
+    content: "Added some context regarding the client's availability and preferences.",
+    author: "Alex Mercer",
+    date: "2026-06-08T14:30:00Z"
+  },
+  {
+    id: "act_62",
+    leadId: "lead_38",
+    type: "Call Made",
+    content: "Called the client but no answer. Left a voicemail.",
+    author: "John Doe",
+    date: "2026-05-12T14:30:00Z"
+  }
 ];
 
 export const initialNotifications = [

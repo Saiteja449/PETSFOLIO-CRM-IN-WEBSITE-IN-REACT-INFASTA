@@ -43,10 +43,10 @@ export default function Settings() {
     <div className="p-4 md:p-6 relative">
       {/* Upper header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-white tracking-tight mb-1">
+        <h1 className="text-2xl font-bold text-brand-primary tracking-tight mb-1">
           Global CRM Configurations
         </h1>
-        <p className="text-sm text-zinc-400">
+        <p className="text-sm text-brand-primary/70">
           Tweak representative profile cards, alert thresholds, and operational
           options.
         </p>
@@ -59,15 +59,15 @@ export default function Settings() {
         {/* Left Hand: Profile & Themes */}
         <div className="md:col-span-7 space-y-6">
           {/* User Profile credentials card */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 shadow-sm">
-            <h2 className="text-sm font-bold text-white mb-5 flex items-center gap-2">
+          <div className="bg-brand-light border border-brand-secondary rounded-2xl p-6 shadow-sm">
+            <h2 className="text-sm font-bold text-brand-primary mb-5 flex items-center gap-2">
               <ProfileIcon className="text-teal-500 w-5 h-5" /> Representative
               Profile Workspace
             </h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-medium text-zinc-400 mb-1.5">
+                <label className="block text-xs font-medium text-brand-primary/70 mb-1.5">
                   Full Display Name
                 </label>
                 <input
@@ -76,11 +76,11 @@ export default function Settings() {
                   onChange={(e) =>
                     setProfile({ ...profile, name: e.target.value })
                   }
-                  className="w-full bg-zinc-950 border border-zinc-800 text-white text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block p-2.5 outline-none"
+                  className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block p-2.5 outline-none"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-zinc-400 mb-1.5">
+                <label className="block text-xs font-medium text-brand-primary/70 mb-1.5">
                   Official Email address
                 </label>
                 <input
@@ -89,11 +89,11 @@ export default function Settings() {
                   onChange={(e) =>
                     setProfile({ ...profile, email: e.target.value })
                   }
-                  className="w-full bg-zinc-950 border border-zinc-800 text-white text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block p-2.5 outline-none"
+                  className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block p-2.5 outline-none"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-zinc-400 mb-1.5">
+                <label className="block text-xs font-medium text-brand-primary/70 mb-1.5">
                   Callback Phone
                 </label>
                 <input
@@ -102,11 +102,11 @@ export default function Settings() {
                   onChange={(e) =>
                     setProfile({ ...profile, phone: e.target.value })
                   }
-                  className="w-full bg-zinc-950 border border-zinc-800 text-white text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block p-2.5 outline-none"
+                  className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block p-2.5 outline-none"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-zinc-400 mb-1.5">
+                <label className="block text-xs font-medium text-brand-primary/70 mb-1.5">
                   Local Timezone
                 </label>
                 <input
@@ -115,21 +115,21 @@ export default function Settings() {
                   onChange={(e) =>
                     setProfile({ ...profile, timezone: e.target.value })
                   }
-                  className="w-full bg-zinc-950 border border-zinc-800 text-white text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block p-2.5 outline-none"
+                  className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block p-2.5 outline-none"
                 />
               </div>
             </div>
           </div>
 
           {/* Aesthetics and themes preferentials */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 shadow-sm">
-            <h2 className="text-sm font-bold text-white mb-5 flex items-center gap-2">
+          <div className="bg-brand-light border border-brand-secondary rounded-2xl p-6 shadow-sm">
+            <h2 className="text-sm font-bold text-brand-primary mb-5 flex items-center gap-2">
               <ThemeIcon className="text-teal-500 w-5 h-5" /> Cosmetics & Theme
               Settings
             </h2>
 
             <div className="mb-5">
-              <label className="block text-sm font-bold text-white mb-3">
+              <label className="block text-sm font-bold text-brand-primary mb-3">
                 Selected Interface Mode
               </label>
               <div className="flex gap-4">
@@ -141,9 +141,9 @@ export default function Settings() {
                     disabled
                     checked={themePref === "light"}
                     onChange={(e) => setThemePref(e.target.value)}
-                    className="text-teal-500 focus:ring-teal-500 bg-zinc-950 border-zinc-700 w-4 h-4"
+                    className="text-teal-500 focus:ring-teal-500 bg-brand-light border-brand-secondary w-4 h-4"
                   />
-                  <span className="text-sm text-zinc-300">
+                  <span className="text-sm text-brand-primary">
                     Classic Alabaster (Light)
                   </span>
                 </label>
@@ -154,9 +154,9 @@ export default function Settings() {
                     value="dark"
                     checked={themePref === "dark"}
                     onChange={(e) => setThemePref(e.target.value)}
-                    className="text-teal-500 focus:ring-teal-500 bg-zinc-950 border-zinc-700 w-4 h-4"
+                    className="text-teal-500 focus:ring-teal-500 bg-brand-light border-brand-secondary w-4 h-4"
                   />
-                  <span className="text-sm text-zinc-300">
+                  <span className="text-sm text-brand-primary">
                     Deep Charcoal (Dark)
                   </span>
                 </label>
@@ -164,7 +164,7 @@ export default function Settings() {
             </div>
 
             <div>
-              <label className="block text-sm font-bold text-white mb-3">
+              <label className="block text-sm font-bold text-brand-primary mb-3">
                 Accent Visual Colorways
               </label>
               <div className="flex gap-4">
@@ -176,9 +176,9 @@ export default function Settings() {
                     disabled
                     checked={accentColor === "blue"}
                     onChange={(e) => setAccentColor(e.target.value)}
-                    className="text-teal-500 focus:ring-teal-500 bg-zinc-950 border-zinc-700 w-4 h-4"
+                    className="text-teal-500 focus:ring-teal-500 bg-brand-light border-brand-secondary w-4 h-4"
                   />
-                  <span className="text-sm text-zinc-300">Sapphire Blue</span>
+                  <span className="text-sm text-brand-primary">Sapphire Blue</span>
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
@@ -187,9 +187,9 @@ export default function Settings() {
                     value="teal"
                     checked={accentColor === "teal"}
                     onChange={(e) => setAccentColor(e.target.value)}
-                    className="text-teal-500 focus:ring-teal-500 bg-zinc-950 border-zinc-700 w-4 h-4"
+                    className="text-teal-500 focus:ring-teal-500 bg-brand-light border-brand-secondary w-4 h-4"
                   />
-                  <span className="text-sm text-zinc-300">Ocean Teal</span>
+                  <span className="text-sm text-brand-primary">Ocean Teal</span>
                 </label>
                 <label className="flex items-center gap-2 cursor-not-allowed opacity-50">
                   <input
@@ -199,9 +199,9 @@ export default function Settings() {
                     disabled
                     checked={accentColor === "purple"}
                     onChange={(e) => setAccentColor(e.target.value)}
-                    className="text-teal-500 focus:ring-teal-500 bg-zinc-950 border-zinc-700 w-4 h-4"
+                    className="text-teal-500 focus:ring-teal-500 bg-brand-light border-brand-secondary w-4 h-4"
                   />
-                  <span className="text-sm text-zinc-300">Amethyst Purple</span>
+                  <span className="text-sm text-brand-primary">Amethyst Purple</span>
                 </label>
               </div>
             </div>
@@ -211,19 +211,19 @@ export default function Settings() {
         {/* Right Hand: Preferences notifications and priority units */}
         <div className="md:col-span-5 space-y-6">
           {/* System notifications channels preferences */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 shadow-sm">
-            <h2 className="text-sm font-bold text-white mb-5 flex items-center gap-2">
+          <div className="bg-brand-light border border-brand-secondary rounded-2xl p-6 shadow-sm">
+            <h2 className="text-sm font-bold text-brand-primary mb-5 flex items-center gap-2">
               <NotificationIcon className="text-teal-500 w-5 h-5" />{" "}
               Communication Preferences
             </h2>
 
             <ul className="flex flex-col">
-              <li className="flex items-center justify-between py-3 border-b border-zinc-800 last:border-0 last:pb-0 first:pt-0">
+              <li className="flex items-center justify-between py-3 border-b border-brand-secondary last:border-0 last:pb-0 first:pt-0">
                 <div className="flex-grow min-w-0 pr-4">
-                  <p className="text-sm font-bold text-white mb-0.5">
+                  <p className="text-sm font-bold text-brand-primary mb-0.5">
                     Lead Assigned Email Alerts
                   </p>
-                  <p className="text-xs text-zinc-400">
+                  <p className="text-xs text-brand-primary/70">
                     Broadcast an inbox notice when a new inquiry lands on your
                     roster.
                   </p>
@@ -236,8 +236,8 @@ export default function Settings() {
                       emailAlerts: !notifications.emailAlerts,
                     })
                   }
-                  className={`relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 focus:ring-offset-zinc-900 ${
-                    notifications.emailAlerts ? "bg-teal-500" : "bg-zinc-700"
+                  className={`relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 focus:ring-offset-brand-light ${
+                    notifications.emailAlerts ? "bg-teal-500" : "bg-brand-secondary/30"
                   }`}
                 >
                   <span
@@ -246,12 +246,12 @@ export default function Settings() {
                 </button>
               </li>
 
-              <li className="flex items-center justify-between py-3 border-b border-zinc-800 last:border-0 last:pb-0">
+              <li className="flex items-center justify-between py-3 border-b border-brand-secondary last:border-0 last:pb-0">
                 <div className="flex-grow min-w-0 pr-4">
-                  <p className="text-sm font-bold text-white mb-0.5">
+                  <p className="text-sm font-bold text-brand-primary mb-0.5">
                     Overdue Backlog Indicators
                   </p>
-                  <p className="text-xs text-zinc-400">
+                  <p className="text-xs text-brand-primary/70">
                     Flag daily task alerts that breach execution timers.
                   </p>
                 </div>
@@ -263,8 +263,8 @@ export default function Settings() {
                       overdueTasks: !notifications.overdueTasks,
                     })
                   }
-                  className={`relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 focus:ring-offset-zinc-900 ${
-                    notifications.overdueTasks ? "bg-teal-500" : "bg-zinc-700"
+                  className={`relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 focus:ring-offset-brand-light ${
+                    notifications.overdueTasks ? "bg-teal-500" : "bg-brand-secondary/30"
                   }`}
                 >
                   <span
@@ -273,12 +273,12 @@ export default function Settings() {
                 </button>
               </li>
 
-              <li className="flex items-center justify-between py-3 border-b border-zinc-800 last:border-0 last:pb-0">
+              <li className="flex items-center justify-between py-3 border-b border-brand-secondary last:border-0 last:pb-0">
                 <div className="flex-grow min-w-0 pr-4">
-                  <p className="text-sm font-bold text-white mb-0.5">
+                  <p className="text-sm font-bold text-brand-primary mb-0.5">
                     Insurance Expiring Toggles
                   </p>
-                  <p className="text-xs text-zinc-400">
+                  <p className="text-xs text-brand-primary/70">
                     Enable policy alert prompts 10 days prior to contract
                     expiration.
                   </p>
@@ -291,8 +291,8 @@ export default function Settings() {
                       insurances: !notifications.insurances,
                     })
                   }
-                  className={`relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 focus:ring-offset-zinc-900 ${
-                    notifications.insurances ? "bg-teal-500" : "bg-zinc-700"
+                  className={`relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 focus:ring-offset-brand-light ${
+                    notifications.insurances ? "bg-teal-500" : "bg-brand-secondary/30"
                   }`}
                 >
                   <span
@@ -306,7 +306,7 @@ export default function Settings() {
           {/* Quick Action save */}
           <button
             type="submit"
-            className="w-full flex items-center justify-center gap-2 bg-teal-500 hover:bg-teal-600 text-zinc-950 font-bold py-3 px-4 rounded-xl transition-colors"
+            className="w-full flex items-center justify-center gap-2 bg-teal-500 hover:bg-teal-600 text-brand-light font-bold py-3 px-4 rounded-xl transition-colors"
           >
             <SaveIcon className="w-5 h-5" />
             Save configurations

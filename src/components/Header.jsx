@@ -24,19 +24,19 @@ export default function Header({ handleDrawerToggle, onQuickAddLead }) {
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-zinc-950/80 backdrop-blur-md border-b border-zinc-800 text-zinc-100">
+    <header className="sticky top-0 z-40 bg-brand-light/80 backdrop-blur-md border-b border-brand-secondary text-brand-primary">
       <div className="flex items-center justify-between px-4 py-3 sm:px-6">
         {/* Left: Mobile Toggle & Page Title */}
         <div className="flex items-center gap-2 sm:gap-4">
           <button
             type="button"
-            className="md:hidden p-2 -ml-2 text-zinc-400 hover:text-zinc-100 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+            className="md:hidden p-2 -ml-2 text-brand-primary/70 hover:text-brand-primary rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
             onClick={handleDrawerToggle}
             aria-label="open drawer"
           >
             <Menu className="w-6 h-6" />
           </button>
-          <h1 className="text-lg sm:text-xl font-bold tracking-tight text-white truncate">
+          <h1 className="text-lg sm:text-xl font-bold tracking-tight text-brand-primary truncate">
             {getPageTitle()}
           </h1>
         </div>
@@ -49,7 +49,7 @@ export default function Header({ handleDrawerToggle, onQuickAddLead }) {
               <button
                 type="button"
                 onClick={onQuickAddLead}
-                className="hidden sm:flex items-center gap-2 bg-teal-500 hover:bg-teal-600 text-zinc-950 font-bold py-2 px-4 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 focus:ring-offset-zinc-950"
+                className="hidden sm:flex items-center gap-2 bg-teal-500 hover:bg-teal-600 text-brand-light font-bold py-2 px-4 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 focus:ring-offset-brand-light"
               >
                 <Plus className="w-4 h-4" />
                 New Lead
@@ -57,7 +57,7 @@ export default function Header({ handleDrawerToggle, onQuickAddLead }) {
               <button
                 type="button"
                 onClick={onQuickAddLead}
-                className="sm:hidden flex items-center justify-center bg-teal-500 hover:bg-teal-600 text-zinc-950 rounded-full w-9 h-9 transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500"
+                className="sm:hidden flex items-center justify-center bg-teal-500 hover:bg-teal-600 text-brand-light rounded-full w-9 h-9 transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500"
                 aria-label="New Lead"
               >
                 <Plus className="w-5 h-5" />
@@ -70,11 +70,11 @@ export default function Header({ handleDrawerToggle, onQuickAddLead }) {
             type="button"
             title="View System Notifications"
             onClick={() => navigate("/notifications")}
-            className="relative p-2 rounded-lg bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 transition-colors text-zinc-400 hover:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-teal-500"
+            className="relative p-2 rounded-lg bg-brand-light border border-brand-secondary hover:bg-brand-secondary/30 transition-colors text-brand-primary/70 hover:text-brand-primary focus:outline-none focus:ring-2 focus:ring-teal-500"
           >
             <Bell className="w-5 h-5" />
             {unreadCount > 0 && (
-              <span className="absolute top-0 right-0 -mt-1 -mr-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white">
+              <span className="absolute top-0 right-0 -mt-1 -mr-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-brand-primary">
                 {unreadCount > 99 ? "99+" : unreadCount}
               </span>
             )}

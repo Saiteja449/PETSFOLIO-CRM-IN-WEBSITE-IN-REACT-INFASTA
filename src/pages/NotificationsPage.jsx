@@ -46,10 +46,10 @@ export default function NotificationsPage() {
       {/* Description header */}
       <div className="flex justify-between items-center mb-6 flex-wrap gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight mb-1">
+          <h1 className="text-2xl font-bold text-brand-primary tracking-tight mb-1">
             Alerts & System Notifications
           </h1>
-          <p className="text-sm text-zinc-400">
+          <p className="text-sm text-brand-primary/70">
             Review pending system reminders, expiring subscription agreements,
             and salesperson call alerts.
           </p>
@@ -58,7 +58,7 @@ export default function NotificationsPage() {
         {unreadCount > 0 && (
           <button
             onClick={markAllAsRead}
-            className="flex items-center gap-2 px-4 py-2 border border-zinc-700 hover:bg-zinc-800 text-white text-sm font-bold rounded-lg transition-colors"
+            className="flex items-center gap-2 px-4 py-2 border border-brand-secondary hover:bg-brand-secondary/30 text-brand-primary text-sm font-bold rounded-lg transition-colors"
           >
             <CheckCheck size={18} />
             Mark All Read
@@ -67,13 +67,13 @@ export default function NotificationsPage() {
       </div>
 
       {/* Main Container */}
-      <div className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden shadow-sm">
-        <ul className="divide-y divide-zinc-800">
+      <div className="bg-brand-light border border-brand-secondary rounded-2xl overflow-hidden shadow-sm">
+        <ul className="divide-y divide-brand-secondary">
           {notifications.map((n) => (
             <li
               key={n.id}
               className={`flex items-start p-4 sm:p-5 transition-colors relative group ${
-                n.read ? "bg-zinc-950" : "bg-teal-500/5"
+                n.read ? "bg-brand-light" : "bg-teal-500/5"
               }`}
             >
               {/* Visual Avatar */}
@@ -89,20 +89,20 @@ export default function NotificationsPage() {
               <div className="flex-grow min-w-0 pr-16 sm:pr-24">
                 <div className="flex items-center gap-2 flex-wrap mb-1">
                   <h3
-                    className={`text-sm ${n.read ? "font-semibold text-zinc-200" : "font-extrabold text-white"}`}
+                    className={`text-sm ${n.read ? "font-semibold text-brand-primary" : "font-extrabold text-brand-primary"}`}
                   >
                     {n.title}
                   </h3>
                   {!n.read && (
-                    <span className="px-1.5 py-0.5 rounded text-[10px] font-black tracking-wider bg-teal-500 text-zinc-950">
+                    <span className="px-1.5 py-0.5 rounded text-[10px] font-black tracking-wider bg-teal-500 text-brand-light">
                       NEW
                     </span>
                   )}
                 </div>
-                <p className="text-sm text-zinc-300 leading-relaxed mb-1.5">
+                <p className="text-sm text-brand-primary leading-relaxed mb-1.5">
                   {n.message}
                 </p>
-                <span className="text-xs text-zinc-500 flex items-center gap-1">
+                <span className="text-xs text-brand-primary/70 flex items-center gap-1">
                   🕒 {n.time}
                 </span>
               </div>
@@ -112,7 +112,7 @@ export default function NotificationsPage() {
                 {!n.read && (
                   <button
                     onClick={() => markAsRead(n.id)}
-                    className="p-1.5 text-zinc-400 hover:text-emerald-500 hover:bg-emerald-500/10 rounded-lg transition-colors"
+                    className="p-1.5 text-brand-primary/70 hover:text-emerald-500 hover:bg-emerald-500/10 rounded-lg transition-colors"
                     title="Mark as Read"
                   >
                     <Check size={18} />
@@ -120,7 +120,7 @@ export default function NotificationsPage() {
                 )}
                 <button
                   onClick={() => deleteNotification(n.id)}
-                  className="p-1.5 text-zinc-400 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
+                  className="p-1.5 text-brand-primary/70 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
                   title="Dismiss Alert"
                 >
                   <Trash2 size={18} />
@@ -131,11 +131,11 @@ export default function NotificationsPage() {
 
           {notifications.length === 0 && (
             <div className="text-center py-16 px-4">
-              <Frown className="w-16 h-16 text-zinc-800 mx-auto mb-4" />
-              <h3 className="text-lg font-bold text-zinc-400 mb-1">
+              <Frown className="w-16 h-16 text-brand-secondary/50 mx-auto mb-4" />
+              <h3 className="text-lg font-bold text-brand-primary/70 mb-1">
                 Alert Feed is Empty
               </h3>
-              <p className="text-sm text-zinc-500">
+              <p className="text-sm text-brand-primary/70">
                 Hooray! No pending system notifications or warnings remain.
               </p>
             </div>

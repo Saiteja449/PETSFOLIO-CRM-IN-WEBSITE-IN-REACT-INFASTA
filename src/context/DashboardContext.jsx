@@ -77,17 +77,15 @@ export function DashboardProvider({ children }) {
     const conversionRate =
       totalLeads > 0 ? Math.round((totalWonCount / totalLeads) * 100) : 0;
 
-    // Service Breakdown & Potential pipeline value vs Won Revenue
+    // Service Breakdown & Won vs Pipeline counts
     const serviceBreakdown = {};
-    const serviceRevenue = {};
-    const serviceTotalPipeline = {};
+    const serviceWonLeads = {};
 
     leads.forEach((lead) => {
       const s = lead.service;
       serviceBreakdown[s] = (serviceBreakdown[s] || 0) + 1;
-      serviceTotalPipeline[s] = (serviceTotalPipeline[s] || 0) + lead.value;
       if (isLeadWon(lead)) {
-        serviceRevenue[s] = (serviceRevenue[s] || 0) + lead.value;
+        serviceWonLeads[s] = (serviceWonLeads[s] || 0) + 1;
       }
     });
 
@@ -97,10 +95,10 @@ export function DashboardProvider({ children }) {
       value: serviceBreakdown[s],
     }));
 
-    const revenueByServiceData = Object.keys(serviceTotalPipeline).map((s) => ({
+    const wonLeadsByServiceData = Object.keys(serviceBreakdown).map((s) => ({
       name: s,
-      pipeline: serviceTotalPipeline[s] || 0,
-      revenue: serviceRevenue[s] || 0,
+      pipeline: serviceBreakdown[s] || 0,
+      won: serviceWonLeads[s] || 0,
     }));
 
     // Today's Date
@@ -130,8 +128,6 @@ export function DashboardProvider({ children }) {
         role: user.role,
         assigned: 0,
         won: 0,
-        revenue: 0,
-        totalValue: 0,
       };
     });
 
@@ -146,15 +142,11 @@ export function DashboardProvider({ children }) {
           role: "Sales Representative",
           assigned: 0,
           won: 0,
-          revenue: 0,
-          totalValue: 0,
         };
       }
       performerMap[rep].assigned += 1;
-      performerMap[rep].totalValue += lead.value;
       if (isLeadWon(lead)) {
         performerMap[rep].won += 1;
-        performerMap[rep].revenue += lead.value;
       }
     });
 
@@ -184,19 +176,14 @@ export function DashboardProvider({ children }) {
               : 0,
         };
       })
-      .sort((a, b) => b.revenue - a.revenue);
-
-    const totalPipelineValue = leads.reduce((sum, l) => sum + l.value, 0);
-    const totalWonRevenue = wonLeads.reduce((sum, l) => sum + l.value, 0);
+      .sort((a, b) => b.won - a.won);
 
     return {
       totalLeads,
       totalWonCount,
       conversionRate,
       leadsByServiceData,
-      revenueByServiceData,
-      totalPipelineValue,
-      totalWonRevenue,
+      wonLeadsByServiceData,
       jobsAssignedCount,
       todaysFollowupsCount: todaysFws.length,
       overdueFollowupsCount: overdueFws.length,

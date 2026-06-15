@@ -40,7 +40,6 @@ export function LeadsProvider({ children }) {
       ...leadData,
       status: leadData.status || "New",
       createdAt: new Date().toISOString().split("T")[0],
-      value: Number(leadData.value) || 100,
     };
     setLeads((prev) => [newLead, ...prev]);
     addActivity(

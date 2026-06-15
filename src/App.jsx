@@ -20,7 +20,6 @@ import Leads from "./pages/Leads.jsx";
 import LeadDetails from "./pages/LeadDetails.jsx";
 import TeamPerformance from "./pages/TeamPerformance.jsx";
 import NotificationsPage from "./pages/NotificationsPage.jsx";
-import Settings from "./pages/Settings.jsx";
 import FollowUpReport from "./pages/FollowUpReport.jsx";
 import SalesPersonDetails from "./pages/SalesPersonDetails.jsx";
 
@@ -42,7 +41,7 @@ function AppLayout() {
   }
 
   return (
-    <div className="flex min-h-screen bg-zinc-950 text-zinc-100 font-sans">
+    <div className="flex min-h-screen bg-brand-light text-brand-primary font-sans">
       {/* Responsive Left Drawers */}
       <Sidebar
         mobileOpen={mobileOpen}
@@ -95,7 +94,6 @@ export default function App() {
                     path="/notifications"
                     element={<NotificationsPage />}
                   />
-                  <Route path="/settings" element={<Settings />} />
 
                   {/* Root Redirects */}
                   <Route

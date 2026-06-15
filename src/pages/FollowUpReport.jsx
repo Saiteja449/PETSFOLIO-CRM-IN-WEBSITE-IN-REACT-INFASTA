@@ -58,11 +58,11 @@ export default function FollowUpReport() {
     <div className="p-4 md:p-6 space-y-6">
       <div className="flex flex-wrap justify-between items-center gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold text-white tracking-tight flex items-center gap-3">
+          <h1 className="text-2xl font-extrabold text-brand-primary tracking-tight flex items-center gap-3">
             <ClipboardList className="text-teal-500" size={28} />
             Recent Follow-up Report (Last 5 Days)
           </h1>
-          <p className="text-sm text-zinc-400 mt-1">
+          <p className="text-sm text-brand-primary/70 mt-1">
             Overview of leads actively followed up by sales representatives in
             the last 5 days.
           </p>
@@ -70,12 +70,12 @@ export default function FollowUpReport() {
       </div>
 
       {reportData.length === 0 ? (
-        <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-12 text-center">
-          <ClipboardList className="w-16 h-16 text-zinc-700 mx-auto mb-4" />
-          <h3 className="text-lg font-bold text-zinc-300">
+        <div className="bg-brand-light border border-brand-secondary rounded-2xl p-12 text-center">
+          <ClipboardList className="w-16 h-16 text-brand-primary/70 mx-auto mb-4" />
+          <h3 className="text-lg font-bold text-brand-primary">
             No Recent Follow-ups
           </h3>
-          <p className="text-sm text-zinc-500 mt-1">
+          <p className="text-sm text-brand-primary/70 mt-1">
             No leads have been followed up in the past 5 days.
           </p>
         </div>
@@ -84,11 +84,11 @@ export default function FollowUpReport() {
           {reportData.map(([salesperson, activeLeads]) => (
             <div
               key={salesperson}
-              className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden shadow-sm"
+              className="bg-brand-light border border-brand-secondary rounded-xl overflow-hidden shadow-sm"
             >
-              <div className="bg-zinc-950 px-5 py-4 border-b border-zinc-800 flex justify-between items-center">
-                <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                  <span className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm">
+              <div className="bg-brand-light px-5 py-4 border-b border-brand-secondary flex justify-between items-center">
+                <h3 className="text-lg font-bold text-brand-primary flex items-center gap-2">
+                  <span className="w-8 h-8 rounded-full bg-blue-600 text-brand-primary flex items-center justify-center text-sm">
                     {salesperson.substring(0, 1).toUpperCase()}
                   </span>
                   {salesperson}
@@ -103,33 +103,33 @@ export default function FollowUpReport() {
                     <div
                       key={lead.id}
                       onClick={() => navigate(`/lead-details/${lead.id}`)}
-                      className="bg-zinc-950 border border-zinc-800 hover:border-teal-500/50 rounded-xl p-4 cursor-pointer transition-all hover:shadow-[0_0_15px_rgba(20,184,166,0.1)] group"
+                      className="bg-brand-light border border-brand-secondary hover:border-teal-500/50 rounded-xl p-4 cursor-pointer transition-all hover:shadow-[0_0_15px_rgba(20,184,166,0.1)] group"
                     >
                       <div className="flex justify-between items-start mb-3">
                         <div>
-                          <h4 className="font-bold text-white group-hover:text-teal-400 transition-colors">
+                          <h4 className="font-bold text-brand-primary group-hover:text-teal-400 transition-colors">
                             {lead.name}
                           </h4>
-                          <span className="text-xs text-zinc-500">
+                          <span className="text-xs text-brand-primary/70">
                             {lead.service} • {lead.stage}
                           </span>
                         </div>
-                        <ExternalLink className="text-zinc-600 group-hover:text-teal-500 w-4 h-4 transition-colors" />
+                        <ExternalLink className="text-brand-primary/80 group-hover:text-teal-500 w-4 h-4 transition-colors" />
                       </div>
 
                       <div className="space-y-2 mt-4">
-                        <div className="flex items-center gap-2 text-sm text-zinc-400">
-                          <Phone size={14} className="text-zinc-500" />
+                        <div className="flex items-center gap-2 text-sm text-brand-primary/70">
+                          <Phone size={14} className="text-brand-primary/70" />
                           {lead.phone}
                         </div>
-                        <div className="flex items-center gap-2 text-sm text-zinc-400">
-                          <Mail size={14} className="text-zinc-500" />
+                        <div className="flex items-center gap-2 text-sm text-brand-primary/70">
+                          <Mail size={14} className="text-brand-primary/70" />
                           <span className="truncate">
                             {lead.email || "No email"}
                           </span>
                         </div>
-                        <div className="flex items-center gap-2 text-sm text-zinc-400">
-                          <Calendar size={14} className="text-zinc-500" />
+                        <div className="flex items-center gap-2 text-sm text-brand-primary/70">
+                          <Calendar size={14} className="text-brand-primary/70" />
                           <span>
                             Joined:{" "}
                             {formatDate(lead.joinedAt || lead.createdAt)}
@@ -137,7 +137,7 @@ export default function FollowUpReport() {
                         </div>
                       </div>
 
-                      <div className="mt-4 pt-4 border-t border-zinc-800 flex justify-between items-center">
+                      <div className="mt-4 pt-4 border-t border-brand-secondary flex justify-between items-center">
                         <span
                           className={`px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider ${
                             lead.status === "Joined"
@@ -149,9 +149,7 @@ export default function FollowUpReport() {
                         >
                           {lead.status || "New"}
                         </span>
-                        <span className="text-xs font-semibold text-zinc-300">
-                          Value: ${lead.value || 0}
-                        </span>
+
                       </div>
                     </div>
                   ))}

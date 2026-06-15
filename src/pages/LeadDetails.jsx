@@ -93,7 +93,7 @@ export default function LeadDetails() {
         </div>
         <button
           onClick={() => navigate("/leads")}
-          className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors mx-auto"
+          className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-brand-primary rounded-lg hover:bg-blue-700 transition-colors mx-auto"
         >
           <ArrowLeft size={18} />
           Back to Directory
@@ -257,19 +257,19 @@ export default function LeadDetails() {
       case "Joined":
         return "bg-emerald-500/10 text-emerald-500 border-emerald-500/20";
       default:
-        return "bg-zinc-800 text-zinc-300 border-zinc-700";
+        return "bg-brand-secondary/30 text-brand-primary border-brand-secondary";
     }
   };
 
   const getSourceBg = (source) => {
-    return "bg-zinc-800/50 text-zinc-400 border-zinc-700";
+    return "bg-brand-secondary/30/50 text-brand-primary/70 border-brand-secondary";
   };
 
   return (
     <div className="p-4 md:p-6 space-y-6">
       <button
         onClick={() => navigate("/leads")}
-        className="flex items-center gap-2 text-zinc-400 hover:text-zinc-200 transition-colors font-medium mb-2"
+        className="flex items-center gap-2 text-brand-primary/70 hover:text-brand-primary transition-colors font-medium mb-2"
       >
         <ArrowLeft size={18} />
         Back to Customer List
@@ -279,18 +279,18 @@ export default function LeadDetails() {
         {/* Left Column */}
         <div className="md:col-span-4 space-y-6">
           {/* Lead Primary Profile Card */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 shadow-sm">
+          <div className="bg-brand-light border border-brand-secondary rounded-xl p-5 shadow-sm">
             <div className="flex items-center gap-4 mb-5">
-              <div className="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xl shrink-0">
+              <div className="w-12 h-12 rounded-full bg-blue-600 text-brand-primary flex items-center justify-center font-bold text-xl shrink-0">
                 {currentLead.name
                   ? currentLead.name.substring(0, 1).toUpperCase()
                   : "C"}
               </div>
               <div className="min-w-0">
-                <h2 className="text-lg font-bold text-white truncate">
+                <h2 className="text-lg font-bold text-brand-primary truncate">
                   {currentLead.name}
                 </h2>
-                <p className="text-sm text-zinc-400 truncate">
+                <p className="text-sm text-brand-primary/70 truncate">
                   Registered on {formatDate(currentLead.createdAt)}
                 </p>
               </div>
@@ -309,42 +309,42 @@ export default function LeadDetails() {
               </span>
             </div>
 
-            <hr className="border-zinc-800 mb-5" />
+            <hr className="border-brand-secondary mb-5" />
 
             <div className="space-y-4">
               <div className="flex items-start gap-3">
-                <Phone className="text-zinc-500 mt-0.5" size={18} />
+                <Phone className="text-brand-primary/70 mt-0.5" size={18} />
                 <div className="min-w-0">
-                  <span className="text-xs text-zinc-500 block mb-0.5">
+                  <span className="text-xs text-brand-primary/70 block mb-0.5">
                     Client Phone
                   </span>
-                  <span className="text-sm font-semibold text-zinc-200 truncate block">
+                  <span className="text-sm font-semibold text-brand-primary truncate block">
                     {currentLead.phone}
                   </span>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <Mail className="text-zinc-500 mt-0.5" size={18} />
+                <Mail className="text-brand-primary/70 mt-0.5" size={18} />
                 <div className="min-w-0">
-                  <span className="text-xs text-zinc-500 block mb-0.5">
+                  <span className="text-xs text-brand-primary/70 block mb-0.5">
                     Email Address
                   </span>
-                  <span className="text-sm font-semibold text-zinc-200 truncate block">
+                  <span className="text-sm font-semibold text-brand-primary truncate block">
                     {currentLead.email || "No email profile"}
                   </span>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <User className="text-zinc-500 mt-0.5" size={18} />
+                <User className="text-brand-primary/70 mt-0.5" size={18} />
                 <div className="min-w-0">
-                  <span className="text-xs text-zinc-500 block mb-0.5">
+                  <span className="text-xs text-brand-primary/70 block mb-0.5">
                     Sales Representative
                   </span>
                   {currentUser?.role === "Sales Manager" ? (
                     <select
                       value={currentLead.assignedTo || ""}
                       onChange={handleAssigneeChange}
-                      className="bg-zinc-950 border border-zinc-800 text-sm font-semibold text-zinc-200 rounded px-2 py-1 focus:outline-none focus:border-teal-500 cursor-pointer w-full max-w-[200px]"
+                      className="bg-brand-light border border-brand-secondary text-sm font-semibold text-brand-primary rounded px-2 py-1 focus:outline-none focus:border-teal-500 cursor-pointer w-full max-w-[200px]"
                     >
                       <option value="">Unassigned</option>
                       {allUsers.map((u) => (
@@ -354,41 +354,41 @@ export default function LeadDetails() {
                       ))}
                     </select>
                   ) : (
-                    <span className="text-sm font-semibold text-zinc-200 truncate block">
+                    <span className="text-sm font-semibold text-brand-primary truncate block">
                       {currentLead.assignedTo}
                     </span>
                   )}
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <MapPin className="text-zinc-500 mt-0.5" size={18} />
+                <MapPin className="text-brand-primary/70 mt-0.5" size={18} />
                 <div className="min-w-0">
-                  <span className="text-xs text-zinc-500 block mb-0.5">
+                  <span className="text-xs text-brand-primary/70 block mb-0.5">
                     City
                   </span>
-                  <span className="text-sm font-semibold text-zinc-200 truncate block">
+                  <span className="text-sm font-semibold text-brand-primary truncate block">
                     {currentLead.city || "Not specified"}
                   </span>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <MessageSquare className="text-zinc-500 mt-0.5" size={18} />
+                <MessageSquare className="text-brand-primary/70 mt-0.5" size={18} />
                 <div className="min-w-0">
-                  <span className="text-xs text-zinc-500 block mb-0.5">
+                  <span className="text-xs text-brand-primary/70 block mb-0.5">
                     Preferred Contact
                   </span>
-                  <span className="text-sm font-semibold text-zinc-200 truncate block">
+                  <span className="text-sm font-semibold text-brand-primary truncate block">
                     {currentLead.preferredContactMethod || "Not specified"}
                   </span>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <Calendar className="text-zinc-500 mt-0.5" size={18} />
+                <Calendar className="text-brand-primary/70 mt-0.5" size={18} />
                 <div className="min-w-0">
-                  <span className="text-xs text-zinc-500 block mb-0.5">
+                  <span className="text-xs text-brand-primary/70 block mb-0.5">
                     Joined At
                   </span>
-                  <span className="text-sm font-semibold text-zinc-200 truncate block">
+                  <span className="text-sm font-semibold text-brand-primary truncate block">
                     {currentLead.joinedAt
                       ? formatDate(currentLead.joinedAt)
                       : "-"}
@@ -399,9 +399,9 @@ export default function LeadDetails() {
           </div>
 
           {/* Update Lead Details Form */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden shadow-sm">
-            <div className="p-4 border-b border-zinc-800 bg-zinc-900/50">
-              <h3 className="font-bold text-white">Update Lead Details</h3>
+          <div className="bg-brand-light border border-brand-secondary rounded-xl overflow-hidden shadow-sm">
+            <div className="p-4 border-b border-brand-secondary bg-brand-light/50">
+              <h3 className="font-bold text-brand-primary">Update Lead Details</h3>
             </div>
             <div className="p-5">
               <form onSubmit={handleUpdateLeadFormSubmit} className="space-y-4">
@@ -413,7 +413,7 @@ export default function LeadDetails() {
                         : "sm:col-span-2"
                     }
                   >
-                    <label className="block text-xs font-medium text-zinc-400 mb-1.5">
+                    <label className="block text-xs font-medium text-brand-primary/70 mb-1.5">
                       Lead Status
                     </label>
                     <select
@@ -421,7 +421,7 @@ export default function LeadDetails() {
                       onChange={(e) =>
                         setFormData({ ...formData, status: e.target.value })
                       }
-                      className="w-full bg-zinc-950 border border-zinc-800 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 outline-none"
+                      className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 outline-none"
                     >
                       <option value="New">New</option>
                       <option value="Follow Up">Follow Up</option>
@@ -429,21 +429,19 @@ export default function LeadDetails() {
                       <option value="Not Responding">Not Responding</option>
                       <option value="Price Issue">Price Issue</option>
                       <option value="Joined">Joined</option>
-                      <option value="Job Posted">Job Posted</option>
-                      <option value="Job Assigned">Job Assigned</option>
                     </select>
                   </div>
 
                   {/* Follow Up Type */}
                   {formData.status === "Follow Up" && (
                     <div className="sm:col-span-2">
-                      <label className="block text-xs font-medium text-zinc-400 mb-1.5">
+                      <label className="block text-xs font-medium text-brand-primary/70 mb-1.5">
                         Follow Up Type
                       </label>
                       <select
                         value={followupType}
                         onChange={(e) => setFollowupType(e.target.value)}
-                        className="w-full bg-zinc-950 border border-zinc-800 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 outline-none"
+                        className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 outline-none"
                       >
                         <option value="Call">Phone Call</option>
                         <option value="WhatsApp">WhatsApp Message</option>
@@ -464,7 +462,7 @@ export default function LeadDetails() {
                           : "sm:col-span-2"
                       }
                     >
-                      <label className="block text-xs font-medium text-zinc-400 mb-1.5">
+                      <label className="block text-xs font-medium text-brand-primary/70 mb-1.5">
                         Follow Up Date
                       </label>
                       <input
@@ -476,7 +474,7 @@ export default function LeadDetails() {
                             nextFollowUp: e.target.value,
                           })
                         }
-                        className="w-full bg-zinc-950 border border-zinc-800 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 outline-none"
+                        className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 outline-none"
                         style={{ colorScheme: "dark" }}
                       />
                     </div>
@@ -496,20 +494,20 @@ export default function LeadDetails() {
                           }
                           className="peer sr-only"
                         />
-                        <div className="w-5 h-5 border-2 border-zinc-700 rounded bg-zinc-950 peer-checked:bg-teal-500 peer-checked:border-teal-500 transition-colors flex items-center justify-center">
+                        <div className="w-5 h-5 border-2 border-brand-secondary rounded bg-brand-light peer-checked:bg-teal-500 peer-checked:border-teal-500 transition-colors flex items-center justify-center">
                           <CheckCircle
-                            className="w-3.5 h-3.5 text-zinc-950 opacity-0 peer-checked:opacity-100"
+                            className="w-3.5 h-3.5 text-brand-light opacity-0 peer-checked:opacity-100"
                             strokeWidth={3}
                           />
                         </div>
                       </div>
-                      <span className="text-sm font-bold text-zinc-200 group-hover:text-white transition-colors">
+                      <span className="text-sm font-bold text-brand-primary group-hover:text-brand-primary transition-colors">
                         🔥 Important Hot Lead
                       </span>
                     </label>
                   </div>
                   <div className="sm:col-span-2">
-                    <label className="block text-xs font-medium text-zinc-400 mb-1.5">
+                    <label className="block text-xs font-medium text-brand-primary/70 mb-1.5">
                       Comments
                     </label>
                     <textarea
@@ -519,13 +517,13 @@ export default function LeadDetails() {
                       onChange={(e) =>
                         setFormData({ ...formData, comments: e.target.value })
                       }
-                      className="w-full bg-zinc-950 border border-zinc-800 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3 resize-y outline-none"
+                      className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3 resize-y outline-none"
                     />
                   </div>
                   <div className="sm:col-span-2 pt-2">
                     <button
                       type="submit"
-                      className="w-full bg-teal-500 hover:bg-teal-600 text-zinc-950 font-bold py-2.5 px-4 rounded-lg transition-colors"
+                      className="w-full bg-teal-500 hover:bg-teal-600 text-brand-light font-bold py-2.5 px-4 rounded-lg transition-colors"
                     >
                       Submit
                     </button>
@@ -534,48 +532,48 @@ export default function LeadDetails() {
               </form>
             </div>
           </div>
-          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 shadow-sm">
-            <h3 className="font-bold text-white mb-4 flex items-center gap-2">
+          <div className="bg-brand-light border border-brand-secondary rounded-xl p-5 shadow-sm">
+            <h3 className="font-bold text-brand-primary mb-4 flex items-center gap-2">
               <Cat className="text-teal-500" size={20} /> Registered Pet Sheet
             </h3>
-            <div className="flex flex-col gap-3 bg-zinc-950 p-4 rounded-lg">
+            <div className="flex flex-col gap-3 bg-brand-light p-4 rounded-lg">
               <div>
-                <span className="text-xs text-zinc-500 block mb-0.5">
+                <span className="text-xs text-brand-primary/70 block mb-0.5">
                   Animal Name
                 </span>
-                <span className="text-sm font-bold text-zinc-200">
+                <span className="text-sm font-bold text-brand-primary">
                   {currentLead.petName || "Not described"}
                 </span>
               </div>
               <div>
-                <span className="text-xs text-zinc-500 block mb-0.5">
+                <span className="text-xs text-brand-primary/70 block mb-0.5">
                   Breed Spec
                 </span>
-                <span className="text-sm font-bold text-zinc-200">
+                <span className="text-sm font-bold text-brand-primary">
                   {currentLead.petBreed || "Not described"}
                 </span>
               </div>
               <div>
-                <span className="text-xs text-zinc-500 block mb-0.5">
+                <span className="text-xs text-brand-primary/70 block mb-0.5">
                   Age Tier
                 </span>
-                <span className="text-sm font-bold text-zinc-200">
+                <span className="text-sm font-bold text-brand-primary">
                   {currentLead.petAge || "Not described"}
                 </span>
               </div>
               <div>
-                <span className="text-xs text-zinc-500 block mb-0.5">
+                <span className="text-xs text-brand-primary/70 block mb-0.5">
                   Weight
                 </span>
-                <span className="text-sm font-bold text-zinc-200">
+                <span className="text-sm font-bold text-brand-primary">
                   {currentLead.petWeight || "Not described"}
                 </span>
               </div>
               <div>
-                <span className="text-xs text-zinc-500 block mb-0.5">
+                <span className="text-xs text-brand-primary/70 block mb-0.5">
                   Medical Conditions
                 </span>
-                <span className="text-sm font-bold text-zinc-200">
+                <span className="text-sm font-bold text-brand-primary">
                   {currentLead.petMedicalConditions || "Not described"}
                 </span>
               </div>
@@ -584,9 +582,9 @@ export default function LeadDetails() {
         </div>
 
         <div className="md:col-span-8 space-y-6">
-          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 shadow-sm">
+          <div className="bg-brand-light border border-brand-secondary rounded-xl p-5 shadow-sm">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="font-bold text-zinc-200">
+              <h3 className="font-bold text-brand-primary">
                 Special Requirements & Logged Notes
               </h3>
               {editingNotes ? (
@@ -596,13 +594,13 @@ export default function LeadDetails() {
                       setEditingNotes(false);
                       setNotesText(currentLead.notes || "");
                     }}
-                    className="px-3 py-1 text-sm text-zinc-400 hover:text-white transition-colors"
+                    className="px-3 py-1 text-sm text-brand-primary/70 hover:text-brand-primary transition-colors"
                   >
                     Cancel
                   </button>
                   <button
                     onClick={handleSaveNotes}
-                    className="px-3 py-1 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors"
+                    className="px-3 py-1 text-sm bg-blue-600 hover:bg-blue-700 text-brand-primary rounded-md transition-colors"
                   >
                     Save
                   </button>
@@ -610,7 +608,7 @@ export default function LeadDetails() {
               ) : (
                 <button
                   onClick={() => setEditingNotes(true)}
-                  className="px-3 py-1 text-sm border border-zinc-700 text-zinc-300 hover:bg-zinc-800 rounded-md transition-colors"
+                  className="px-3 py-1 text-sm border border-brand-secondary text-brand-primary hover:bg-brand-secondary/30 rounded-md transition-colors"
                 >
                   Edit Notes
                 </button>
@@ -619,13 +617,13 @@ export default function LeadDetails() {
 
             {editingNotes ? (
               <textarea
-                className="w-full bg-zinc-950 border border-zinc-800 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3 min-h-[100px] outline-none"
+                className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3 min-h-[100px] outline-none"
                 value={notesText}
                 onChange={(e) => setNotesText(e.target.value)}
               />
             ) : (
               <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-4">
-                <p className="text-sm text-amber-200/80 italic whitespace-pre-wrap leading-relaxed">
+                <p className="text-sm text-orange italic whitespace-pre-wrap leading-relaxed">
                   {currentLead.notes ||
                     "No operational context or requirements notes logged. Click 'Edit' to update."}
                 </p>
@@ -635,25 +633,18 @@ export default function LeadDetails() {
 
           {/* Upcoming Followups schedule */}
           {currentLead.status === "Follow Up" && (
-            <div className="bg-zinc-950 border border-teal-500/30 rounded-xl overflow-hidden shadow-sm">
+            <div className="bg-brand-light border border-teal-500/30 rounded-xl overflow-hidden shadow-sm">
               <div className="p-5">
                 <div className="flex justify-between items-center mb-5">
                   <h3 className="font-bold text-teal-500">
                     Follow-Up History & Communications Logs
                   </h3>
-                  <button
-                    onClick={() => setFollowupOpen(true)}
-                    className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-bold text-teal-500 border border-teal-500/50 hover:bg-teal-500/10 rounded-lg transition-colors"
-                  >
-                    <Plus size={16} strokeWidth={2.5} />
-                    Schedule Task
-                  </button>
                 </div>
 
                 <div className="space-y-3">
                   {leadFollowups.length === 0 && (
-                    <div className="text-center py-8 border border-dashed border-zinc-800 rounded-lg">
-                      <p className="text-sm text-zinc-500">
+                    <div className="text-center py-8 border border-dashed border-brand-secondary rounded-lg">
+                      <p className="text-sm text-brand-primary/70">
                         No follow-up reminders scheduled yet.
                       </p>
                     </div>
@@ -661,27 +652,12 @@ export default function LeadDetails() {
                   {leadFollowups.map((f) => (
                     <div
                       key={f.id}
-                      className={`p-4 rounded-xl border flex justify-between items-start ${f.done ? "bg-zinc-900 border-zinc-800" : "bg-zinc-900/60 border-zinc-700"}`}
+                      className="p-4 bg-brand-light border border-brand-secondary rounded-xl flex justify-between items-start"
                     >
                       <div className="flex gap-4 items-start w-full">
-                        <button
-                          onClick={() => toggleFollowupDone(f.id)}
-                          className="mt-0.5 shrink-0 text-zinc-500 hover:text-blue-500 focus:outline-none"
-                        >
-                          {f.done ? (
-                            <CheckCircle
-                              className="text-emerald-500"
-                              size={24}
-                            />
-                          ) : (
-                            <Circle size={24} />
-                          )}
-                        </button>
                         <div className="min-w-0 flex-grow">
                           <div className="flex flex-wrap items-center gap-2 mb-1.5">
-                            <h4
-                              className={`text-sm font-bold ${f.done ? "line-through text-zinc-500" : "text-white"}`}
-                            >
+                            <h4 className="text-sm font-bold text-brand-primary">
                               {f.type} Engagement Channel
                             </h4>
                             <span
@@ -690,36 +666,25 @@ export default function LeadDetails() {
                                   ? "bg-red-500/10 text-red-500 border border-red-500/20"
                                   : f.priority === "Medium"
                                     ? "bg-blue-500/10 text-blue-500 border border-blue-500/20"
-                                    : "bg-zinc-800 text-zinc-400 border border-zinc-700"
+                                    : "bg-brand-secondary/30 text-brand-primary/70 border border-brand-secondary"
                               }`}
                             >
                               {f.priority}
                             </span>
-                            {f.done ? (
-                              <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
-                                Completed
-                              </span>
-                            ) : (
-                              <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-amber-500/10 text-amber-500 border border-amber-500/20">
-                                Pending Action
-                              </span>
-                            )}
                           </div>
 
-                          <div className="flex items-center gap-1.5 text-xs text-zinc-400 mb-2">
+                          <div className="flex items-center gap-1.5 text-xs text-brand-primary/70 mb-2">
                             <Calendar size={14} />
                             <span>
                               Scheduled: {formatDate(f.date)} • {f.time}
                             </span>
                           </div>
 
-                          <p
-                            className={`text-sm italic mb-3 ${f.done ? "text-zinc-500" : "text-zinc-300"}`}
-                          >
+                          <p className="text-sm italic text-brand-primary mb-3">
                             "{f.notes}"
                           </p>
 
-                          <hr className="border-zinc-800 mb-3" />
+                          <hr className="border-brand-secondary mb-3" />
 
                           <div className="text-xs font-bold text-teal-500 flex items-center gap-1.5">
                             <User size={12} />
@@ -735,64 +700,21 @@ export default function LeadDetails() {
             </div>
           )}
 
-          {/* Activities Chronology Log list */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 shadow-sm">
-            <div className="flex justify-between items-center mb-5">
-              <h3 className="font-bold text-white">
-                Historical Action & Audit Trail
-              </h3>
-              <button
-                onClick={() => setActivityOpen(true)}
-                className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-white border border-zinc-700 hover:bg-zinc-800 rounded-lg transition-colors"
-              >
-                <Plus size={16} />
-                Log Interaction
-              </button>
-            </div>
 
-            <div className="space-y-3">
-              {leadActivities.length === 0 && (
-                <div className="text-center py-8">
-                  <p className="text-sm text-zinc-500">
-                    No audit events logged. Click "Log Interaction" to begin.
-                  </p>
-                </div>
-              )}
-              {leadActivities.map((act) => (
-                <div
-                  key={act.id}
-                  className="p-4 bg-zinc-950 border border-zinc-800 rounded-xl"
-                >
-                  <div className="flex justify-between items-start mb-2">
-                    <h4 className="text-sm font-bold text-white">{act.type}</h4>
-                    <span className="text-xs text-zinc-500">
-                      {formatDate(act.date)}
-                    </span>
-                  </div>
-                  <p className="text-sm text-zinc-300 mb-3 leading-relaxed">
-                    {act.content}
-                  </p>
-                  <div className="text-xs text-teal-500 font-medium">
-                    Logged by: {act.author}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       </div>
 
       {/* Modals/Dialogs */}
       {followupOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
-            <div className="flex justify-between items-center p-4 border-b border-zinc-800">
-              <h3 className="font-bold text-white text-lg">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-brand-light/50 backdrop-blur-sm">
+          <div className="bg-brand-light border border-brand-secondary rounded-2xl w-full max-w-md overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
+            <div className="flex justify-between items-center p-4 border-b border-brand-secondary">
+              <h3 className="font-bold text-brand-primary text-lg">
                 Schedule Agenda Follow-up
               </h3>
               <button
                 onClick={() => setFollowupOpen(false)}
-                className="text-zinc-400 hover:text-white transition-colors"
+                className="text-brand-primary/70 hover:text-brand-primary transition-colors"
               >
                 <X size={20} />
               </button>
@@ -805,7 +727,7 @@ export default function LeadDetails() {
                 className="space-y-4"
               >
                 <div>
-                  <label className="block text-xs font-medium text-zinc-400 mb-1.5">
+                  <label className="block text-xs font-medium text-brand-primary/70 mb-1.5">
                     Task Type
                   </label>
                   <select
@@ -813,7 +735,7 @@ export default function LeadDetails() {
                     onChange={(e) =>
                       setNewFw({ ...newFw, type: e.target.value })
                     }
-                    className="w-full bg-zinc-950 border border-zinc-800 text-white text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block p-2.5 outline-none"
+                    className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block p-2.5 outline-none"
                   >
                     <option value="Call">Call</option>
                     <option value="WhatsApp">WhatsApp Message</option>
@@ -827,7 +749,7 @@ export default function LeadDetails() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-medium text-zinc-400 mb-1.5">
+                    <label className="block text-xs font-medium text-brand-primary/70 mb-1.5">
                       Due Date
                     </label>
                     <input
@@ -836,12 +758,12 @@ export default function LeadDetails() {
                       onChange={(e) =>
                         setNewFw({ ...newFw, date: e.target.value })
                       }
-                      className="w-full bg-zinc-950 border border-zinc-800 text-white text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block p-2.5 outline-none"
+                      className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block p-2.5 outline-none"
                       style={{ colorScheme: "dark" }}
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-medium text-zinc-400 mb-1.5">
+                    <label className="block text-xs font-medium text-brand-primary/70 mb-1.5">
                       Due Time
                     </label>
                     <input
@@ -851,13 +773,13 @@ export default function LeadDetails() {
                       onChange={(e) =>
                         setNewFw({ ...newFw, time: e.target.value })
                       }
-                      className="w-full bg-zinc-950 border border-zinc-800 text-white text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block p-2.5 outline-none"
+                      className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block p-2.5 outline-none"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-medium text-zinc-400 mb-1.5">
+                  <label className="block text-xs font-medium text-brand-primary/70 mb-1.5">
                     Priority level
                   </label>
                   <select
@@ -865,7 +787,7 @@ export default function LeadDetails() {
                     onChange={(e) =>
                       setNewFw({ ...newFw, priority: e.target.value })
                     }
-                    className="w-full bg-zinc-950 border border-zinc-800 text-white text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block p-2.5 outline-none"
+                    className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block p-2.5 outline-none"
                   >
                     <option value="Low">Low</option>
                     <option value="Medium">Medium</option>
@@ -874,7 +796,7 @@ export default function LeadDetails() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-medium text-zinc-400 mb-1.5">
+                  <label className="block text-xs font-medium text-brand-primary/70 mb-1.5">
                     Action Agenda Notes
                   </label>
                   <textarea
@@ -883,24 +805,24 @@ export default function LeadDetails() {
                     onChange={(e) =>
                       setNewFw({ ...newFw, notes: e.target.value })
                     }
-                    className="w-full bg-zinc-950 border border-zinc-800 text-white text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block p-2.5 resize-y outline-none"
+                    className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block p-2.5 resize-y outline-none"
                   />
                 </div>
               </form>
             </div>
 
-            <div className="p-4 border-t border-zinc-800 bg-zinc-950 flex justify-end gap-3">
+            <div className="p-4 border-t border-brand-secondary bg-brand-light flex justify-end gap-3">
               <button
                 type="button"
                 onClick={() => setFollowupOpen(false)}
-                className="px-4 py-2 text-sm font-medium text-zinc-400 hover:text-white transition-colors"
+                className="px-4 py-2 text-sm font-medium text-brand-primary/70 hover:text-brand-primary transition-colors"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 form="schedule-form"
-                className="px-4 py-2 bg-teal-500 hover:bg-teal-600 text-zinc-950 text-sm font-bold rounded-lg transition-colors"
+                className="px-4 py-2 bg-teal-500 hover:bg-teal-600 text-brand-light text-sm font-bold rounded-lg transition-colors"
               >
                 Schedule
               </button>
@@ -909,109 +831,7 @@ export default function LeadDetails() {
         </div>
       )}
 
-      {activityOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
-            <div className="flex justify-between items-center p-4 border-b border-zinc-800">
-              <h3 className="font-bold text-white text-lg">
-                Log Sales Interaction Event
-              </h3>
-              <button
-                onClick={() => setActivityOpen(false)}
-                className="text-zinc-400 hover:text-white transition-colors"
-              >
-                <X size={20} />
-              </button>
-            </div>
 
-            <div className="p-5 overflow-y-auto">
-              <form
-                id="activity-form"
-                onSubmit={handleSaveActivity}
-                className="space-y-4"
-              >
-                <div>
-                  <label className="block text-xs font-medium text-zinc-400 mb-1.5">
-                    Action Topic
-                  </label>
-                  <select
-                    value={newAct.type}
-                    onChange={(e) =>
-                      setNewAct({ ...newAct, type: e.target.value })
-                    }
-                    className="w-full bg-zinc-950 border border-zinc-800 text-white text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block p-2.5 outline-none"
-                  >
-                    <option value="Call Completed">
-                      Call Completed Successfully
-                    </option>
-                    <option value="Email Dispatched">Email Dispatched</option>
-                    <option value="WhatsApp Communication">
-                      WhatsApp Logged
-                    </option>
-                    <option value="Physical Consultation Conducted">
-                      Physical Consultation
-                    </option>
-                    <option value="Negotiation Conducted">
-                      Price Negotiation Session
-                    </option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-medium text-zinc-400 mb-1.5">
-                    Core Discussion Details
-                  </label>
-                  <textarea
-                    rows={3}
-                    required
-                    value={newAct.content}
-                    onChange={(e) =>
-                      setNewAct({ ...newAct, content: e.target.value })
-                    }
-                    className="w-full bg-zinc-950 border border-zinc-800 text-white text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block p-2.5 resize-y outline-none"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-medium text-zinc-400 mb-1.5">
-                    Representative
-                  </label>
-                  <select
-                    value={newAct.author}
-                    onChange={(e) =>
-                      setNewAct({ ...newAct, author: e.target.value })
-                    }
-                    className="w-full bg-zinc-950 border border-zinc-800 text-white text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block p-2.5 outline-none"
-                  >
-                    {allUsers.map((u) => (
-                      <option key={u.id} value={u.name}>
-                        {u.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </form>
-            </div>
-
-            <div className="p-4 border-t border-zinc-800 bg-zinc-950 flex justify-end gap-3">
-              <button
-                type="button"
-                onClick={() => setActivityOpen(false)}
-                className="px-4 py-2 text-sm font-medium text-zinc-400 hover:text-white transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                form="activity-form"
-                className="px-4 py-2 bg-teal-500 hover:bg-teal-600 text-zinc-950 text-sm font-bold rounded-lg transition-colors"
-              >
-                Log Interaction
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
