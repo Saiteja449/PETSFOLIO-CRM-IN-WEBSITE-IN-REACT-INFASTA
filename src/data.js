@@ -111,7 +111,7 @@ export const initialLeads = [
     name: "John Doe",
     phone: "9876543210",
     email: "john.doe@gmail.com",
-    source: "Meta",
+    source: "Meta Ads",
     service: "Grooming",
     stage: "New Lead",
     assignedTo: "Alex Mercer",
@@ -119,84 +119,84 @@ export const initialLeads = [
     status: "Follow Up",
     leadType: "Client",
     providerService: "",
-    petName: "Max",
-    petBreed: "Golden Retriever",
-    petAge: "2 years",
+    
+    
+    
     notes:
       "Requires hypoallergenic shampoo. Slightly nervous during nail trimming.",
     createdAt: "2026-05-20",
     city: "Phoenix",
     preferredContactMethod: "Email",
-    petWeight: "23 lbs",
-    petMedicalConditions: "None",
+    
+    
   },
   {
     id: "lead_2",
     name: "Alice Smith",
     phone: "9812345678",
     email: "alice.smith@yahoo.com",
-    source: "Whatsapp",
+    source: "WhatsApp",
     service: "Grooming",
     stage: "Inquiry",
     assignedTo: "Sarah Connor",
     joinedAt: "2026-05-27",
     status: "Joined",
-    leadType: "Service Provider",
+    leadType: "Client",
     providerService: "Grooming",
-    petName: "Bella",
-    petBreed: "Shih Tzu",
-    petAge: "1 year",
+    
+    
+    
     notes: "Inquired about full haircut and de-tangling treatment.",
     createdAt: "2026-05-21",
     city: "Dallas",
     preferredContactMethod: "SMS",
-    petWeight: "22 lbs",
-    petMedicalConditions: "None",
+    
+    
   },
   {
     id: "lead_3",
     name: "Robert Johnson",
     phone: "8899776655",
     email: "robert.j@outlook.com",
-    source: "Social Media",
+    source: "Meta Ads",
     service: "Grooming",
     assignedTo: "Sarah Connor",
     joinedAt: "2026-05-26",
     status: "Price Issue",
     leadType: "Client",
     providerService: "",
-    petName: "Rocky",
-    petBreed: "German Shepherd",
-    petAge: "3 years",
+    
+    
+    
     notes: "Appointment set for Saturday morning. Needs deshedding treatment.",
     createdAt: "2026-05-18",
     city: "San Jose",
     preferredContactMethod: "Email",
-    petWeight: "20 lbs",
-    petMedicalConditions: "None",
+    
+    
   },
   {
     id: "lead_4",
     name: "Emily Brown",
     phone: "7766554433",
     email: "emily.b@hotmail.com",
-    source: "Meta",
+    source: "Meta Ads",
     service: "Grooming",
     assignedTo: "Alex Mercer",
     joinedAt: "2026-06-15",
     status: "Joined",
     leadType: "Client",
     providerService: "",
-    petName: "Daisy",
-    petBreed: "Poodle",
-    petAge: "4 years",
+    
+    
+    
     notes:
       "Super friendly. Loved the teddy bear cut. Will need a recall for repeat booking in 3 weeks.",
     createdAt: "2026-05-15",
     city: "Chicago",
     preferredContactMethod: "WhatsApp",
-    petWeight: "50 lbs",
-    petMedicalConditions: "None",
+    
+    
   },
   {
     id: "lead_5",
@@ -208,60 +208,60 @@ export const initialLeads = [
     assignedTo: "Sarah Connor",
     joinedAt: "2026-05-28",
     status: "Joined",
-    leadType: "Service Provider",
+    leadType: "Client",
     providerService: "Walking",
-    petName: "Charlie",
-    petBreed: "Cocker Spaniel",
-    petAge: "5 years",
+    
+    
+    
     notes: "Monthly regular grooming customer.",
     createdAt: "2026-04-10",
     city: "San Antonio",
     preferredContactMethod: "Email",
-    petWeight: "17 lbs",
-    petMedicalConditions: "Allergies",
+    
+    
   },
   {
     id: "lead_6",
     name: "Jessica Wilson",
     phone: "9988776655",
     email: "jess.wilson@me.com",
-    source: "Whatsapp",
+    source: "WhatsApp",
     service: "Training",
     assignedTo: "David Miller",
     joinedAt: "2026-05-26",
     status: "Joined",
-    leadType: "Service Provider",
+    leadType: "Client",
     providerService: "Training",
-    petName: "Cooper",
-    petBreed: "Labrador Retriever",
-    petAge: "6 months",
+    
+    
+    
     notes: "Owner is struggling with potty training and basic crate training.",
     createdAt: "2026-05-25",
     city: "Chicago",
     preferredContactMethod: "Phone",
-    petWeight: "46 lbs",
-    petMedicalConditions: "Arthritis",
+    
+    
   },
   {
     id: "lead_7",
     name: "Matthew Martinez",
     phone: "8877665544",
     email: "mmartinez@gmail.com",
-    source: "Social Media",
+    source: "Meta Ads",
     service: "Training",
     assignedTo: "David Miller",
     joinedAt: "2026-05-25", // Overdue for today's followups helper
     status: "Follow Up",
-    petName: "Luna",
-    petBreed: "Siberian Husky",
-    petAge: "1.5 years",
+    
+    
+    
     notes:
       "High energy level, pulls excessively on leash. Consultation scheduled to align objectives.",
     createdAt: "2026-05-19",
     city: "Chicago",
     preferredContactMethod: "Phone",
-    petWeight: "33 lbs",
-    petMedicalConditions: "None",
+    
+    
   },
   {
     id: "lead_8",
@@ -273,58 +273,58 @@ export const initialLeads = [
     assignedTo: "David Miller",
     joinedAt: "2026-05-29",
     status: "Follow Up",
-    petName: "Milo",
-    petBreed: "Beagle",
-    petAge: "8 months",
+    
+    
+    
     notes:
       "Completed basic initial assessment. Treats motivated but easily distracted.",
     createdAt: "2026-05-16",
     city: "Philadelphia",
     preferredContactMethod: "WhatsApp",
-    petWeight: "12 lbs",
-    petMedicalConditions: "None",
+    
+    
   },
   {
     id: "lead_9",
     name: "James Taylor",
     phone: "9911223344",
     email: "jtaylor@outlook.com",
-    source: "Meta",
+    source: "Meta Ads",
     service: "Training",
     assignedTo: "Alex Mercer",
     joinedAt: "2026-05-27",
     status: "Follow Up",
-    petName: "Oliver",
-    petBreed: "French Bulldog",
-    petAge: "2 years",
+    
+    
+    
     notes:
       "Discussing the 6-week behavior modification package. Hesitant on pricing.",
     createdAt: "2026-05-14",
     city: "San Jose",
     preferredContactMethod: "Phone",
-    petWeight: "31 lbs",
-    petMedicalConditions: "Anxiety",
+    
+    
   },
   {
     id: "lead_10",
     name: "Sarah Jenkins",
     phone: "8822334455",
     email: "sjenkins@gmail.com",
-    source: "Whatsapp",
+    source: "WhatsApp",
     service: "Training",
     assignedTo: "David Miller",
     joinedAt: "2026-05-30",
     status: "Follow Up",
-    petName: "Lola",
-    petBreed: "Pug",
-    petAge: "1 year",
+    
+    
+    
     notes:
       "Enrolled in puppy socialization classes. Payment structure finalized.",
     createdAt: "2026-05-12",
     city: "New York",
     preferredContactMethod: "SMS",
-    petWeight: "47 lbs",
-    petMedicalConditions: "Diabetes",
+    
+    
   },
   {
     id: "lead_11",
@@ -336,15 +336,15 @@ export const initialLeads = [
     assignedTo: "David Miller",
     joinedAt: "2026-05-26",
     status: "Active",
-    petName: "Teddy",
-    petBreed: "Goldendoodle",
-    petAge: "10 months",
+    
+    
+    
     notes: "Active in Group Canine Good Citizen course. Making fast progress.",
     createdAt: "2026-05-01",
     city: "Houston",
     preferredContactMethod: "Email",
-    petWeight: "22 lbs",
-    petMedicalConditions: "Diabetes",
+    
+    
   },
   {
     id: "lead_12",
@@ -356,120 +356,120 @@ export const initialLeads = [
     assignedTo: "Alex Mercer",
     joinedAt: "2026-05-28",
     status: "Active",
-    petName: "Zeus",
-    petBreed: "Rottweiler",
-    petAge: "3 years",
+    
+    
+    
     notes:
       "Agility stage 1 completed. Offering 15% discount for Agility Stage 2 renewal.",
     createdAt: "2026-03-15",
     city: "San Diego",
     preferredContactMethod: "WhatsApp",
-    petWeight: "43 lbs",
-    petMedicalConditions: "Allergies",
+    
+    
   },
   {
     id: "lead_13",
     name: "Kevin Martin",
     phone: "9955667788",
     email: "kmartin@yahoo.com",
-    source: "Meta",
+    source: "Meta Ads",
     service: "Walking",
     assignedTo: "David Miller",
     joinedAt: "2026-05-26",
     status: "Active",
-    petName: "Winston",
-    petBreed: "English Bulldog",
-    petAge: "4 years",
+    
+    
+    
     notes:
       "Needs 30-minute slow paced daily walks due to breathing characteristics.",
     createdAt: "2026-05-24",
     city: "Dallas",
     preferredContactMethod: "WhatsApp",
-    petWeight: "31 lbs",
-    petMedicalConditions: "Allergies",
+    
+    
   },
   {
     id: "lead_14",
     name: "Rachel Clark",
     phone: "8866778899",
     email: "rclark@me.com",
-    source: "Social Media",
+    source: "Meta Ads",
     service: "Walking",
     assignedTo: "David Miller",
     joinedAt: "2026-05-27",
     status: "Active",
-    petName: "Coco",
-    petBreed: "Chihuahua",
-    petAge: "2 years",
+    
+    
+    
     notes:
       "Trial walk scheduled for tomorrow afternoon. Reactive to large dogs.",
     createdAt: "2026-05-22",
     city: "Chicago",
     preferredContactMethod: "WhatsApp",
-    petWeight: "45 lbs",
-    petMedicalConditions: "Arthritis",
+    
+    
   },
   {
     id: "lead_15",
     name: "Brian Rodriguez",
     phone: "7777888899",
     email: "brodriguez@gmail.com",
-    source: "Whatsapp",
+    source: "WhatsApp",
     service: "Walking",
     assignedTo: "David Miller",
     joinedAt: "2026-05-28",
     status: "Active",
-    petName: "Gizmo",
-    petBreed: "Boston Terrier",
-    petAge: "1.5 years",
+    
+    
+    
     notes: "Enrolling in Mon-Wed-Fri walker subscription package.",
     createdAt: "2026-05-18",
     city: "Dallas",
     preferredContactMethod: "WhatsApp",
-    petWeight: "18 lbs",
-    petMedicalConditions: "None",
+    
+    
   },
   {
     id: "lead_16",
     name: "Megan Lewis",
     phone: "8888999900",
     email: "mlewis@corp.com",
-    source: "Meta",
+    source: "Meta Ads",
     service: "Walking",
     assignedTo: "Sarah Connor",
     joinedAt: "2026-06-01",
     status: "Active",
-    petName: "Tucker",
-    petBreed: "Australian Shepherd",
-    petAge: "3 years",
+    
+    
+    
     notes:
       "Regular 5-day / week energetic walker customer. Handled by Walker Sam.",
     createdAt: "2026-04-05",
     city: "San Antonio",
     preferredContactMethod: "Phone",
-    petWeight: "27 lbs",
-    petMedicalConditions: "None",
+    
+    
   },
   {
     id: "lead_17",
     name: "Steven Walker",
     phone: "9999000011",
     email: "swalker@outlook.com",
-    source: "Social Media",
+    source: "Meta Ads",
     service: "Walking",
     assignedTo: "Alex Mercer",
     joinedAt: "2026-05-24", // Overdue
     status: "Active",
-    petName: "Ruby",
-    petBreed: "Boxer",
-    petAge: "4 years",
+    
+    
+    
     notes:
       "Monthly subscription ending on May 28. Needs review for renewal discount.",
     createdAt: "2026-04-20",
     city: "Chicago",
     preferredContactMethod: "SMS",
-    petWeight: "27 lbs",
-    petMedicalConditions: "Anxiety",
+    
+    
   },
   {
     id: "lead_18",
@@ -481,99 +481,99 @@ export const initialLeads = [
     assignedTo: "Sarah Connor",
     joinedAt: "2026-05-26",
     status: "Active",
-    petName: "Simba",
-    petBreed: "Maine Coon Cat",
-    petAge: "2 years",
+    
+    
+    
     notes:
       "Needs feeding and litter cleaning twice daily from June 10 to June 15.",
     createdAt: "2026-05-24",
     city: "Los Angeles",
     preferredContactMethod: "SMS",
-    petWeight: "23 lbs",
-    petMedicalConditions: "None",
+    
+    
   },
   {
     id: "lead_19",
     name: "Daniel Allen",
     phone: "8899112233",
     email: "dallen@company.org",
-    source: "Meta",
+    source: "Meta Ads",
     service: "Pet Sitting",
     assignedTo: "Sarah Connor",
     joinedAt: "2026-05-27",
     status: "Active",
-    petName: "Chloe",
-    petBreed: "Persian Cat",
-    petAge: "5 years",
+    
+    
+    
     notes:
       "Requires administration of insulin shots in the evening. Discussing safety criteria.",
     createdAt: "2026-05-21",
     city: "San Antonio",
     preferredContactMethod: "WhatsApp",
-    petWeight: "38 lbs",
-    petMedicalConditions: "None",
+    
+    
   },
   {
     id: "lead_20",
     name: "Ashley Young",
     phone: "6677112233",
     email: "ayoung@gmail.com",
-    source: "Whatsapp",
+    source: "WhatsApp",
     service: "Pet Sitting",
     assignedTo: "Alex Mercer",
     joinedAt: "2026-05-28",
     status: "Active",
-    petName: "Ziggy",
-    petBreed: "Border Collie",
-    petAge: "2 years",
+    
+    
+    
     notes:
       "Overnight house sitting planned for 4 nights during 4th of July week.",
     createdAt: "2026-05-18",
     city: "Dallas",
     preferredContactMethod: "WhatsApp",
-    petWeight: "54 lbs",
-    petMedicalConditions: "Diabetes",
+    
+    
   },
   {
     id: "lead_21",
     name: "Joseph King",
     phone: "9911559922",
     email: "jking@yahoo.com",
-    source: "Social Media",
+    source: "Meta Ads",
     service: "Pet Sitting",
     assignedTo: "Sarah Connor",
     joinedAt: "2026-05-26",
     status: "Active",
-    petName: "Minnie",
-    petBreed: "Maltese",
-    petAge: "6 years",
+    
+    
+    
     notes:
       "Scheduled block of 3 days. Keys collected and home orientation done.",
     createdAt: "2026-05-10",
     city: "Philadelphia",
     preferredContactMethod: "WhatsApp",
-    petWeight: "38 lbs",
-    petMedicalConditions: "Allergies",
+    
+    
   },
   {
     id: "lead_22",
     name: "Katelyn Wright",
     phone: "8822660011",
     email: "kwright@outlook.com",
-    source: "Meta",
+    source: "Meta Ads",
     service: "Pet Sitting",
     assignedTo: "Sarah Connor",
     joinedAt: "2026-06-05",
     status: "Active",
-    petName: "Duke",
-    petBreed: "Doberman",
-    petAge: "4 years",
+    
+    
+    
     notes: "Pet sitting successfully completed. Owner left 5-star review.",
     createdAt: "2026-05-05",
     city: "Chicago",
     preferredContactMethod: "WhatsApp",
-    petWeight: "55 lbs",
-    petMedicalConditions: "None",
+    
+    
   },
   {
     id: "lead_23",
@@ -585,36 +585,36 @@ export const initialLeads = [
     assignedTo: "Alex Mercer",
     joinedAt: "2026-05-28",
     status: "Active",
-    petName: "Harley",
-    petBreed: "Great Dane",
-    petAge: "3 years",
+    
+    
+    
     notes: "Regular vacation sitter. Booking again for mid-June weekend.",
     createdAt: "2026-04-12",
     city: "Dallas",
     preferredContactMethod: "WhatsApp",
-    petWeight: "37 lbs",
-    petMedicalConditions: "None",
+    
+    
   },
   {
     id: "lead_24",
     name: "Elizabeth Green",
     phone: "9944772211",
     email: "egreen@gmail.com",
-    source: "Meta",
+    source: "Meta Ads",
     service: "Pet Insurance",
     assignedTo: "Emily Davis",
     joinedAt: "2026-05-26",
     status: "Active",
-    petName: "Nala",
-    petBreed: "Ragdoll Cat",
-    petAge: "5 months",
+    
+    
+    
     notes:
       "Young kitten, owner wants to lock in a premium coverage starting early.",
     createdAt: "2026-05-24",
     city: "Philadelphia",
     preferredContactMethod: "WhatsApp",
-    petWeight: "20 lbs",
-    petMedicalConditions: "Anxiety",
+    
+    
   },
   {
     id: "lead_25",
@@ -626,79 +626,79 @@ export const initialLeads = [
     assignedTo: "Emily Davis",
     joinedAt: "2026-05-27",
     status: "Active",
-    petName: "Buster",
-    petBreed: "Boxer",
-    petAge: "5 years",
+    
+    
+    
     notes:
       "Shared quote for $5,000 annual coverage with $250 deductible. Waiting for response.",
     createdAt: "2026-05-19",
     city: "Philadelphia",
     preferredContactMethod: "WhatsApp",
-    petWeight: "31 lbs",
-    petMedicalConditions: "None",
+    
+    
   },
   {
     id: "lead_26",
     name: "Charles Adams",
     phone: "7766991100",
     email: "cadams@gmail.com",
-    source: "Whatsapp",
+    source: "WhatsApp",
     service: "Pet Insurance",
     assignedTo: "Emily Davis",
     joinedAt: "2026-05-26",
     status: "Active",
-    petName: "Oreo",
-    petBreed: "Border Collie",
-    petAge: "2 years",
+    
+    
+    
     notes:
       "Owner uploading medical history documents to check for pre-existing conditions exclusions.",
     createdAt: "2026-05-14",
     city: "Dallas",
     preferredContactMethod: "WhatsApp",
-    petWeight: "59 lbs",
-    petMedicalConditions: "Arthritis",
+    
+    
   },
   {
     id: "lead_27",
     name: "Patricia Nelson",
     phone: "9900334466",
     email: "pnelson@me.com",
-    source: "Meta",
+    source: "Meta Ads",
     service: "Pet Insurance",
     assignedTo: "Emily Davis",
     joinedAt: "2026-05-28",
     status: "Active",
-    petName: "Zoe",
-    petBreed: "Yorkshire Terrier",
-    petAge: "6 years",
+    
+    
+    
     notes:
       "Comparing our comprehensive premium cover against competitor's base-tier budget plan.",
     createdAt: "2026-05-15",
     city: "Chicago",
     preferredContactMethod: "SMS",
-    petWeight: "30 lbs",
-    petMedicalConditions: "Allergies",
+    
+    
   },
   {
     id: "lead_28",
     name: "George Carter",
     phone: "8844885522",
     email: "gcarter@yahoo.com",
-    source: "Social Media",
+    source: "Meta Ads",
     service: "Pet Insurance",
     assignedTo: "Alex Mercer",
     joinedAt: "2026-05-26",
     status: "Active",
-    petName: "Rex",
-    petBreed: "Siberian Husky",
-    petAge: "1 year",
+    
+    
+    
     notes:
       "Approved proposal. Sent secure payment link. Waiting for transaction execution.",
     createdAt: "2026-05-10",
     city: "San Diego",
     preferredContactMethod: "SMS",
-    petWeight: "23 lbs",
-    petMedicalConditions: "Anxiety",
+    
+    
   },
   {
     id: "lead_29",
@@ -710,15 +710,15 @@ export const initialLeads = [
     assignedTo: "Emily Davis",
     joinedAt: "2026-11-26",
     status: "Closed Won",
-    petName: "Rusty",
-    petBreed: "Irish Setter",
-    petAge: "3 years",
+    
+    
+    
     notes: "Policy PI-99238 issued. Customer onboarding packet dispatched.",
     createdAt: "2026-05-05",
     city: "Phoenix",
     preferredContactMethod: "SMS",
-    petWeight: "12 lbs",
-    petMedicalConditions: "Anxiety",
+    
+    
   },
   {
     id: "lead_30",
@@ -730,125 +730,125 @@ export const initialLeads = [
     assignedTo: "Emily Davis",
     joinedAt: "2026-05-20", // Overdue renewal
     status: "Active",
-    petName: "Bear",
-    petBreed: "Newfoundland",
-    petAge: "5 years",
+    
+    
+    
     notes:
       "Annual policy expiring soon on June 5th. Initiating renewal proposal with premium incentive.",
     createdAt: "2025-05-20",
     city: "Los Angeles",
     preferredContactMethod: "Email",
-    petWeight: "39 lbs",
-    petMedicalConditions: "None",
+    
+    
   },
   {
     id: "lead_31",
     name: "Carol Roberts",
     phone: "8855110033",
     email: "croberts@gmail.com",
-    source: "Whatsapp",
+    source: "WhatsApp",
     service: "Grooming",
     assignedTo: "Sarah Connor",
     joinedAt: "2026-05-29",
     status: "Active",
-    petName: "Rosie",
-    petBreed: "Bichon Frise",
-    petAge: "6 months",
+    
+    
+    
     notes:
       "Puppy's first grooming session. Owner is very protective, requested extra caring handling.",
     createdAt: "2026-05-25",
     city: "San Antonio",
     preferredContactMethod: "WhatsApp",
-    petWeight: "24 lbs",
-    petMedicalConditions: "Diabetes",
+    
+    
   },
   {
     id: "lead_32",
     name: "Edward Evans",
     phone: "7766110044",
     email: "eevans@yahoo.com",
-    source: "Social Media",
+    source: "Meta Ads",
     service: "Walking",
     assignedTo: "David Miller",
     joinedAt: "2026-06-02",
     status: "Closed Won",
-    petName: "Penny",
-    petBreed: "Dachshund",
-    petAge: "2 years",
+    
+    
+    
     notes:
       "Highly energetic. Closed won walking service with 3 rides per week.",
     createdAt: "2026-04-18",
     city: "San Diego",
     preferredContactMethod: "WhatsApp",
-    petWeight: "16 lbs",
-    petMedicalConditions: "Arthritis",
+    
+    
   },
   {
     id: "lead_33",
     name: "Clara Hughes",
     phone: "9123456789",
     email: "clara.h@gmail.com",
-    source: "Meta",
+    source: "Meta Ads",
     service: "Grooming",
     assignedTo: "Sarah Connor",
     joinedAt: "2026-05-28",
     status: "New",
     leadType: "Client",
     providerService: "",
-    petName: "Oliver",
-    petBreed: "Poodle",
-    petAge: "10 months",
+    
+    
+    
     notes: "Client needs standard breed cut for puppy.",
     createdAt: "2026-05-26",
     city: "San Diego",
     preferredContactMethod: "Phone",
-    petWeight: "54 lbs",
-    petMedicalConditions: "Diabetes",
+    
+    
   },
   {
     id: "lead_34",
     name: "Nathan Drake",
     phone: "9234567890",
     email: "drake@unmapped.com",
-    source: "Whatsapp",
+    source: "WhatsApp",
     service: "Training",
     assignedTo: "Sarah Connor",
     joinedAt: "2026-05-29",
     status: "Joined",
-    leadType: "Service Provider",
+    leadType: "Client",
     providerService: "Training",
-    petName: "Sully",
-    petBreed: "Boxer",
-    petAge: "3 years",
+    
+    
+    
     notes:
       "Professional trainer applying to join the network as service partner.",
     createdAt: "2026-05-26",
     city: "Chicago",
     preferredContactMethod: "Email",
-    petWeight: "14 lbs",
-    petMedicalConditions: "Allergies",
+    
+    
   },
   {
     id: "lead_35",
     name: "Sophie Turner",
     phone: "9345678901",
     email: "sophie.t@gmail.com",
-    source: "Social Media",
+    source: "Meta Ads",
     service: "Walking",
     assignedTo: "David Miller",
     joinedAt: "2026-05-27",
     status: "New",
     leadType: "Client",
     providerService: "",
-    petName: "Lady",
-    petBreed: "Cocker Spaniel",
-    petAge: "4 years",
+    
+    
+    
     notes: "Client requesting 2 morning walks per day starting next week.",
     createdAt: "2026-05-26",
     city: "San Diego",
     preferredContactMethod: "SMS",
-    petWeight: "56 lbs",
-    petMedicalConditions: "None",
+    
+    
   },
   {
     id: "lead_36",
@@ -860,18 +860,18 @@ export const initialLeads = [
     assignedTo: "David Miller",
     joinedAt: "2026-05-28",
     status: "Joined",
-    leadType: "Service Provider",
+    leadType: "Client",
     providerService: "Walking",
-    petName: "Buddy",
-    petBreed: "Labrador",
-    petAge: "2 years",
+    
+    
+    
     notes:
       "Looking to onboard as an experienced pet walker for premium routes.",
     createdAt: "2026-05-26",
     city: "San Antonio",
     preferredContactMethod: "Phone",
-    petWeight: "24 lbs",
-    petMedicalConditions: "None",
+    
+    
   },
   {
     id: "lead_37",
@@ -885,37 +885,37 @@ export const initialLeads = [
     status: "New",
     leadType: "Client",
     providerService: "",
-    petName: "Snitch",
-    petBreed: "Siamese Cat",
-    petAge: "6 years",
+    
+    
+    
     notes: "In-home pet parenting requested for 5 days of vacation.",
     createdAt: "2026-05-26",
     city: "Los Angeles",
     preferredContactMethod: "SMS",
-    petWeight: "54 lbs",
-    petMedicalConditions: "None",
+    
+    
   },
   {
     id: "lead_38",
     name: "Julian Assange",
     phone: "9678901234",
     email: "julian@wikipets.org",
-    source: "Meta",
+    source: "Meta Ads",
     service: "Grooming",
     assignedTo: "Emily Davis",
     joinedAt: "2026-05-29",
     status: "Joined",
-    leadType: "Service Provider",
+    leadType: "Client",
     providerService: "Grooming",
-    petName: "Leaks",
-    petBreed: "Beagle",
-    petAge: "5 years",
+    
+    
+    
     notes: "Part-time self-employed groomer seeking subcontract shifts.",
     createdAt: "2026-05-26",
     city: "New York",
     preferredContactMethod: "WhatsApp",
-    petWeight: "39 lbs",
-    petMedicalConditions: "Anxiety",
+    
+    
   },
 ];
 
@@ -930,7 +930,7 @@ export const initialFollowups = [
     priority: "Medium",
     done: false,
     notes: "Ping regarding pricing structure options.",
-    petName: "Max"
+    
   },
   {
     id: "fw_2",
@@ -942,7 +942,7 @@ export const initialFollowups = [
     priority: "Low",
     done: false,
     notes: "Call to confirm scheduling and availability.",
-    petName: "Max"
+    
   },
   {
     id: "fw_3",
@@ -954,7 +954,7 @@ export const initialFollowups = [
     priority: "High",
     done: true,
     notes: "Call to confirm scheduling and availability.",
-    petName: "Max"
+    
   },
   {
     id: "fw_4",
@@ -966,7 +966,7 @@ export const initialFollowups = [
     priority: "Medium",
     done: true,
     notes: "Ping regarding pricing structure options.",
-    petName: "Luna"
+    
   },
   {
     id: "fw_5",
@@ -978,7 +978,7 @@ export const initialFollowups = [
     priority: "Medium",
     done: false,
     notes: "Call to confirm scheduling and availability.",
-    petName: "Luna"
+    
   },
   {
     id: "fw_6",
@@ -990,7 +990,7 @@ export const initialFollowups = [
     priority: "High",
     done: true,
     notes: "Ping regarding pricing structure options.",
-    petName: "Milo"
+    
   },
   {
     id: "fw_7",
@@ -1002,7 +1002,7 @@ export const initialFollowups = [
     priority: "High",
     done: true,
     notes: "Call to confirm scheduling and availability.",
-    petName: "Milo"
+    
   },
   {
     id: "fw_8",
@@ -1014,7 +1014,7 @@ export const initialFollowups = [
     priority: "Medium",
     done: false,
     notes: "Send follow up marketing materials and brochures.",
-    petName: "Milo"
+    
   },
   {
     id: "fw_9",
@@ -1026,7 +1026,7 @@ export const initialFollowups = [
     priority: "Medium",
     done: false,
     notes: "Send follow up marketing materials and brochures.",
-    petName: "Oliver"
+    
   },
   {
     id: "fw_10",
@@ -1038,7 +1038,7 @@ export const initialFollowups = [
     priority: "Medium",
     done: false,
     notes: "Call to confirm scheduling and availability.",
-    petName: "Oliver"
+    
   },
   {
     id: "fw_11",
@@ -1050,7 +1050,7 @@ export const initialFollowups = [
     priority: "Low",
     done: true,
     notes: "Call to confirm scheduling and availability.",
-    petName: "Oliver"
+    
   },
   {
     id: "fw_12",
@@ -1062,7 +1062,7 @@ export const initialFollowups = [
     priority: "Medium",
     done: false,
     notes: "Call to confirm scheduling and availability.",
-    petName: "Lola"
+    
   },
   {
     id: "fw_13",
@@ -1074,7 +1074,7 @@ export const initialFollowups = [
     priority: "Medium",
     done: false,
     notes: "Send follow up marketing materials and brochures.",
-    petName: "Lola"
+    
   }
 ];
 
@@ -1093,7 +1093,7 @@ export const initialActivities = [
     type: "Status Update",
     content: "Updated lead status to follow up required.",
     author: "Alex Mercer",
-    date: "2026-06-06T14:30:00Z"
+    date: "2026-06-16T14:30:00Z"
   },
   {
     id: "act_3",
@@ -1117,7 +1117,7 @@ export const initialActivities = [
     type: "Status Update",
     content: "Updated lead status to follow up required.",
     author: "John Doe",
-    date: "2026-06-06T14:30:00Z"
+    date: "2026-06-16T14:30:00Z"
   },
   {
     id: "act_6",
@@ -1149,7 +1149,7 @@ export const initialActivities = [
     type: "Email Sent",
     content: "Sent introductory email with service brochure.",
     author: "Alex Mercer",
-    date: "2026-06-04T14:30:00Z"
+    date: "2026-06-14T14:30:00Z"
   },
   {
     id: "act_10",
@@ -1173,7 +1173,7 @@ export const initialActivities = [
     type: "Email Sent",
     content: "Sent introductory email with service brochure.",
     author: "Sarah Connor",
-    date: "2026-06-06T14:30:00Z"
+    date: "2026-06-16T14:30:00Z"
   },
   {
     id: "act_13",
@@ -1181,7 +1181,7 @@ export const initialActivities = [
     type: "Follow Up Set",
     content: "Scheduled a follow-up call for next week.",
     author: "Alex Mercer",
-    date: "2026-06-05T14:30:00Z"
+    date: "2026-06-15T14:30:00Z"
   },
   {
     id: "act_14",
@@ -1189,7 +1189,7 @@ export const initialActivities = [
     type: "Call Made",
     content: "Called the client but no answer. Left a voicemail.",
     author: "Sarah Connor",
-    date: "2026-06-08T14:30:00Z"
+    date: "2026-06-13T14:30:00Z"
   },
   {
     id: "act_15",
@@ -1213,7 +1213,7 @@ export const initialActivities = [
     type: "Email Sent",
     content: "Sent introductory email with service brochure.",
     author: "Sarah Connor",
-    date: "2026-06-04T14:30:00Z"
+    date: "2026-06-14T14:30:00Z"
   },
   {
     id: "act_18",
@@ -1253,7 +1253,7 @@ export const initialActivities = [
     type: "Email Sent",
     content: "Sent introductory email with service brochure.",
     author: "Sarah Connor",
-    date: "2026-06-05T14:30:00Z"
+    date: "2026-06-15T14:30:00Z"
   },
   {
     id: "act_23",
@@ -1261,7 +1261,7 @@ export const initialActivities = [
     type: "Note Added",
     content: "Added some context regarding the client's availability and preferences.",
     author: "Alex Mercer",
-    date: "2026-06-07T14:30:00Z"
+    date: "2026-06-12T14:30:00Z"
   },
   {
     id: "act_24",
@@ -1269,7 +1269,7 @@ export const initialActivities = [
     type: "Follow Up Set",
     content: "Scheduled a follow-up call for next week.",
     author: "John Doe",
-    date: "2026-06-04T14:30:00Z"
+    date: "2026-06-14T14:30:00Z"
   },
   {
     id: "act_25",
@@ -1277,7 +1277,7 @@ export const initialActivities = [
     type: "Status Update",
     content: "Updated lead status to follow up required.",
     author: "John Doe",
-    date: "2026-06-04T14:30:00Z"
+    date: "2026-06-14T14:30:00Z"
   },
   {
     id: "act_26",
@@ -1301,7 +1301,7 @@ export const initialActivities = [
     type: "Call Made",
     content: "Called the client but no answer. Left a voicemail.",
     author: "Alex Mercer",
-    date: "2026-06-05T14:30:00Z"
+    date: "2026-06-15T14:30:00Z"
   },
   {
     id: "act_29",
@@ -1341,7 +1341,7 @@ export const initialActivities = [
     type: "Email Sent",
     content: "Sent introductory email with service brochure.",
     author: "Sarah Connor",
-    date: "2026-06-08T14:30:00Z"
+    date: "2026-06-13T14:30:00Z"
   },
   {
     id: "act_34",
@@ -1349,7 +1349,7 @@ export const initialActivities = [
     type: "Email Sent",
     content: "Sent introductory email with service brochure.",
     author: "John Doe",
-    date: "2026-06-04T14:30:00Z"
+    date: "2026-06-14T14:30:00Z"
   },
   {
     id: "act_35",
@@ -1357,7 +1357,7 @@ export const initialActivities = [
     type: "Follow Up Set",
     content: "Scheduled a follow-up call for next week.",
     author: "John Doe",
-    date: "2026-06-08T14:30:00Z"
+    date: "2026-06-13T14:30:00Z"
   },
   {
     id: "act_36",
@@ -1365,7 +1365,7 @@ export const initialActivities = [
     type: "Email Sent",
     content: "Sent introductory email with service brochure.",
     author: "John Doe",
-    date: "2026-06-06T14:30:00Z"
+    date: "2026-06-16T14:30:00Z"
   },
   {
     id: "act_37",
@@ -1389,7 +1389,7 @@ export const initialActivities = [
     type: "Status Update",
     content: "Updated lead status to follow up required.",
     author: "Sarah Connor",
-    date: "2026-06-07T14:30:00Z"
+    date: "2026-06-12T14:30:00Z"
   },
   {
     id: "act_40",
@@ -1397,7 +1397,7 @@ export const initialActivities = [
     type: "Call Made",
     content: "Called the client but no answer. Left a voicemail.",
     author: "Alex Mercer",
-    date: "2026-06-06T14:30:00Z"
+    date: "2026-06-16T14:30:00Z"
   },
   {
     id: "act_41",
@@ -1405,7 +1405,7 @@ export const initialActivities = [
     type: "Status Update",
     content: "Updated lead status to follow up required.",
     author: "John Doe",
-    date: "2026-06-08T14:30:00Z"
+    date: "2026-06-13T14:30:00Z"
   },
   {
     id: "act_42",
@@ -1413,7 +1413,7 @@ export const initialActivities = [
     type: "Email Sent",
     content: "Sent introductory email with service brochure.",
     author: "Sarah Connor",
-    date: "2026-06-06T14:30:00Z"
+    date: "2026-06-16T14:30:00Z"
   },
   {
     id: "act_43",
@@ -1445,7 +1445,7 @@ export const initialActivities = [
     type: "Email Sent",
     content: "Sent introductory email with service brochure.",
     author: "John Doe",
-    date: "2026-06-05T14:30:00Z"
+    date: "2026-06-15T14:30:00Z"
   },
   {
     id: "act_47",
@@ -1453,7 +1453,7 @@ export const initialActivities = [
     type: "Status Update",
     content: "Updated lead status to follow up required.",
     author: "John Doe",
-    date: "2026-06-08T14:30:00Z"
+    date: "2026-06-13T14:30:00Z"
   },
   {
     id: "act_48",
@@ -1477,7 +1477,7 @@ export const initialActivities = [
     type: "Email Sent",
     content: "Sent introductory email with service brochure.",
     author: "Alex Mercer",
-    date: "2026-06-08T14:30:00Z"
+    date: "2026-06-13T14:30:00Z"
   },
   {
     id: "act_51",
@@ -1493,7 +1493,7 @@ export const initialActivities = [
     type: "Email Sent",
     content: "Sent introductory email with service brochure.",
     author: "Sarah Connor",
-    date: "2026-06-05T14:30:00Z"
+    date: "2026-06-15T14:30:00Z"
   },
   {
     id: "act_53",
@@ -1501,7 +1501,7 @@ export const initialActivities = [
     type: "Follow Up Set",
     content: "Scheduled a follow-up call for next week.",
     author: "Sarah Connor",
-    date: "2026-06-06T14:30:00Z"
+    date: "2026-06-15T14:30:00Z"
   },
   {
     id: "act_54",
@@ -1517,7 +1517,7 @@ export const initialActivities = [
     type: "Status Update",
     content: "Updated lead status to follow up required.",
     author: "Alex Mercer",
-    date: "2026-06-06T14:30:00Z"
+    date: "2026-06-14T14:30:00Z"
   },
   {
     id: "act_56",
@@ -1525,7 +1525,7 @@ export const initialActivities = [
     type: "Call Made",
     content: "Called the client but no answer. Left a voicemail.",
     author: "John Doe",
-    date: "2026-06-05T14:30:00Z"
+    date: "2026-06-13T14:30:00Z"
   },
   {
     id: "act_57",
@@ -1565,7 +1565,7 @@ export const initialActivities = [
     type: "Note Added",
     content: "Added some context regarding the client's availability and preferences.",
     author: "Alex Mercer",
-    date: "2026-06-08T14:30:00Z"
+    date: "2026-06-12T14:30:00Z"
   },
   {
     id: "act_62",

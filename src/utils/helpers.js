@@ -131,16 +131,12 @@ export function filterLeads(
   },
 ) {
   return leads.filter((lead) => {
-    // Search filter (handles name, phone, email, pet breed, pet name)
+    // Search filter (handles name, phone, email)
     const matchSearch =
       !search ||
       lead.name.toLowerCase().includes(search.toLowerCase()) ||
       lead.phone.includes(search) ||
-      (lead.email && lead.email.toLowerCase().includes(search.toLowerCase())) ||
-      (lead.petName &&
-        lead.petName.toLowerCase().includes(search.toLowerCase())) ||
-      (lead.petBreed &&
-        lead.petBreed.toLowerCase().includes(search.toLowerCase()));
+      (lead.email && lead.email.toLowerCase().includes(search.toLowerCase()));
 
     const matchService = service === "All" || lead.service === service;
     const matchStage = stage === "All" || lead.stage === stage;

@@ -24,25 +24,32 @@ export default function SalesPersonDetails() {
   const { name } = useParams();
   const navigate = useNavigate();
   const { leads } = useLeads();
-  const [activeTab, setActiveTab] = useState("Clients");
+  const [activeTab, setActiveTab] = useState("New Leads");
 
   const decodedName = decodeURIComponent(name);
   const repLeads = leads.filter((l) => l.assignedTo === decodedName);
 
-  const clientLeads = repLeads.filter(
-    (l) => l.leadType === "Client" || !l.leadType,
-  );
-  const providerLeads = repLeads.filter(
-    (l) => l.leadType === "Service Provider",
-  );
   const newLeads = repLeads.filter((l) => l.status?.toLowerCase() === "new");
+  const followupLeads = repLeads.filter((l) => l.status?.toLowerCase() === "follow up");
+  const convertedLeads = repLeads.filter((l) => l.status?.toLowerCase() === "joined");
+  const notAttendedLeads = repLeads.filter((l) => l.status?.toLowerCase() === "not attended");
+  const lostLeads = repLeads.filter((l) => {
+    const s = l.status?.toLowerCase();
+    return s === "price issue" || s === "not responding" || s === "not answered";
+  });
 
   const displayedLeads =
-    activeTab === "Clients"
-      ? clientLeads
-      : activeTab === "Service Providers"
-        ? providerLeads
-        : newLeads;
+    activeTab === "New Leads"
+      ? newLeads
+      : activeTab === "Followup Leads"
+      ? followupLeads
+      : activeTab === "Converted Leads"
+      ? convertedLeads
+      : activeTab === "Lost Leads"
+      ? lostLeads
+      : activeTab === "Not Attended"
+      ? notAttendedLeads
+      : repLeads;
 
   const handleExport = () => {
     exportToCSV(
@@ -59,8 +66,10 @@ export default function SalesPersonDetails() {
         return "bg-orange-500/10 text-orange-500 border border-orange-500/20";
       case "joined":
         return "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20";
-      case "not interested":
+      case "not attended":
       case "price issue":
+      case "not responding":
+      case "not answered":
         return "bg-red-500/10 text-red-500 border border-red-500/20";
       default:
         return "bg-brand-secondary/40 text-brand-primary/70 border border-brand-secondary/50";
@@ -101,9 +110,11 @@ export default function SalesPersonDetails() {
 
       <div className="border-b border-brand-secondary flex overflow-x-auto no-scrollbar mb-6">
         {[
-          { name: "Clients", count: clientLeads.length },
-          { name: "Service Providers", count: providerLeads.length },
-          { name: "New Assigned Leads", count: newLeads.length },
+          { name: "New Leads", count: newLeads.length },
+          { name: "Followup Leads", count: followupLeads.length },
+          { name: "Converted Leads", count: convertedLeads.length },
+          { name: "Lost Leads", count: lostLeads.length },
+          { name: "Not Attended", count: notAttendedLeads.length },
         ].map((tab) => (
           <button
             key={tab.name}

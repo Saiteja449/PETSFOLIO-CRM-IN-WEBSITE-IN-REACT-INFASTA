@@ -168,7 +168,7 @@ export default function LeadDetails() {
       addFollowup({
         leadId: currentLead.id,
         leadName: currentLead.name,
-        petName: currentLead.petName || "Pet",
+
         type: followupType,
         date: formData.nextFollowUp,
         time: formData.appointmentTime || "11:00 AM",
@@ -210,7 +210,7 @@ export default function LeadDetails() {
     addFollowup({
       leadId: currentLead.id,
       leadName: currentLead.name,
-      petName: currentLead.petName,
+
       type: newFw.type,
       date: newFw.date,
       time: newFw.time,
@@ -532,53 +532,7 @@ export default function LeadDetails() {
               </form>
             </div>
           </div>
-          <div className="bg-brand-light border border-brand-secondary rounded-xl p-5 shadow-sm">
-            <h3 className="font-bold text-brand-primary mb-4 flex items-center gap-2">
-              <Cat className="text-teal-500" size={20} /> Registered Pet Sheet
-            </h3>
-            <div className="flex flex-col gap-3 bg-brand-light p-4 rounded-lg">
-              <div>
-                <span className="text-xs text-brand-primary/70 block mb-0.5">
-                  Animal Name
-                </span>
-                <span className="text-sm font-bold text-brand-primary">
-                  {currentLead.petName || "Not described"}
-                </span>
-              </div>
-              <div>
-                <span className="text-xs text-brand-primary/70 block mb-0.5">
-                  Breed Spec
-                </span>
-                <span className="text-sm font-bold text-brand-primary">
-                  {currentLead.petBreed || "Not described"}
-                </span>
-              </div>
-              <div>
-                <span className="text-xs text-brand-primary/70 block mb-0.5">
-                  Age Tier
-                </span>
-                <span className="text-sm font-bold text-brand-primary">
-                  {currentLead.petAge || "Not described"}
-                </span>
-              </div>
-              <div>
-                <span className="text-xs text-brand-primary/70 block mb-0.5">
-                  Weight
-                </span>
-                <span className="text-sm font-bold text-brand-primary">
-                  {currentLead.petWeight || "Not described"}
-                </span>
-              </div>
-              <div>
-                <span className="text-xs text-brand-primary/70 block mb-0.5">
-                  Medical Conditions
-                </span>
-                <span className="text-sm font-bold text-brand-primary">
-                  {currentLead.petMedicalConditions || "Not described"}
-                </span>
-              </div>
-            </div>
-          </div>
+
         </div>
 
         <div className="md:col-span-8 space-y-6">

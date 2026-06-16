@@ -51,24 +51,20 @@ export default function Leads() {
 
   const [addOpen, setAddOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  // const [drawerOpen, setDrawerOpen] = useState(false);
   const [selectedLead, setSelectedLead] = useState(null);
 
   const defaultFormFields = {
     name: "",
     phone: "",
     email: "",
-    source: "Google Search",
+    source: "Manual Entry",
     service: "Grooming",
     stage: "New Lead",
     assignedTo: currentUser?.name || "Alex Mercer",
     nextFollowUp: "2026-05-26",
     status: "New",
     leadType: "Client",
-    providerService: "",
-    petName: "",
-    petBreed: "",
-    petAge: "",
     notes: "",
   };
 
@@ -77,11 +73,12 @@ export default function Leads() {
 
   const salespeople = (allUsers || []).map((u) => u.name);
   const sources = [
-    "Google Search",
-    "Social Media",
-    "Referral",
-    "Walk-in",
-    "Email Campaign",
+    "Email",
+    "WhatsApp",
+    "Meta Ads",
+    "Website Form",
+    "Call",
+    "Manual Entry",
   ];
 
   const viewableLeads =
@@ -103,19 +100,30 @@ export default function Leads() {
   const newCount = rawProcessedLeads.filter(
     (l) => l.status?.toLowerCase() === "new",
   ).length;
-  const clientCount = rawProcessedLeads.filter(
-    (l) => l.leadType === "Client" || !l.leadType,
+  const followupCount = rawProcessedLeads.filter(
+    (l) => l.status?.toLowerCase() === "follow up",
   ).length;
-  const providerCount = rawProcessedLeads.filter(
-    (l) => l.leadType === "Service Provider",
+  const convertedCount = rawProcessedLeads.filter(
+    (l) => l.status?.toLowerCase() === "joined",
   ).length;
+  const notAttendedCount = rawProcessedLeads.filter((l) => {
+    return l.status?.toLowerCase() === "not attended";
+  }).length;
+  
+  const lostCount = rawProcessedLeads.filter((l) => {
+    const s = l.status?.toLowerCase();
+    return s === "price issue" || s === "not responding" || s === "not answered";
+  }).length;
 
   const processedLeads = rawProcessedLeads.filter((lead) => {
-    if (leadTypeTab === "New") return lead.status?.toLowerCase() === "new";
-    if (leadTypeTab === "Client")
-      return lead.leadType === "Client" || !lead.leadType;
-    if (leadTypeTab === "Service Provider")
-      return lead.leadType === "Service Provider";
+    const s = lead.status?.toLowerCase() || "";
+    if (leadTypeTab === "New") return s === "new";
+    if (leadTypeTab === "Followup") return s === "follow up";
+    if (leadTypeTab === "Converted") return s === "joined";
+    if (leadTypeTab === "Lost")
+      return s === "price issue" || s === "not responding" || s === "not answered";
+    if (leadTypeTab === "NotAttended")
+      return s === "not attended";
     return true;
   });
 
@@ -152,10 +160,6 @@ export default function Leads() {
       nextFollowUp: lead.nextFollowUp || "",
       status: lead.status || "New",
       leadType: lead.leadType || "Client",
-      providerService: lead.providerService || "",
-      petName: lead.petName || "",
-      petBreed: lead.petBreed || "",
-      petAge: lead.petAge || "",
       notes: lead.notes || "",
     });
     setEditOpen(true);
@@ -165,15 +169,12 @@ export default function Leads() {
     e.preventDefault();
     updateLead(selectedLead.id, formFields, currentUser?.name || "System");
     setEditOpen(false);
-    if (selectedLead && drawerOpen) {
+    if (selectedLead ) {
       setSelectedLead({ ...selectedLead, ...formFields });
     }
   };
 
-  const handleOpenDrawer = (lead) => {
-    setSelectedLead(lead);
-    setDrawerOpen(true);
-  };
+ 
 
   // Convert MUI color keywords to Tailwind classes
   const getTwStatusColor = (statusName) => {
@@ -184,8 +185,10 @@ export default function Leads() {
         return "bg-orange-500/10 text-orange-500 border border-orange-500/20";
       case "joined":
         return "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20";
-      case "not interested":
+      case "not attended":
       case "price issue":
+      case "not responding":
+      case "not answered":
         return "bg-red-500/10 text-red-500 border border-red-500/20";
       default:
         return "bg-brand-secondary/40 text-brand-primary/70 border border-brand-secondary/50";
@@ -232,12 +235,10 @@ export default function Leads() {
       <div className="border-b border-brand-secondary flex overflow-x-auto no-scrollbar">
         {[
           { name: "New", label: "New Leads", count: newCount },
-          { name: "Client", label: "Client Leads", count: clientCount },
-          {
-            name: "Service Provider",
-            label: "Service Provider Leads",
-            count: providerCount,
-          },
+          { name: "Followup", label: "Followup Leads", count: followupCount },
+          { name: "Converted", label: "Converted Leads", count: convertedCount },
+          { name: "Lost", label: "Lost Leads", count: lostCount },
+          { name: "NotAttended", label: "Not Attended", count: notAttendedCount },
         ].map((tab) => (
           <button
             key={tab.name}
@@ -367,7 +368,7 @@ export default function Leads() {
               <thead>
                 <tr className="bg-brand-light border-b border-brand-secondary">
                   <th className="px-4 py-3 text-xs font-bold text-brand-primary uppercase tracking-wider">
-                    Client / Pet Name
+                    Client Name
                   </th>
                   <th className="px-4 py-3 text-xs font-bold text-brand-primary uppercase tracking-wider">
                     Phone Number
@@ -440,29 +441,7 @@ export default function Leads() {
                         </div>
                       </td>
                       <td className="px-4 py-3 text-sm text-brand-primary">
-                        {currentUser?.role === "Sales Manager" ? (
-                          <select
-                            value={lead.assignedTo || ""}
-                            onChange={(e) =>
-                              updateLead(
-                                lead.id,
-                                { assignedTo: e.target.value },
-                                currentUser?.name,
-                              )
-                            }
-                            className="bg-transparent border border-brand-secondary rounded px-2 py-1 text-sm focus:outline-none focus:border-teal-500 cursor-pointer w-full max-w-[150px]"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            <option value="">Unassigned</option>
-                            {allUsers.map((u) => (
-                              <option key={u.id} value={u.name}>
-                                {u.name}
-                              </option>
-                            ))}
-                          </select>
-                        ) : (
-                          lead.assignedTo
-                        )}
+                        {lead.assignedTo || "Unassigned"}
                       </td>
                       <td className="px-4 py-3 text-sm">
                         {lead.joinedAt ? (
@@ -489,13 +468,7 @@ export default function Leads() {
                       </td>
                       <td className="px-4 py-3 text-right">
                         <div className="flex items-center justify-end gap-1">
-                          <button
-                            onClick={() => handleOpenDrawer(lead)}
-                            className="p-1.5 text-brand-primary/70 hover:text-brand-primary hover:bg-brand-secondary/30 rounded transition-colors"
-                            title="Quick Overview"
-                          >
-                            <Eye className="w-4 h-4" />
-                          </button>
+                         
                           <button
                             onClick={() => handleOpenEdit(lead)}
                             className="p-1.5 text-brand-primary/70 hover:text-brand-primary hover:bg-brand-secondary/30 rounded transition-colors"
@@ -572,7 +545,7 @@ export default function Leads() {
       )}
 
       {/* Drawer */}
-      {drawerOpen && selectedLead && (
+      {/* {drawerOpen && selectedLead && (
         <>
           <div
             className="fixed inset-0 bg-brand-light/50 z-40"
@@ -748,7 +721,7 @@ export default function Leads() {
             </div>
           </div>
         </>
-      )}
+      )} */}
 
       {/* Add / Edit Dialog */}
       {(addOpen || editOpen) && (
@@ -894,49 +867,9 @@ export default function Leads() {
                       ))}
                     </select>
                   </div>
-                  <div>
-                    <label className="block text-xs font-bold text-brand-primary/70 mb-1">
-                      Lead Type
-                    </label>
-                    <select
-                      value={formFields.leadType}
-                      onChange={(e) => {
-                        const newLeadType = e.target.value;
-                        setFormFields({
-                          ...formFields,
-                          leadType: newLeadType,
-                          providerService: newLeadType === "Client" ? "" : "Walking",
-                          status: newLeadType === "Service Provider" ? "Joined" : (formFields.status === "Joined" && formFields.id ? "Joined" : "New"),
-                        });
-                      }}
-                      className="w-full bg-brand-light border border-brand-secondary rounded-lg px-3 py-2 text-sm text-brand-primary focus:outline-none focus:border-teal-500"
-                    >
-                      <option value="Client">Client</option>
-                      <option value="Service Provider">Service Provider</option>
-                    </select>
-                  </div>
 
-                  {formFields.leadType === "Service Provider" && (
-                    <div>
-                      <label className="block text-xs font-bold text-brand-primary/70 mb-1">
-                        Provider Service Unit *
-                      </label>
-                      <select
-                        value={formFields.providerService || "Walking"}
-                        onChange={(e) =>
-                          setFormFields({
-                            ...formFields,
-                            providerService: e.target.value,
-                          })
-                        }
-                        className="w-full bg-brand-light border border-brand-secondary rounded-lg px-3 py-2 text-sm text-brand-primary focus:outline-none focus:border-teal-500"
-                      >
-                        <option value="Walking">Walking</option>
-                        <option value="Grooming">Grooming</option>
-                        <option value="Training">Training</option>
-                      </select>
-                    </div>
-                  )}
+
+
 
                   <div>
                     <label className="block text-xs font-bold text-brand-primary/70 mb-1">
@@ -949,70 +882,17 @@ export default function Leads() {
                       }
                       className="w-full bg-brand-light border border-brand-secondary rounded-lg px-3 py-2 text-sm text-brand-primary focus:outline-none focus:border-teal-500"
                     >
-                      {formFields.leadType === "Service Provider" ? (
-                        <option value="Joined">Joined</option>
-                      ) : (
-                        <>
-                          <option value="New">New</option>
-                          <option value="Follow Up">Follow Up</option>
-                          <option value="Not Interested">Not Interested</option>
-                          <option value="Not Responding">Not Responding</option>
-                          <option value="Price Issue">Price Issue</option>
-                          <option value="Joined">Joined</option>
-                        </>
-                      )}
+                      <option value="New">New</option>
+                      <option value="Follow Up">Follow Up</option>
+                      <option value="Not Attended">Not Attended</option>
+                      <option value="Not Responding">Not Responding</option>
+                      <option value="Not Answered">Not Answered</option>
+                      <option value="Price Issue">Price Issue</option>
+                      <option value="Joined">Joined</option>
                     </select>
                   </div>
 
-                  {formFields.leadType !== "Service Provider" && (
-                    <>
-                      <div>
-                        <label className="block text-xs font-bold text-brand-primary/70 mb-1">
-                          Pet Name
-                        </label>
-                        <input
-                          type="text"
-                          value={formFields.petName}
-                          onChange={(e) =>
-                            setFormFields({
-                              ...formFields,
-                              petName: e.target.value,
-                            })
-                          }
-                          className="w-full bg-brand-light border border-brand-secondary rounded-lg px-3 py-2 text-sm text-brand-primary focus:outline-none focus:border-teal-500"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-xs font-bold text-brand-primary/70 mb-1">
-                          Pet Breed
-                        </label>
-                        <input
-                          type="text"
-                          value={formFields.petBreed}
-                          onChange={(e) =>
-                            setFormFields({
-                              ...formFields,
-                              petBreed: e.target.value,
-                            })
-                          }
-                          className="w-full bg-brand-light border border-brand-secondary rounded-lg px-3 py-2 text-sm text-brand-primary focus:outline-none focus:border-teal-500"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-xs font-bold text-brand-primary/70 mb-1">
-                          Pet Age
-                        </label>
-                        <input
-                          type="text"
-                          value={formFields.petAge}
-                          onChange={(e) =>
-                            setFormFields({ ...formFields, petAge: e.target.value })
-                          }
-                          className="w-full bg-brand-light border border-brand-secondary rounded-lg px-3 py-2 text-sm text-brand-primary focus:outline-none focus:border-teal-500"
-                        />
-                      </div>
-                    </>
-                  )}
+
                   <div className="md:col-span-2">
                     <label className="block text-xs font-bold text-brand-primary/70 mb-1">
                       Client Requirements & Internal Notes
