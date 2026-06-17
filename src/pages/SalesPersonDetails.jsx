@@ -31,7 +31,8 @@ export default function SalesPersonDetails() {
 
   const newLeads = repLeads.filter((l) => l.status?.toLowerCase() === "new");
   const followupLeads = repLeads.filter((l) => l.status?.toLowerCase() === "follow up");
-  const convertedLeads = repLeads.filter((l) => l.status?.toLowerCase() === "job posted");
+  const convertedLeads = repLeads.filter((l) => l.status?.toLowerCase() === "job assigned");
+  const jobPostedLeads = repLeads.filter((l) => l.status?.toLowerCase() === "job posted");
   const joinedLeads = repLeads.filter((l) => l.status?.toLowerCase() === "joined");
   const notAttendedLeads = repLeads.filter((l) => l.status?.toLowerCase() === "not attended");
   const lostLeads = repLeads.filter((l) => {
@@ -48,6 +49,8 @@ export default function SalesPersonDetails() {
       ? convertedLeads
       : activeTab === "Lost Leads"
       ? lostLeads
+      : activeTab === "Job Posted"
+      ? jobPostedLeads
       : activeTab === "Joined Leads"
       ? joinedLeads
       : activeTab === "Not Attended"
@@ -71,6 +74,8 @@ export default function SalesPersonDetails() {
         return "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20";
       case "job posted":
         return "bg-teal-500/10 text-teal-600 border border-teal-500/20 font-extrabold";
+      case "job assigned":
+        return "bg-indigo-500/10 text-indigo-500 border border-indigo-500/20 font-extrabold";
       case "not attended":
       case "price issue":
       case "not responding":
@@ -119,6 +124,7 @@ export default function SalesPersonDetails() {
           { name: "Not Attended", count: notAttendedLeads.length },
           { name: "Followup Leads", count: followupLeads.length },
           { name: "Converted Leads", count: convertedLeads.length },
+          { name: "Job Posted", count: jobPostedLeads.length },
           { name: "Joined Leads", count: joinedLeads.length },
           { name: "Lost Leads", count: lostLeads.length },
         ].map((tab) => (

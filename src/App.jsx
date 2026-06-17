@@ -49,9 +49,9 @@ function AppLayout() {
       />
 
       {/* Right Column Container */}
-      <div className="flex-grow flex flex-col min-h-screen md:ml-64 transition-all duration-300">
+      <div className="flex-grow flex flex-col min-h-screen md:ml-64 transition-all duration-300 min-w-0">
         <Header handleDrawerToggle={handleDrawerToggle} />
-        <main className="flex-grow pb-6 flex flex-col">
+        <main className="flex-grow pb-6 flex flex-col min-w-0 w-full overflow-x-hidden">
           <Outlet />
         </main>
       </div>

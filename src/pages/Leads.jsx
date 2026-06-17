@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Plus,
@@ -12,6 +12,8 @@ import {
   Calendar,
   ExternalLink,
   Trash2,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { useLeads } from "../context/LeadsContext.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
@@ -35,6 +37,15 @@ const Badge = ({ children, colorClass, className = "" }) => (
 
 export default function Leads() {
   const navigate = useNavigate();
+  const scrollContainerRef = useRef(null);
+
+  const handleScroll = (direction) => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = 250;
+      scrollContainerRef.current.scrollBy({ left: direction === "left" ? -scrollAmount : scrollAmount, behavior: "smooth" });
+    }
+  };
+
   const { leads, addLead, updateLead, deleteLead, stages, activeServices } =
     useLeads();
   const { allUsers, currentUser } = useAuth();
@@ -111,8 +122,11 @@ export default function Leads() {
     (l) => l.status?.toLowerCase() === "follow up" && l.nextFollowUp > todayStr,
   ).length;
 
-  const convertedCount = rawProcessedLeads.filter(
+  const jobPostedCount = rawProcessedLeads.filter(
     (l) => l.status?.toLowerCase() === "job posted",
+  ).length;
+  const convertedCount = rawProcessedLeads.filter(
+    (l) => l.status?.toLowerCase() === "job assigned",
   ).length;
   const joinedCount = rawProcessedLeads.filter(
     (l) => l.status?.toLowerCase() === "joined",
@@ -131,7 +145,8 @@ export default function Leads() {
     if (leadTypeTab === "New") return s === "new";
     if (leadTypeTab === "TodayFollowup") return s === "follow up" && lead.nextFollowUp === todayStr;
     if (leadTypeTab === "UpcomingFollowup") return s === "follow up" && lead.nextFollowUp > todayStr;
-    if (leadTypeTab === "Converted") return s === "job posted";
+    if (leadTypeTab === "JobPosted") return s === "job posted";
+    if (leadTypeTab === "Converted") return s === "job assigned";
     if (leadTypeTab === "Joined") return s === "joined";
     if (leadTypeTab === "Lost")
       return s === "price issue" || s === "not responding" || s === "not answered" || s === "not interested";
@@ -200,6 +215,8 @@ export default function Leads() {
         return "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20";
       case "job posted":
         return "bg-teal-500/10 text-teal-600 border border-teal-500/20 font-extrabold";
+      case "job assigned":
+        return "bg-indigo-500/10 text-indigo-500 border border-indigo-500/20 font-extrabold";
       case "not attended":
       case "price issue":
       case "not responding":
@@ -219,7 +236,7 @@ export default function Leads() {
       return "bg-blue-500/10 text-blue-500 border border-blue-500/20";
     if (s.includes("trial") || s.includes("meeting"))
       return "bg-purple-500/10 text-purple-500 border border-purple-500/20";
-    if (s.includes("won") || s.includes("job posted") || s.includes("hired") || s.includes("joined"))
+    if (s.includes("won") || s.includes("job posted") || s.includes("job assigned") || s.includes("hired") || s.includes("joined"))
       return "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20";
     if (s.includes("lost"))
       return "bg-red-500/10 text-red-500 border border-red-500/20";
@@ -227,7 +244,7 @@ export default function Leads() {
   };
 
   return (
-    <div className="p-4 md:p-6 space-y-6">
+    <div className="p-4 md:p-6 space-y-6 w-full max-w-full overflow-x-hidden">
       {/* Header and Add button */}
       <div className="flex flex-wrap justify-between items-center gap-4">
         <div>
@@ -238,50 +255,74 @@ export default function Leads() {
             Query, manage, schedule, and configure customer entry profiles.
           </p>
         </div>
-        {currentUser?.role !== "Sales Representative" && (
-          <button
-            onClick={handleOpenAdd}
-            className="flex items-center gap-2 px-4 py-2 bg-sky-600 hover:bg-sky-700 text-brand-primary text-sm font-bold rounded-lg transition-colors"
-          >
-            <Plus className="w-4 h-4" /> Add New Lead
-          </button>
-        )}
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1 border border-brand-secondary rounded-lg p-1 bg-brand-light">
+            <button
+              onClick={() => handleScroll('left')}
+              className="p-1.5 rounded hover:bg-brand-secondary/50 text-brand-primary transition-colors"
+              title="Scroll Tabs Left"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => handleScroll('right')}
+              className="p-1.5 rounded hover:bg-brand-secondary/50 text-brand-primary transition-colors"
+              title="Scroll Tabs Right"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+          {currentUser?.role !== "Sales Representative" && (
+            <button
+              onClick={handleOpenAdd}
+              className="flex items-center gap-2 px-4 py-2 bg-sky-600 hover:bg-sky-700 text-brand-primary text-sm font-bold rounded-lg transition-colors"
+            >
+              <Plus className="w-4 h-4" /> Add New Lead
+            </button>
+          )}
+        </div>
       </div>
 
-      <div className="border-b border-brand-secondary flex overflow-x-auto no-scrollbar">
-        {[
-          { name: "New", label: "New Leads", count: newCount },
-          { name: "TodayFollowup", label: "Today Followups", count: todayFollowupsCount },
-          { name: "UpcomingFollowup", label: "Upcoming Followups", count: upcomingFollowupsCount },
-          { name: "NotAttended", label: "Not Attended", count: notAttendedCount },
-          { name: "Converted", label: "Converted Leads", count: convertedCount },
-          { name: "Joined", label: "Joined Leads", count: joinedCount },
-          { name: "Lost", label: "Lost Leads", count: lostCount },
-        ].map((tab) => (
-          <button
-            key={tab.name}
-            onClick={() => {
-              setLeadTypeTab(tab.name);
-              setPage(0);
-            }}
-            className={`flex items-center gap-2 px-4 py-3 text-sm font-bold whitespace-nowrap border-b-2 transition-colors ${
-              leadTypeTab === tab.name
-                ? "border-teal-500 text-teal-500"
-                : "border-transparent text-brand-primary/70 hover:text-brand-primary hover:border-brand-secondary"
-            }`}
-          >
-            {tab.label}
-            <span
-              className={`px-1.5 py-0.5 rounded text-[10px] ${
+      <div className="border-b border-brand-secondary w-full overflow-hidden">
+        <div 
+          ref={scrollContainerRef}
+          className="flex overflow-x-auto scroll-smooth w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']"
+        >
+          {[
+            { name: "New", label: "New Leads", count: newCount },
+            { name: "TodayFollowup", label: "Today Followups", count: todayFollowupsCount },
+            { name: "UpcomingFollowup", label: "Upcoming Followups", count: upcomingFollowupsCount },
+            { name: "NotAttended", label: "Not Attended", count: notAttendedCount },
+            { name: "Joined", label: "Joined Leads", count: joinedCount },
+            { name: "JobPosted", label: "Job Posted", count: jobPostedCount },
+            { name: "Converted", label: "Converted Leads", count: convertedCount },
+            { name: "Lost", label: "Lost Leads", count: lostCount },
+          ].map((tab) => (
+            <button
+              key={tab.name}
+              onClick={() => {
+                setLeadTypeTab(tab.name);
+                setPage(0);
+              }}
+              className={`flex items-center gap-2 px-4 py-3 text-sm font-bold whitespace-nowrap border-b-2 transition-colors shrink-0 ${
                 leadTypeTab === tab.name
-                  ? "bg-teal-500/20 text-teal-500"
-                  : "bg-brand-secondary/30 text-brand-primary/70"
+                  ? "border-teal-500 text-teal-500"
+                  : "border-transparent text-brand-primary/70 hover:text-brand-primary hover:border-brand-secondary"
               }`}
             >
-              {tab.count}
-            </span>
-          </button>
-        ))}
+              {tab.label}
+              <span
+                className={`px-1.5 py-0.5 rounded text-[10px] ${
+                  leadTypeTab === tab.name
+                    ? "bg-teal-500/20 text-teal-500"
+                    : "bg-brand-secondary/30 text-brand-primary/70"
+                }`}
+              >
+                {tab.count}
+              </span>
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Filter and Search Bar */}
@@ -364,6 +405,7 @@ export default function Leads() {
               <option value="Price Issue">Price Issue</option>
               <option value="Joined">Joined</option>
               <option value="Job Posted">Job Posted</option>
+              <option value="Job Assigned">Job Assigned</option>
             </select>
           </div>
         </div>
@@ -909,6 +951,7 @@ export default function Leads() {
                       <option value="Price Issue">Price Issue</option>
                       <option value="Joined">Joined</option>
                       <option value="Job Posted">Job Posted</option>
+                      <option value="Job Assigned">Job Assigned</option>
                     </select>
                   </div>
 

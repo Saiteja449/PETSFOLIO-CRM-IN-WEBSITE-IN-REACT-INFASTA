@@ -478,6 +478,7 @@ export default function LeadDetails() {
                     <option value="Price Issue">Price Issue</option>
                     <option value="Joined">Joined</option>
                     <option value="Job Posted">Job Posted</option>
+                    <option value="Job Assigned">Job Assigned</option>
                   </select>
                 </div>
 
