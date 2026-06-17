@@ -385,8 +385,8 @@ export default function LeadDetails() {
               <div className="flex items-start gap-3">
                 <Calendar className="text-brand-primary/70 mt-0.5" size={18} />
                 <div className="min-w-0">
-                  <span className="text-xs text-brand-primary/70 block mb-0.5">
-                    Joined At
+                  <span className="block text-xs text-brand-primary/70 mb-1">
+                    Enquired On
                   </span>
                   <span className="text-sm font-semibold text-brand-primary truncate block">
                     {currentLead.joinedAt

@@ -98,61 +98,65 @@ export default function FollowUpReport() {
                 </span>
               </div>
               <div className="p-5">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {activeLeads.map((lead) => (
-                    <div
-                      key={lead.id}
-                      onClick={() => navigate(`/lead-details/${lead.id}`)}
-                      className="bg-brand-light border border-brand-secondary hover:border-teal-500/50 rounded-xl p-4 cursor-pointer transition-all hover:shadow-[0_0_15px_rgba(20,184,166,0.1)] group"
-                    >
-                      <div className="flex justify-between items-start mb-3">
-                        <div>
-                          <h4 className="font-bold text-brand-primary group-hover:text-teal-400 transition-colors">
-                            {lead.name}
-                          </h4>
-                          <span className="text-xs text-brand-primary/70">
-                            {lead.service} • {lead.stage}
-                          </span>
-                        </div>
-                        <ExternalLink className="text-brand-primary/80 group-hover:text-teal-500 w-4 h-4 transition-colors" />
-                      </div>
-
-                      <div className="space-y-2 mt-4">
-                        <div className="flex items-center gap-2 text-sm text-brand-primary/70">
-                          <Phone size={14} className="text-brand-primary/70" />
-                          {lead.phone}
-                        </div>
-                        <div className="flex items-center gap-2 text-sm text-brand-primary/70">
-                          <Mail size={14} className="text-brand-primary/70" />
-                          <span className="truncate">
-                            {lead.email || "No email"}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2 text-sm text-brand-primary/70">
-                          <Calendar size={14} className="text-brand-primary/70" />
-                          <span>
-                            Joined:{" "}
-                            {formatDate(lead.joinedAt || lead.createdAt)}
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="mt-4 pt-4 border-t border-brand-secondary flex justify-between items-center">
-                        <span
-                          className={`px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider ${
-                            lead.status === "Joined"
-                              ? "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20"
-                              : lead.status === "New"
-                                ? "bg-blue-500/10 text-blue-500 border border-blue-500/20"
-                                : "bg-amber-500/10 text-amber-500 border border-amber-500/20"
-                          }`}
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="border-b border-brand-secondary text-brand-primary/70 text-sm">
+                        <th className="p-4 font-semibold">Lead Name</th>
+                        <th className="p-4 font-semibold">Contact Info</th>
+                        <th className="p-4 font-semibold">Service & Stage</th>
+                        <th className="p-4 font-semibold">Enquired On</th>
+                        <th className="p-4 font-semibold text-right">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {activeLeads.map((lead) => (
+                        <tr
+                          key={lead.id}
+                          onClick={() => navigate(`/lead-details/${lead.id}`)}
+                          className="border-b border-brand-secondary/50 hover:bg-brand-secondary/10 cursor-pointer transition-colors group"
                         >
-                          {lead.status || "New"}
-                        </span>
-
-                      </div>
-                    </div>
-                  ))}
+                          <td className="p-4">
+                            <div className="font-bold text-brand-primary group-hover:text-teal-500 transition-colors flex items-center gap-2">
+                              {lead.name}
+                              <ExternalLink className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity text-teal-500" />
+                            </div>
+                          </td>
+                          <td className="p-4">
+                            <div className="text-sm text-brand-primary/80 flex flex-col gap-1.5">
+                              <span className="flex items-center gap-1.5"><Phone size={14} className="text-brand-primary/50" /> {lead.phone}</span>
+                              <span className="flex items-center gap-1.5"><Mail size={14} className="text-brand-primary/50" /> <span className="truncate max-w-[150px]">{lead.email || "No email"}</span></span>
+                            </div>
+                          </td>
+                          <td className="p-4">
+                            <div className="text-sm text-brand-primary/80">
+                              <div className="font-medium">{lead.service}</div>
+                              <div className="text-xs text-brand-primary/60 mt-0.5">{lead.stage}</div>
+                            </div>
+                          </td>
+                          <td className="p-4">
+                            <div className="text-sm text-brand-primary/80 flex items-center gap-1.5">
+                              <Calendar size={14} className="text-brand-primary/50" />
+                              {formatDate(lead.joinedAt || lead.createdAt)}
+                            </div>
+                          </td>
+                          <td className="p-4 text-right">
+                            <span
+                              className={`px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-wider ${
+                                lead.status === "Joined"
+                                  ? "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20"
+                                  : lead.status === "New"
+                                    ? "bg-blue-500/10 text-blue-500 border border-blue-500/20"
+                                    : "bg-amber-500/10 text-amber-500 border border-amber-500/20"
+                              }`}
+                            >
+                              {lead.status || "New"}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>

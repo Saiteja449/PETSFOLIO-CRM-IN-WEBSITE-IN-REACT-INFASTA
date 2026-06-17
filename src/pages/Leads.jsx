@@ -235,10 +235,10 @@ export default function Leads() {
       <div className="border-b border-brand-secondary flex overflow-x-auto no-scrollbar">
         {[
           { name: "New", label: "New Leads", count: newCount },
+          { name: "NotAttended", label: "Not Attended", count: notAttendedCount },
           { name: "Followup", label: "Followup Leads", count: followupCount },
           { name: "Converted", label: "Converted Leads", count: convertedCount },
           { name: "Lost", label: "Lost Leads", count: lostCount },
-          { name: "NotAttended", label: "Not Attended", count: notAttendedCount },
         ].map((tab) => (
           <button
             key={tab.name}
@@ -384,7 +384,7 @@ export default function Leads() {
                     Assigned to
                   </th>
                   <th className="px-4 py-3 text-xs font-bold text-brand-primary uppercase tracking-wider">
-                    Joined At
+                    Enquired On
                   </th>
                   <th className="px-4 py-3 text-xs font-bold text-brand-primary uppercase tracking-wider">
                     Status
@@ -634,7 +634,7 @@ export default function Leads() {
                 </div>
                 <div>
                   <span className="block text-xs text-brand-primary/70 mb-1">
-                    Joined At
+                    Enquired On
                   </span>
                   <span className="font-semibold text-brand-primary">
                     {selectedLead.joinedAt

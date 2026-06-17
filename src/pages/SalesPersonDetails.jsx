@@ -111,10 +111,10 @@ export default function SalesPersonDetails() {
       <div className="border-b border-brand-secondary flex overflow-x-auto no-scrollbar mb-6">
         {[
           { name: "New Leads", count: newLeads.length },
+          { name: "Not Attended", count: notAttendedLeads.length },
           { name: "Followup Leads", count: followupLeads.length },
           { name: "Converted Leads", count: convertedLeads.length },
           { name: "Lost Leads", count: lostLeads.length },
-          { name: "Not Attended", count: notAttendedLeads.length },
         ].map((tab) => (
           <button
             key={tab.name}
