@@ -275,387 +275,375 @@ export default function LeadDetails() {
         Back to Customer List
       </button>
 
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-        {/* Left Column */}
-        <div className="md:col-span-4 space-y-6">
-          {/* Lead Primary Profile Card */}
-          <div className="bg-brand-light border border-brand-secondary rounded-xl p-5 shadow-sm">
-            <div className="flex items-center gap-4 mb-5">
-              <div className="w-12 h-12 rounded-full bg-blue-600 text-brand-primary flex items-center justify-center font-bold text-xl shrink-0">
-                {currentLead.name
-                  ? currentLead.name.substring(0, 1).toUpperCase()
-                  : "C"}
-              </div>
+      <div className="flex flex-col gap-6">
+        {/* 1. Lead Primary Profile Card */}
+        <div className="bg-brand-light border border-brand-secondary rounded-xl p-5 shadow-sm">
+          <div className="flex items-center gap-4 mb-5">
+            <div className="w-12 h-12 rounded-full bg-blue-600 text-brand-primary flex items-center justify-center font-bold text-xl shrink-0">
+              {currentLead.name
+                ? currentLead.name.substring(0, 1).toUpperCase()
+                : "C"}
+            </div>
+            <div className="min-w-0">
+              <h2 className="text-lg font-bold text-brand-primary truncate">
+                {currentLead.name}
+              </h2>
+              <p className="text-sm text-brand-primary/70 truncate">
+                Registered on {formatDate(currentLead.createdAt)}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap gap-2 mb-6">
+            <span
+              className={`px-2.5 py-1 rounded-md text-xs font-bold border ${getStatusBg(currentLead.status)}`}
+            >
+              {currentLead.status}
+            </span>
+            <span
+              className={`px-2.5 py-1 rounded-md text-xs font-medium border ${getSourceBg(currentLead.source)}`}
+            >
+              {currentLead.source}
+            </span>
+          </div>
+
+          <hr className="border-brand-secondary mb-5" />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="flex items-start gap-3">
+              <Phone className="text-brand-primary/70 mt-0.5" size={18} />
               <div className="min-w-0">
-                <h2 className="text-lg font-bold text-brand-primary truncate">
-                  {currentLead.name}
-                </h2>
-                <p className="text-sm text-brand-primary/70 truncate">
-                  Registered on {formatDate(currentLead.createdAt)}
-                </p>
+                <span className="text-xs text-brand-primary/70 block mb-0.5">
+                  Client Phone
+                </span>
+                <span className="text-sm font-semibold text-brand-primary truncate block">
+                  {currentLead.phone}
+                </span>
               </div>
             </div>
-
-            <div className="flex flex-wrap gap-2 mb-6">
-              <span
-                className={`px-2.5 py-1 rounded-md text-xs font-bold border ${getStatusBg(currentLead.status)}`}
-              >
-                {currentLead.status}
-              </span>
-              <span
-                className={`px-2.5 py-1 rounded-md text-xs font-medium border ${getSourceBg(currentLead.source)}`}
-              >
-                {currentLead.source}
-              </span>
-            </div>
-
-            <hr className="border-brand-secondary mb-5" />
-
-            <div className="space-y-4">
-              <div className="flex items-start gap-3">
-                <Phone className="text-brand-primary/70 mt-0.5" size={18} />
-                <div className="min-w-0">
-                  <span className="text-xs text-brand-primary/70 block mb-0.5">
-                    Client Phone
-                  </span>
-                  <span className="text-sm font-semibold text-brand-primary truncate block">
-                    {currentLead.phone}
-                  </span>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <Mail className="text-brand-primary/70 mt-0.5" size={18} />
-                <div className="min-w-0">
-                  <span className="text-xs text-brand-primary/70 block mb-0.5">
-                    Email Address
-                  </span>
-                  <span className="text-sm font-semibold text-brand-primary truncate block">
-                    {currentLead.email || "No email profile"}
-                  </span>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <User className="text-brand-primary/70 mt-0.5" size={18} />
-                <div className="min-w-0">
-                  <span className="text-xs text-brand-primary/70 block mb-0.5">
-                    Sales Representative
-                  </span>
-                  {currentUser?.role === "Sales Manager" ? (
-                    <select
-                      value={currentLead.assignedTo || ""}
-                      onChange={handleAssigneeChange}
-                      className="bg-brand-light border border-brand-secondary text-sm font-semibold text-brand-primary rounded px-2 py-1 focus:outline-none focus:border-teal-500 cursor-pointer w-full max-w-[200px]"
-                    >
-                      <option value="">Unassigned</option>
-                      {allUsers.map((u) => (
-                        <option key={u.id} value={u.name}>
-                          {u.name}
-                        </option>
-                      ))}
-                    </select>
-                  ) : (
-                    <span className="text-sm font-semibold text-brand-primary truncate block">
-                      {currentLead.assignedTo}
-                    </span>
-                  )}
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <MapPin className="text-brand-primary/70 mt-0.5" size={18} />
-                <div className="min-w-0">
-                  <span className="text-xs text-brand-primary/70 block mb-0.5">
-                    City
-                  </span>
-                  <span className="text-sm font-semibold text-brand-primary truncate block">
-                    {currentLead.city || "Not specified"}
-                  </span>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <MessageSquare className="text-brand-primary/70 mt-0.5" size={18} />
-                <div className="min-w-0">
-                  <span className="text-xs text-brand-primary/70 block mb-0.5">
-                    Preferred Contact
-                  </span>
-                  <span className="text-sm font-semibold text-brand-primary truncate block">
-                    {currentLead.preferredContactMethod || "Not specified"}
-                  </span>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <Calendar className="text-brand-primary/70 mt-0.5" size={18} />
-                <div className="min-w-0">
-                  <span className="block text-xs text-brand-primary/70 mb-1">
-                    Enquired On
-                  </span>
-                  <span className="text-sm font-semibold text-brand-primary truncate block">
-                    {currentLead.joinedAt
-                      ? formatDate(currentLead.joinedAt)
-                      : "-"}
-                  </span>
-                </div>
+            <div className="flex items-start gap-3">
+              <Mail className="text-brand-primary/70 mt-0.5" size={18} />
+              <div className="min-w-0">
+                <span className="text-xs text-brand-primary/70 block mb-0.5">
+                  Email Address
+                </span>
+                <span className="text-sm font-semibold text-brand-primary truncate block">
+                  {currentLead.email || "No email profile"}
+                </span>
               </div>
             </div>
-          </div>
-
-          {/* Update Lead Details Form */}
-          <div className="bg-brand-light border border-brand-secondary rounded-xl overflow-hidden shadow-sm">
-            <div className="p-4 border-b border-brand-secondary bg-brand-light/50">
-              <h3 className="font-bold text-brand-primary">Update Lead Details</h3>
-            </div>
-            <div className="p-5">
-              <form onSubmit={handleUpdateLeadFormSubmit} className="space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div
-                    className={
-                      formData.status === "Follow Up"
-                        ? "sm:col-span-2"
-                        : "sm:col-span-2"
-                    }
+            <div className="flex items-start gap-3">
+              <User className="text-brand-primary/70 mt-0.5" size={18} />
+              <div className="min-w-0">
+                <span className="text-xs text-brand-primary/70 block mb-0.5">
+                  Sales Representative
+                </span>
+                {currentUser?.role === "Sales Manager" ? (
+                  <select
+                    value={currentLead.assignedTo || ""}
+                    onChange={handleAssigneeChange}
+                    className="bg-brand-light border border-brand-secondary text-sm font-semibold text-brand-primary rounded px-2 py-1 focus:outline-none focus:border-teal-500 cursor-pointer w-full max-w-[200px]"
                   >
-                    <label className="block text-xs font-medium text-brand-primary/70 mb-1.5">
-                      Lead Status
-                    </label>
-                    <select
-                      value={formData.status}
-                      onChange={(e) =>
-                        setFormData({ ...formData, status: e.target.value })
-                      }
-                      className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 outline-none"
-                    >
-                      <option value="New">New</option>
-                      <option value="Follow Up">Follow Up</option>
-                      <option value="Not Interested">Not Interested</option>
-                      <option value="Not Responding">Not Responding</option>
-                      <option value="Price Issue">Price Issue</option>
-                      <option value="Joined">Joined</option>
-                    </select>
-                  </div>
-
-                  {/* Follow Up Type */}
-                  {formData.status === "Follow Up" && (
-                    <div className="sm:col-span-2">
-                      <label className="block text-xs font-medium text-brand-primary/70 mb-1.5">
-                        Follow Up Type
-                      </label>
-                      <select
-                        value={followupType}
-                        onChange={(e) => setFollowupType(e.target.value)}
-                        className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 outline-none"
-                      >
-                        <option value="Call">Phone Call</option>
-                        <option value="WhatsApp">WhatsApp Message</option>
-                        <option value="Email">Email Communication</option>
-                        <option value="Meeting">Direct Meeting</option>
-                        <option value="Consultation">
-                          Consultation Assessment
-                        </option>
-                      </select>
-                    </div>
-                  )}
-
-                  {formData.status === "Follow Up" && (
-                    <div
-                      className={
-                        formData.status === "Follow Up"
-                          ? "sm:col-span-2"
-                          : "sm:col-span-2"
-                      }
-                    >
-                      <label className="block text-xs font-medium text-brand-primary/70 mb-1.5">
-                        Follow Up Date
-                      </label>
-                      <input
-                        type="date"
-                        value={formData.nextFollowUp}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            nextFollowUp: e.target.value,
-                          })
-                        }
-                        className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 outline-none"
-                        style={{ colorScheme: "dark" }}
-                      />
-                    </div>
-                  )}
-
-                  <div className="sm:col-span-2 flex items-center">
-                    <label className="flex items-center gap-3 cursor-pointer group">
-                      <div className="relative flex items-center">
-                        <input
-                          type="checkbox"
-                          checked={Boolean(formData.importantLead)}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              importantLead: e.target.checked,
-                            })
-                          }
-                          className="peer sr-only"
-                        />
-                        <div className="w-5 h-5 border-2 border-brand-secondary rounded bg-brand-light peer-checked:bg-teal-500 peer-checked:border-teal-500 transition-colors flex items-center justify-center">
-                          <CheckCircle
-                            className="w-3.5 h-3.5 text-brand-light opacity-0 peer-checked:opacity-100"
-                            strokeWidth={3}
-                          />
-                        </div>
-                      </div>
-                      <span className="text-sm font-bold text-brand-primary group-hover:text-brand-primary transition-colors">
-                        🔥 Important Hot Lead
-                      </span>
-                    </label>
-                  </div>
-                  <div className="sm:col-span-2">
-                    <label className="block text-xs font-medium text-brand-primary/70 mb-1.5">
-                      Comments
-                    </label>
-                    <textarea
-                      rows={3}
-                      placeholder="Type customer call summary, special requests, or latest requirement updates here..."
-                      value={formData.comments}
-                      onChange={(e) =>
-                        setFormData({ ...formData, comments: e.target.value })
-                      }
-                      className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3 resize-y outline-none"
-                    />
-                  </div>
-                  <div className="sm:col-span-2 pt-2">
-                    <button
-                      type="submit"
-                      className="w-full bg-teal-500 hover:bg-teal-600 text-brand-light font-bold py-2.5 px-4 rounded-lg transition-colors"
-                    >
-                      Submit
-                    </button>
-                  </div>
-                </div>
-              </form>
+                    <option value="">Unassigned</option>
+                    {allUsers.map((u) => (
+                      <option key={u.id} value={u.name}>
+                        {u.name}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <span className="text-sm font-semibold text-brand-primary truncate block">
+                    {currentLead.assignedTo}
+                  </span>
+                )}
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <MapPin className="text-brand-primary/70 mt-0.5" size={18} />
+              <div className="min-w-0">
+                <span className="text-xs text-brand-primary/70 block mb-0.5">
+                  City
+                </span>
+                <span className="text-sm font-semibold text-brand-primary truncate block">
+                  {currentLead.city || "Not specified"}
+                </span>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <MessageSquare className="text-brand-primary/70 mt-0.5" size={18} />
+              <div className="min-w-0">
+                <span className="text-xs text-brand-primary/70 block mb-0.5">
+                  Preferred Contact
+                </span>
+                <span className="text-sm font-semibold text-brand-primary truncate block">
+                  {currentLead.preferredContactMethod || "Not specified"}
+                </span>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <Calendar className="text-brand-primary/70 mt-0.5" size={18} />
+              <div className="min-w-0">
+                <span className="block text-xs text-brand-primary/70 mb-1">
+                  Enquired On
+                </span>
+                <span className="text-sm font-semibold text-brand-primary truncate block">
+                  {currentLead.joinedAt
+                    ? formatDate(currentLead.joinedAt)
+                    : "-"}
+                </span>
+              </div>
             </div>
           </div>
-
         </div>
 
-        <div className="md:col-span-8 space-y-6">
-          <div className="bg-brand-light border border-brand-secondary rounded-xl p-5 shadow-sm">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="font-bold text-brand-primary">
-                Special Requirements & Logged Notes
-              </h3>
-              {editingNotes ? (
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => {
-                      setEditingNotes(false);
-                      setNotesText(currentLead.notes || "");
-                    }}
-                    className="px-3 py-1 text-sm text-brand-primary/70 hover:text-brand-primary transition-colors"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={handleSaveNotes}
-                    className="px-3 py-1 text-sm bg-blue-600 hover:bg-blue-700 text-brand-primary rounded-md transition-colors"
-                  >
-                    Save
-                  </button>
-                </div>
-              ) : (
-                <button
-                  onClick={() => setEditingNotes(true)}
-                  className="px-3 py-1 text-sm border border-brand-secondary text-brand-primary hover:bg-brand-secondary/30 rounded-md transition-colors"
-                >
-                  Edit Notes
-                </button>
-              )}
-            </div>
-
+        {/* 2. Special Requirements & Logged Notes */}
+        <div className="bg-brand-light border border-brand-secondary rounded-xl p-5 shadow-sm">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="font-bold text-brand-primary">
+              Special Requirements & Logged Notes
+            </h3>
             {editingNotes ? (
-              <textarea
-                className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3 min-h-[100px] outline-none"
-                value={notesText}
-                onChange={(e) => setNotesText(e.target.value)}
-              />
-            ) : (
-              <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-4">
-                <p className="text-sm text-orange italic whitespace-pre-wrap leading-relaxed">
-                  {currentLead.notes ||
-                    "No operational context or requirements notes logged. Click 'Edit' to update."}
-                </p>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => {
+                    setEditingNotes(false);
+                    setNotesText(currentLead.notes || "");
+                  }}
+                  className="px-3 py-1 text-sm text-brand-primary/70 hover:text-brand-primary transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSaveNotes}
+                  className="px-3 py-1 text-sm bg-blue-600 hover:bg-blue-700 text-brand-primary rounded-md transition-colors"
+                >
+                  Save
+                </button>
               </div>
+            ) : (
+              <button
+                onClick={() => setEditingNotes(true)}
+                className="px-3 py-1 text-sm border border-brand-secondary text-brand-primary hover:bg-brand-secondary/30 rounded-md transition-colors"
+              >
+                Edit Notes
+              </button>
             )}
           </div>
 
-          {/* Upcoming Followups schedule */}
-          {currentLead.status === "Follow Up" && (
-            <div className="bg-brand-light border border-teal-500/30 rounded-xl overflow-hidden shadow-sm">
-              <div className="p-5">
-                <div className="flex justify-between items-center mb-5">
-                  <h3 className="font-bold text-teal-500">
-                    Follow-Up History & Communications Logs
-                  </h3>
+          {editingNotes ? (
+            <textarea
+              className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3 min-h-[100px] outline-none"
+              value={notesText}
+              onChange={(e) => setNotesText(e.target.value)}
+            />
+          ) : (
+            <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-4">
+              <p className="text-sm text-orange italic whitespace-pre-wrap leading-relaxed">
+                {currentLead.notes ||
+                  "No operational context or requirements notes logged. Click 'Edit' to update."}
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* 3. Update Lead Details Form */}
+        <div className="bg-brand-light border border-brand-secondary rounded-xl overflow-hidden shadow-sm">
+          <div className="p-4 border-b border-brand-secondary bg-brand-light/50">
+            <h3 className="font-bold text-brand-primary">Update Lead Details</h3>
+          </div>
+          <div className="p-5">
+            <form onSubmit={handleUpdateLeadFormSubmit} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div
+                  className={
+                    formData.status === "Follow Up"
+                      ? "sm:col-span-1"
+                      : "sm:col-span-1"
+                  }
+                >
+                  <label className="block text-xs font-medium text-brand-primary/70 mb-1.5">
+                    Lead Status
+                  </label>
+                  <select
+                    value={formData.status}
+                    onChange={(e) =>
+                      setFormData({ ...formData, status: e.target.value })
+                    }
+                    className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 outline-none"
+                  >
+                    <option value="New">New</option>
+                    <option value="Follow Up">Follow Up</option>
+                    <option value="Not Interested">Not Interested</option>
+                    <option value="Not Responding">Not Responding</option>
+                    <option value="Price Issue">Price Issue</option>
+                    <option value="Joined">Joined</option>
+                    <option value="Job Posted">Job Posted</option>
+                  </select>
                 </div>
 
-                <div className="space-y-3">
-                  {leadFollowups.length === 0 && (
-                    <div className="text-center py-8 border border-dashed border-brand-secondary rounded-lg">
-                      <p className="text-sm text-brand-primary/70">
-                        No follow-up reminders scheduled yet.
-                      </p>
-                    </div>
-                  )}
-                  {leadFollowups.map((f) => (
-                    <div
-                      key={f.id}
-                      className="p-4 bg-brand-light border border-brand-secondary rounded-xl flex justify-between items-start"
+                {/* Follow Up Type */}
+                {formData.status === "Follow Up" && (
+                  <div className="sm:col-span-1">
+                    <label className="block text-xs font-medium text-brand-primary/70 mb-1.5">
+                      Follow Up Type
+                    </label>
+                    <select
+                      value={followupType}
+                      onChange={(e) => setFollowupType(e.target.value)}
+                      className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 outline-none"
                     >
-                      <div className="flex gap-4 items-start w-full">
-                        <div className="min-w-0 flex-grow">
-                          <div className="flex flex-wrap items-center gap-2 mb-1.5">
-                            <h4 className="text-sm font-bold text-brand-primary">
-                              {f.type} Engagement Channel
-                            </h4>
-                            <span
-                              className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
-                                f.priority === "High"
-                                  ? "bg-red-500/10 text-red-500 border border-red-500/20"
-                                  : f.priority === "Medium"
-                                    ? "bg-blue-500/10 text-blue-500 border border-blue-500/20"
-                                    : "bg-brand-secondary/30 text-brand-primary/70 border border-brand-secondary"
-                              }`}
-                            >
-                              {f.priority}
-                            </span>
-                          </div>
+                      <option value="Call">Phone Call</option>
+                      <option value="WhatsApp">WhatsApp Message</option>
+                      <option value="Email">Email Communication</option>
+                      <option value="Meeting">Direct Meeting</option>
+                      <option value="Consultation">
+                        Consultation Assessment
+                      </option>
+                    </select>
+                  </div>
+                )}
 
-                          <div className="flex items-center gap-1.5 text-xs text-brand-primary/70 mb-2">
-                            <Calendar size={14} />
-                            <span>
-                              Scheduled: {formatDate(f.date)} • {f.time}
-                            </span>
-                          </div>
+                {formData.status === "Follow Up" && (
+                  <div className="sm:col-span-1">
+                    <label className="block text-xs font-medium text-brand-primary/70 mb-1.5">
+                      Follow Up Date
+                    </label>
+                    <input
+                      type="date"
+                      value={formData.nextFollowUp}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          nextFollowUp: e.target.value,
+                        })
+                      }
+                      className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 outline-none"
+                      style={{ colorScheme: "dark" }}
+                    />
+                  </div>
+                )}
 
-                          <p className="text-sm italic text-brand-primary mb-3">
-                            "{f.notes}"
-                          </p>
+                <div className="sm:col-span-1 flex items-center lg:col-span-3">
+                  <label className="flex items-center gap-3 cursor-pointer group">
+                    <div className="relative flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={Boolean(formData.importantLead)}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            importantLead: e.target.checked,
+                          })
+                        }
+                        className="peer sr-only"
+                      />
+                      <div className="w-5 h-5 border-2 border-brand-secondary rounded bg-brand-light peer-checked:bg-teal-500 peer-checked:border-teal-500 transition-colors flex items-center justify-center">
+                        <CheckCircle
+                          className="w-3.5 h-3.5 text-brand-light opacity-0 peer-checked:opacity-100"
+                          strokeWidth={3}
+                        />
+                      </div>
+                    </div>
+                    <span className="text-sm font-bold text-brand-primary group-hover:text-brand-primary transition-colors">
+                      🔥 Important Hot Lead
+                    </span>
+                  </label>
+                </div>
+                <div className="sm:col-span-2 lg:col-span-3">
+                  <label className="block text-xs font-medium text-brand-primary/70 mb-1.5">
+                    Comments
+                  </label>
+                  <textarea
+                    rows={3}
+                    placeholder="Type customer call summary, special requests, or latest requirement updates here..."
+                    value={formData.comments}
+                    onChange={(e) =>
+                      setFormData({ ...formData, comments: e.target.value })
+                    }
+                    className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3 resize-y outline-none"
+                  />
+                </div>
+                <div className="sm:col-span-2 lg:col-span-3 pt-2">
+                  <button
+                    type="submit"
+                    className="w-full bg-teal-500 hover:bg-teal-600 text-brand-light font-bold py-2.5 px-4 rounded-lg transition-colors"
+                  >
+                    Submit Update
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
 
-                          <hr className="border-brand-secondary mb-3" />
+        {/* 4. Upcoming Followups schedule */}
+        {currentLead.status === "Follow Up" && (
+          <div className="bg-brand-light border border-teal-500/30 rounded-xl overflow-hidden shadow-sm">
+            <div className="p-5">
+              <div className="flex justify-between items-center mb-5">
+                <h3 className="font-bold text-teal-500">
+                  Follow-Up History & Communications Logs
+                </h3>
+              </div>
 
-                          <div className="text-xs font-bold text-teal-500 flex items-center gap-1.5">
-                            <User size={12} />
-                            Followed up by:{" "}
-                            {f.author || currentLead.assignedTo || "System"}
-                          </div>
+              <div className="space-y-3">
+                {leadFollowups.length === 0 && (
+                  <div className="text-center py-8 border border-dashed border-brand-secondary rounded-lg">
+                    <p className="text-sm text-brand-primary/70">
+                      No follow-up reminders scheduled yet.
+                    </p>
+                  </div>
+                )}
+                {leadFollowups.map((f) => (
+                  <div
+                    key={f.id}
+                    className="p-4 bg-brand-light border border-brand-secondary rounded-xl flex justify-between items-start"
+                  >
+                    <div className="flex gap-4 items-start w-full">
+                      <div className="min-w-0 flex-grow">
+                        <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                          <h4 className="text-sm font-bold text-brand-primary">
+                            {f.type} Engagement Channel
+                          </h4>
+                          <span
+                            className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
+                              f.priority === "High"
+                                ? "bg-red-500/10 text-red-500 border border-red-500/20"
+                                : f.priority === "Medium"
+                                  ? "bg-blue-500/10 text-blue-500 border border-blue-500/20"
+                                  : "bg-brand-secondary/30 text-brand-primary/70 border border-brand-secondary"
+                            }`}
+                          >
+                            {f.priority}
+                          </span>
+                        </div>
+
+                        <div className="flex items-center gap-1.5 text-xs text-brand-primary/70 mb-2">
+                          <Calendar size={14} />
+                          <span>
+                            Scheduled: {formatDate(f.date)} • {f.time}
+                          </span>
+                        </div>
+
+                        <p className="text-sm italic text-brand-primary mb-3">
+                          "{f.notes}"
+                        </p>
+
+                        <hr className="border-brand-secondary mb-3" />
+
+                        <div className="text-xs font-bold text-teal-500 flex items-center gap-1.5">
+                          <User size={12} />
+                          Followed up by:{" "}
+                          {f.author || currentLead.assignedTo || "System"}
                         </div>
                       </div>
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
             </div>
-          )}
-
-
-        </div>
+          </div>
+        )}
       </div>
 
       {/* Modals/Dialogs */}

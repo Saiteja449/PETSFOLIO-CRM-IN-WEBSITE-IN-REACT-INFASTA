@@ -55,7 +55,7 @@ export function DashboardProvider({ children }) {
     // Define what constitutes a "Closed Won" or Converted lead
     const isLeadWon = (lead) => {
       return (
-        lead.status === "Closed Won" ||
+        lead.status === "Job Posted" ||
         [
           "Grooming Completed",
           "Repeat Booking",

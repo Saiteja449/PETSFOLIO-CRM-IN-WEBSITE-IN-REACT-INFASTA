@@ -97,33 +97,46 @@ export default function Leads() {
     status,
   });
 
+  const todayStr = new Date().toISOString().split("T")[0];
+
   const newCount = rawProcessedLeads.filter(
     (l) => l.status?.toLowerCase() === "new",
   ).length;
-  const followupCount = rawProcessedLeads.filter(
-    (l) => l.status?.toLowerCase() === "follow up",
+  
+  const todayFollowupsCount = rawProcessedLeads.filter(
+    (l) => l.status?.toLowerCase() === "follow up" && l.nextFollowUp === todayStr,
   ).length;
+
+  const upcomingFollowupsCount = rawProcessedLeads.filter(
+    (l) => l.status?.toLowerCase() === "follow up" && l.nextFollowUp > todayStr,
+  ).length;
+
   const convertedCount = rawProcessedLeads.filter(
+    (l) => l.status?.toLowerCase() === "job posted",
+  ).length;
+  const joinedCount = rawProcessedLeads.filter(
     (l) => l.status?.toLowerCase() === "joined",
   ).length;
   const notAttendedCount = rawProcessedLeads.filter((l) => {
-    return l.status?.toLowerCase() === "not attended";
+    return l.status?.toLowerCase() === "not attended" || (l.status?.toLowerCase() === "follow up" && l.nextFollowUp < todayStr);
   }).length;
   
   const lostCount = rawProcessedLeads.filter((l) => {
     const s = l.status?.toLowerCase();
-    return s === "price issue" || s === "not responding" || s === "not answered";
+    return s === "price issue" || s === "not responding" || s === "not answered" || s === "not interested";
   }).length;
 
   const processedLeads = rawProcessedLeads.filter((lead) => {
     const s = lead.status?.toLowerCase() || "";
     if (leadTypeTab === "New") return s === "new";
-    if (leadTypeTab === "Followup") return s === "follow up";
-    if (leadTypeTab === "Converted") return s === "joined";
+    if (leadTypeTab === "TodayFollowup") return s === "follow up" && lead.nextFollowUp === todayStr;
+    if (leadTypeTab === "UpcomingFollowup") return s === "follow up" && lead.nextFollowUp > todayStr;
+    if (leadTypeTab === "Converted") return s === "job posted";
+    if (leadTypeTab === "Joined") return s === "joined";
     if (leadTypeTab === "Lost")
-      return s === "price issue" || s === "not responding" || s === "not answered";
+      return s === "price issue" || s === "not responding" || s === "not answered" || s === "not interested";
     if (leadTypeTab === "NotAttended")
-      return s === "not attended";
+      return s === "not attended" || (s === "follow up" && lead.nextFollowUp < todayStr);
     return true;
   });
 
@@ -185,10 +198,13 @@ export default function Leads() {
         return "bg-orange-500/10 text-orange-500 border border-orange-500/20";
       case "joined":
         return "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20";
+      case "job posted":
+        return "bg-teal-500/10 text-teal-600 border border-teal-500/20 font-extrabold";
       case "not attended":
       case "price issue":
       case "not responding":
       case "not answered":
+      case "not interested":
         return "bg-red-500/10 text-red-500 border border-red-500/20";
       default:
         return "bg-brand-secondary/40 text-brand-primary/70 border border-brand-secondary/50";
@@ -203,7 +219,7 @@ export default function Leads() {
       return "bg-blue-500/10 text-blue-500 border border-blue-500/20";
     if (s.includes("trial") || s.includes("meeting"))
       return "bg-purple-500/10 text-purple-500 border border-purple-500/20";
-    if (s.includes("won") || s.includes("joined") || s.includes("hired"))
+    if (s.includes("won") || s.includes("job posted") || s.includes("hired") || s.includes("joined"))
       return "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20";
     if (s.includes("lost"))
       return "bg-red-500/10 text-red-500 border border-red-500/20";
@@ -235,9 +251,11 @@ export default function Leads() {
       <div className="border-b border-brand-secondary flex overflow-x-auto no-scrollbar">
         {[
           { name: "New", label: "New Leads", count: newCount },
+          { name: "TodayFollowup", label: "Today Followups", count: todayFollowupsCount },
+          { name: "UpcomingFollowup", label: "Upcoming Followups", count: upcomingFollowupsCount },
           { name: "NotAttended", label: "Not Attended", count: notAttendedCount },
-          { name: "Followup", label: "Followup Leads", count: followupCount },
           { name: "Converted", label: "Converted Leads", count: convertedCount },
+          { name: "Joined", label: "Joined Leads", count: joinedCount },
           { name: "Lost", label: "Lost Leads", count: lostCount },
         ].map((tab) => (
           <button
@@ -345,6 +363,7 @@ export default function Leads() {
               <option value="Not Responding">Not Responding</option>
               <option value="Price Issue">Price Issue</option>
               <option value="Joined">Joined</option>
+              <option value="Job Posted">Job Posted</option>
             </select>
           </div>
         </div>
@@ -889,6 +908,7 @@ export default function Leads() {
                       <option value="Not Answered">Not Answered</option>
                       <option value="Price Issue">Price Issue</option>
                       <option value="Joined">Joined</option>
+                      <option value="Job Posted">Job Posted</option>
                     </select>
                   </div>
 

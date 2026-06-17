@@ -26,6 +26,7 @@ import {
 } from "recharts";
 import { useDashboard } from "../context/DashboardContext.jsx";
 import { useLeads } from "../context/LeadsContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
 import { formatDate, getServiceColor, exportToCSV } from "../utils/helpers.js";
 
 const CHART_COLORS = ["#2563eb", "#16a34a", "#ea580c", "#db2777", "#7c3aed"];
@@ -34,6 +35,7 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const stats = useDashboard();
   const { leads } = useLeads();
+  const { currentUser } = useAuth();
 
   const handleExport = () => {
     exportToCSV(leads, "dashboard_leads_export.csv");
@@ -209,160 +211,164 @@ export default function Dashboard() {
       </div>
 
       {/* Analytics Pie Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-brand-light border border-brand-secondary rounded-3xl p-5 h-[400px]">
-          <h3 className="text-base font-bold text-brand-primary mb-4">
-            Leads by Service
-          </h3>
-          <ResponsiveContainer width="100%" height="85%">
-            <PieChart>
-              <Pie
-                data={stats.leadsByServiceData}
-                cx="50%"
-                cy="50%"
-                innerRadius={60}
-                outerRadius={100}
-                paddingAngle={2}
-                dataKey="value"
-                nameKey="name"
-                label={({ name, percent }) =>
-                  `${name} ${(percent * 100).toFixed(0)}%`
-                }
-                labelLine={false}
-              >
-                {stats.leadsByServiceData.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={CHART_COLORS[index % CHART_COLORS.length]}
-                  />
-                ))}
-              </Pie>
-              <RechartsTooltip
-                contentStyle={{
-                  backgroundColor: "#FFFFFF",
-                  borderColor: "#CADCFC",
-                  color: "#00246B",
-                  borderRadius: "8px",
-                }}
-                itemStyle={{ color: "#00246B" }}
-              />
-              <Legend
-                verticalAlign="bottom"
-                height={36}
-                wrapperStyle={{ fontSize: "12px", color: "#00246B" }}
-              />
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
-
-        <div className="bg-brand-light border border-brand-secondary rounded-3xl p-5 h-[400px]">
-          <h3 className="text-base font-bold text-brand-primary mb-4">
-            Leads by Source
-          </h3>
-          <ResponsiveContainer width="100%" height="85%">
-            <PieChart>
-              <Pie
-                data={stats.leadSourceData}
-                cx="50%"
-                cy="50%"
-                innerRadius={60}
-                outerRadius={100}
-                paddingAngle={2}
-                dataKey="value"
-                nameKey="name"
-                label={({ name, percent }) =>
-                  `${name} ${(percent * 100).toFixed(0)}%`
-                }
-                labelLine={false}
-              >
-                {stats.leadSourceData.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={CHART_COLORS[(index + 2) % CHART_COLORS.length]}
-                  />
-                ))}
-              </Pie>
-              <RechartsTooltip
-                contentStyle={{
-                  backgroundColor: "#FFFFFF",
-                  borderColor: "#CADCFC",
-                  color: "#00246B",
-                  borderRadius: "8px",
-                }}
-                itemStyle={{ color: "#00246B" }}
-              />
-              <Legend
-                verticalAlign="bottom"
-                height={36}
-                wrapperStyle={{ fontSize: "12px", color: "#00246B" }}
-              />
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-brand-light border border-brand-secondary rounded-3xl p-5 min-h-[400px]">
-          <div className="flex justify-between items-center mb-6 px-2">
-            <h3 className="text-base font-bold text-brand-primary flex items-center gap-2">
-              <Star className="w-5 h-5 text-yellow-500" fill="currentColor" />{" "}
-              Sales Leaderboard
+      {currentUser?.role === "Sales Manager" && (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="bg-brand-light border border-brand-secondary rounded-3xl p-5 h-[400px]">
+            <h3 className="text-base font-bold text-brand-primary mb-4">
+              Leads by Service
             </h3>
-            <button
-              onClick={() => navigate("/performance")}
-              className="text-sm font-bold text-teal-500 hover:text-teal-400 flex items-center gap-1 transition-colors"
-            >
-              View Report <ArrowRight className="w-4 h-4" />
-            </button>
+            <ResponsiveContainer width="100%" height="85%">
+              <PieChart>
+                <Pie
+                  data={stats.leadsByServiceData}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={60}
+                  outerRadius={100}
+                  paddingAngle={2}
+                  dataKey="value"
+                  nameKey="name"
+                  label={({ name, percent }) =>
+                    `${name} ${(percent * 100).toFixed(0)}%`
+                  }
+                  labelLine={false}
+                >
+                  {stats.leadsByServiceData.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={CHART_COLORS[index % CHART_COLORS.length]}
+                    />
+                  ))}
+                </Pie>
+                <RechartsTooltip
+                  contentStyle={{
+                    backgroundColor: "#FFFFFF",
+                    borderColor: "#CADCFC",
+                    color: "#00246B",
+                    borderRadius: "8px",
+                  }}
+                  itemStyle={{ color: "#00246B" }}
+                />
+                <Legend
+                  verticalAlign="bottom"
+                  height={36}
+                  wrapperStyle={{ fontSize: "12px", color: "#00246B" }}
+                />
+              </PieChart>
+            </ResponsiveContainer>
           </div>
 
-          <ul className="space-y-0">
-            {stats.performersList.map((p, index) => (
-              <React.Fragment key={p.name}>
-                {index > 0 && <li className="h-px bg-brand-secondary/30 my-2" />}
-                <li className="flex items-center px-2 py-3">
-                  <div className="relative shrink-0 mr-4">
-                    <div
-                      className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-brand-light ${
-                        index === 0 ? "bg-teal-500" : "bg-brand-secondary/30 text-brand-primary"
-                      }`}
-                    >
-                      {p.name
-                        .split(" ")
-                        .map((w) => w[0])
-                        .join("")}
-                    </div>
-                    <div
-                      className={`absolute -bottom-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-brand-light border-2 border-brand-secondary ${
-                        index === 0
-                          ? "bg-yellow-500"
-                          : index === 1
-                            ? "bg-brand-primary/50"
-                            : "bg-amber-700"
-                      }`}
-                    >
-                      {index + 1}
-                    </div>
-                  </div>
-                  <div className="flex-1 flex items-center justify-between min-w-0">
-                    <div className="min-w-0 truncate pr-4">
-                      <div className="font-bold text-brand-primary text-sm truncate">
-                        {p.name}
-                      </div>
-                      <div className="text-xs text-brand-primary/70 mt-0.5 truncate">
-                        {p.assigned} assigned • {p.won} converted
-                      </div>
-                    </div>
-                    <div className="text-right shrink-0">
-                      <div className="font-bold text-emerald-500 text-sm">
-                        {p.conversionRate}% Conv.
-                      </div>
-                    </div>
-                  </div>
-                </li>
-              </React.Fragment>
-            ))}
-          </ul>
+          <div className="bg-brand-light border border-brand-secondary rounded-3xl p-5 h-[400px]">
+            <h3 className="text-base font-bold text-brand-primary mb-4">
+              Leads by Source
+            </h3>
+            <ResponsiveContainer width="100%" height="85%">
+              <PieChart>
+                <Pie
+                  data={stats.leadSourceData}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={60}
+                  outerRadius={100}
+                  paddingAngle={2}
+                  dataKey="value"
+                  nameKey="name"
+                  label={({ name, percent }) =>
+                    `${name} ${(percent * 100).toFixed(0)}%`
+                  }
+                  labelLine={false}
+                >
+                  {stats.leadSourceData.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={CHART_COLORS[(index + 2) % CHART_COLORS.length]}
+                    />
+                  ))}
+                </Pie>
+                <RechartsTooltip
+                  contentStyle={{
+                    backgroundColor: "#FFFFFF",
+                    borderColor: "#CADCFC",
+                    color: "#00246B",
+                    borderRadius: "8px",
+                  }}
+                  itemStyle={{ color: "#00246B" }}
+                />
+                <Legend
+                  verticalAlign="bottom"
+                  height={36}
+                  wrapperStyle={{ fontSize: "12px", color: "#00246B" }}
+                />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
         </div>
+      )}
+      <div className={currentUser?.role === "Sales Manager" ? "grid grid-cols-1 lg:grid-cols-2 gap-6" : "grid grid-cols-1"}>
+        {currentUser?.role === "Sales Manager" && (
+          <div className="bg-brand-light border border-brand-secondary rounded-3xl p-5 min-h-[400px]">
+            <div className="flex justify-between items-center mb-6 px-2">
+              <h3 className="text-base font-bold text-brand-primary flex items-center gap-2">
+                <Star className="w-5 h-5 text-yellow-500" fill="currentColor" />{" "}
+                Sales Leaderboard
+              </h3>
+              <button
+                onClick={() => navigate("/performance")}
+                className="text-sm font-bold text-teal-500 hover:text-teal-400 flex items-center gap-1 transition-colors"
+              >
+                View Report <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+
+            <ul className="space-y-0">
+              {stats.performersList.map((p, index) => (
+                <React.Fragment key={p.name}>
+                  {index > 0 && <li className="h-px bg-brand-secondary/30 my-2" />}
+                  <li className="flex items-center px-2 py-3">
+                    <div className="relative shrink-0 mr-4">
+                      <div
+                        className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-brand-light ${
+                          index === 0 ? "bg-teal-500" : "bg-brand-secondary/30 text-brand-primary"
+                        }`}
+                      >
+                        {p.name
+                          .split(" ")
+                          .map((w) => w[0])
+                          .join("")}
+                      </div>
+                      <div
+                        className={`absolute -bottom-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-brand-light border-2 border-brand-secondary ${
+                          index === 0
+                            ? "bg-yellow-500"
+                            : index === 1
+                              ? "bg-brand-primary/50"
+                              : "bg-amber-700"
+                        }`}
+                      >
+                        {index + 1}
+                      </div>
+                    </div>
+                    <div className="flex-1 flex items-center justify-between min-w-0">
+                      <div className="min-w-0 truncate pr-4">
+                        <div className="font-bold text-brand-primary text-sm truncate">
+                          {p.name}
+                        </div>
+                        <div className="text-xs text-brand-primary/70 mt-0.5 truncate">
+                          {p.assigned} assigned • {p.won} converted
+                        </div>
+                      </div>
+                      <div className="text-right shrink-0">
+                        <div className="font-bold text-emerald-500 text-sm">
+                          {p.conversionRate}% Conv.
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </React.Fragment>
+              ))}
+            </ul>
+          </div>
+        )}
 
         {/* Recent timeline feed */}
         <div className="bg-brand-light border border-brand-secondary rounded-3xl p-5 min-h-[400px]">

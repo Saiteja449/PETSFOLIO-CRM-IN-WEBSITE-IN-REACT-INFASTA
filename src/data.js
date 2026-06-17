@@ -119,6 +119,7 @@ export const initialLeads = [
     status: "Follow Up",
     leadType: "Client",
     providerService: "",
+    nextFollowUp: "2026-06-17",
     
     
     
@@ -252,6 +253,7 @@ export const initialLeads = [
     assignedTo: "David Miller",
     joinedAt: "2026-05-25", // Overdue for today's followups helper
     status: "Follow Up",
+    nextFollowUp: "2026-06-17",
     
     
     
@@ -273,6 +275,7 @@ export const initialLeads = [
     assignedTo: "David Miller",
     joinedAt: "2026-05-29",
     status: "Follow Up",
+    nextFollowUp: "2026-06-19",
     
     
     
@@ -294,6 +297,7 @@ export const initialLeads = [
     assignedTo: "Alex Mercer",
     joinedAt: "2026-05-27",
     status: "Follow Up",
+    nextFollowUp: "2026-06-22",
     
     
     
@@ -315,6 +319,7 @@ export const initialLeads = [
     assignedTo: "David Miller",
     joinedAt: "2026-05-30",
     status: "Follow Up",
+    nextFollowUp: "2026-06-25",
     
     
     

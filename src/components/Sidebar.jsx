@@ -31,15 +31,6 @@ export default function Sidebar({ mobileOpen, handleDrawerToggle }) {
     ...(currentUser?.role === "Sales Manager"
       ? [
           {
-            text: "Recent Follow-ups",
-            icon: <ClipboardList className="w-5 h-5" />,
-            path: "/followups",
-          },
-        ]
-      : []),
-    ...(currentUser?.role === "Sales Manager"
-      ? [
-          {
             text: "Team Performance",
             icon: <BarChart2 className="w-5 h-5" />,
             path: "/performance",
