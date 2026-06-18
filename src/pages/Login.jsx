@@ -5,36 +5,56 @@ import { useAuth } from "../context/AuthContext.jsx";
 
 export default function Login() {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, sendOtp } = useAuth();
 
-  const [email, setEmail] = useState("alex@petsfolio.com");
-  const [password, setPassword] = useState("password123");
-  const [role, setRole] = useState("Sales Manager");
-  const [showPassword, setShowPassword] = useState(false);
+  const [step, setStep] = useState(1);
+  const [email, setEmail] = useState("");
+  const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSendOtp = async (e) => {
     e.preventDefault();
     setError("");
+    setMessage("");
 
-    if (!email || !password) {
-      setError("Please fill in all standard credentials.");
+    if (!email) {
+      setError("Please enter your email address.");
       return;
     }
 
-    // Call Context login integration
-    const result = login(email, password, role);
+    setLoading(true);
+    const result = await sendOtp(email);
+    setLoading(false);
+
     if (result.success) {
-      navigate("/dashboard");
+      setStep(2);
+      setMessage(result.message || "OTP has been sent to your email.");
     } else {
-      setError("Invalid credential validation. Please try again.");
+      setError(result.message || "Failed to send OTP.");
     }
   };
 
-  const handleDemoFill = (demoEmail, demoRole) => {
-    setEmail(demoEmail);
-    setRole(demoRole);
-    setPassword("password123");
+  const handleVerifyOtp = async (e) => {
+    e.preventDefault();
+    setError("");
+
+    if (!otp) {
+      setError("Please enter the OTP.");
+      return;
+    }
+
+    setLoading(true);
+    const result = await login(email?.toLowerCase(), otp);
+    setLoading(false);
+
+    if (result.success) {
+      navigate("/dashboard");
+    } else {
+      setError(result.message || "Invalid OTP. Please try again.");
+      setOtp("");
+    }
   };
 
   return (
@@ -66,101 +86,99 @@ export default function Login() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} noValidate className="space-y-6">
-            {/* Role Selection */}
-            <div>
-              <label className="block text-xs font-medium text-brand-primary/70 mb-1.5">
-                Select Workspace Role
-              </label>
-              <select
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-                className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block p-3 outline-none"
-              >
-                <option value="Sales Manager">
-                  Sales Manager (Alex Mercer)
-                </option>
-                <option value="Sales Representative">
-                  Sales Representative
-                </option>
-              </select>
+          {message && (
+            <div className="bg-teal-500/10 text-teal-600 border border-teal-500/20 p-3 rounded-lg mb-6 text-sm">
+              {message}
             </div>
+          )}
 
-            {/* Email Address */}
-            <div>
-              <label className="block text-xs font-medium text-brand-primary/70 mb-1.5">
-                Email Address
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="e.g. alex@petsfolio.com"
-                className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block p-3 outline-none"
-              />
-            </div>
-
-            {/* Password */}
-            <div>
-              <label className="block text-xs font-medium text-brand-primary/70 mb-1.5">
-                Password
-              </label>
-              <div className="relative">
+          {step === 1 ? (
+            <form onSubmit={handleSendOtp} noValidate className="space-y-6">
+              <div>
+                <label className="block text-xs font-medium text-brand-primary/70 mb-1.5">
+                  Email Address
+                </label>
                 <input
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block p-3 pr-10 outline-none"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="e.g. alex@petsfolio.com"
+                  className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block p-3 outline-none"
+                  disabled={loading}
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-brand-primary/70 hover:text-brand-primary"
-                >
-                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                </button>
               </div>
-            </div>
 
-            {/* Submit Button */}
-            <button
-              type="submit"
-              className="w-full flex items-center justify-center gap-2 bg-teal-500 hover:bg-teal-600 text-brand-light font-bold py-3 px-4 rounded-xl transition-colors mt-2"
-            >
-              <Lock size={18} />
-              Sign In to System
-            </button>
-          </form>
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full flex items-center justify-center gap-2 bg-teal-500 hover:bg-teal-600 text-brand-light font-bold py-3 px-4 rounded-xl transition-colors mt-2 disabled:opacity-70"
+              >
+                {loading ? "Sending..." : "Send OTP"}
+              </button>
+            </form>
+          ) : (
+            <form onSubmit={handleVerifyOtp} noValidate className="space-y-6">
+              <div>
+                <label className="block text-xs font-medium text-brand-primary/70 mb-1.5">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  value={email}
+                  disabled
+                  className="w-full bg-gray-100 border border-brand-secondary text-brand-primary/60 text-sm rounded-lg block p-3 outline-none"
+                />
+              </div>
 
-          <hr className="border-brand-secondary my-8" />
+              <div>
+                <label className="block text-xs font-medium text-brand-primary/70 mb-1.5">
+                  One-Time Password (OTP)
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={otp}
+                    onChange={(e) => {
+                      setOtp(e.target.value);
+                      if (error) setError("");
+                    }}
+                    placeholder="Enter 6-digit OTP"
+                    className={`w-full bg-brand-light border text-brand-primary text-sm rounded-lg block p-3 pr-10 outline-none tracking-widest transition-colors ${
+                      error
+                        ? "border-red-500 focus:ring-red-500 focus:border-red-500"
+                        : "border-brand-secondary focus:ring-teal-500 focus:border-teal-500"
+                    }`}
+                    disabled={loading}
+                    maxLength={6}
+                  />
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                    <Lock size={18} className="text-brand-primary/40" />
+                  </div>
+                </div>
+              </div>
 
-          {/* Demonstration Quick Fills */}
-          <div className="text-center">
-            <span className="text-xs font-bold text-brand-primary/70 tracking-wider uppercase block mb-4">
-              QUICK ACCESS DEMO ACCOUNTS
-            </span>
-            <div className="flex gap-3">
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full flex items-center justify-center gap-2 bg-teal-500 hover:bg-teal-600 text-brand-light font-bold py-3 px-4 rounded-xl transition-colors mt-2 disabled:opacity-70"
+              >
+                {loading ? "Verifying..." : "Verify & Sign In"}
+              </button>
+
               <button
                 type="button"
-                onClick={() =>
-                  handleDemoFill("alex@petsfolio.com", "Sales Manager")
-                }
-                className="flex-1 py-2 px-3 border border-brand-secondary text-brand-primary hover:bg-brand-secondary/30 rounded-lg text-xs font-medium transition-colors"
+                onClick={() => {
+                  setStep(1);
+                  setOtp("");
+                  setError("");
+                  setMessage("");
+                }}
+                className="w-full text-center text-xs font-medium text-teal-600 hover:text-teal-700 mt-4"
               >
-                Sales Manager
+                Use a different email address
               </button>
-              <button
-                type="button"
-                onClick={() =>
-                  handleDemoFill("sarah@petsfolio.com", "Sales Representative")
-                }
-                className="flex-1 py-2 px-3 border border-brand-secondary text-brand-primary hover:bg-brand-secondary/30 rounded-lg text-xs font-medium transition-colors"
-              >
-                Sales Rep
-              </button>
-            </div>
-          </div>
+            </form>
+          )}
         </div>
       </div>
     </div>

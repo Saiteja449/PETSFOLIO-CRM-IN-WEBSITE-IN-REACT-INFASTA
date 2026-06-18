@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { useState, createContext, useContext } from "react";
+import axios from "axios";
 import { users } from "../data.js";
+import { API_ENDPOINTS } from "../utils/constants.js";
 
 const AuthContext = createContext(null);
 
@@ -43,40 +45,63 @@ export function AuthProvider({ children }) {
     localStorage.setItem("petsfolio_users", JSON.stringify(allUsers));
   }, [allUsers]);
 
-  // Simple authentication based on simulated credential pool
-  const login = (email, password, role) => {
-    const foundUser = allUsers.find(
-      (u) => u.email.toLowerCase() === email.toLowerCase(),
-    );
-    if (foundUser) {
-      const userWithRole = { ...foundUser, role: role || foundUser.role };
-      setCurrentUser(userWithRole);
+  // Request OTP from backend
+  const sendOtp = async (email) => {
+    try {
+      const response = await axios.post(API_ENDPOINTS.AUTH.SEND_OTP, { email });
+      const data = response.data;
+
+      return {
+        success: true,
+        message: data.message || "OTP sent successfully",
+      };
+    } catch (error) {
+      console.error("Send OTP error:", error);
+      const message =
+        error.response?.data?.message || "Network error connecting to server.";
+      return { success: false, message };
+    }
+  };
+
+  // Authentication using OTP backend
+  const login = async (email, otp) => {
+    try {
+      const response = await axios.post(API_ENDPOINTS.AUTH.VERIFY_OTP, {
+        email,
+        otp,
+      });
+      const data = response.data;
+
+      const roleMap = {
+        "sales manager": "Sales Manager",
+        "sales person": "Sales Representative",
+        user: "User",
+      };
+
+      const userWithToken = {
+        id: data._id,
+        name: data.name || email.split("@")[0],
+        email: data.email,
+        role: roleMap[data.role?.toLowerCase()] || data.role,
+        token: data.token,
+        avatar: data.name
+          ? data.name.substring(0, 2).toUpperCase()
+          : email.substring(0, 2).toUpperCase(),
+      };
+
+      setCurrentUser(userWithToken);
       setIsAuthenticated(true);
       localStorage.setItem(
         "petsfolio_session_user",
-        JSON.stringify(userWithRole),
+        JSON.stringify(userWithToken),
       );
-      return { success: true, user: userWithRole };
-    } else {
-      // Create a transient custom user if not found in pre-defined list, for ease of testing
-      const nameParts = email.split("@")[0].split(".");
-      const name = nameParts
-        .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
-        .join(" ");
-      const tempUser = {
-        id: "u_temp_" + Date.now(),
-        name: name || "Custom User",
-        role: role || "Sales Representative",
-        email: email,
-        avatar: (name ? name.substring(0, 2) : "CU").toUpperCase(),
-      };
-
-      // Save newly registered rep into our dynamic user pool
-      setAllUsers((prev) => [...prev, tempUser]);
-      setCurrentUser(tempUser);
-      setIsAuthenticated(true);
-      localStorage.setItem("petsfolio_session_user", JSON.stringify(tempUser));
-      return { success: true, user: tempUser };
+      localStorage.setItem("petsfolio_token", data.token);
+      return { success: true, user: userWithToken };
+    } catch (error) {
+      console.error("Login error:", error);
+      const message =
+        error.response?.data?.message || "Network error connecting to server.";
+      return { success: false, message };
     }
   };
 
@@ -127,6 +152,7 @@ export function AuthProvider({ children }) {
         currentUser,
         isAuthenticated,
         allUsers,
+        sendOtp,
         login,
         logout,
         addSalesPerson,
