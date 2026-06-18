@@ -121,32 +121,28 @@ export function DashboardProvider({ children }) {
 
     // Seed performerMap with all active salespeople so they exist even with zero assigned leads
     (allUsers || []).forEach((user) => {
-      performerMap[user.name] = {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        assigned: 0,
-        won: 0,
-      };
-    });
-
-    // Fill metrics using raw global leads list
-    rawLeads.forEach((lead) => {
-      const rep = lead.assignedTo || "Unassigned";
-      if (!performerMap[rep]) {
-        performerMap[rep] = {
-          id: "u_extra_" + rep.replace(/\s+/g, ""),
-          name: rep,
-          email: `${rep.toLowerCase().replace(/\s+/g, "")}@petsfolio.com`,
-          role: "Sales Representative",
+      if (user.role === "Sales Representative") {
+        performerMap[user.name] = {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
           assigned: 0,
           won: 0,
         };
       }
-      performerMap[rep].assigned += 1;
-      if (isLeadWon(lead)) {
-        performerMap[rep].won += 1;
+    });
+
+    // Fill metrics using raw global leads list
+    rawLeads.forEach((lead) => {
+      const rep = lead.assignedTo;
+      
+      // Only track metrics for legitimate Sales Representatives currently in the system
+      if (rep && performerMap[rep]) {
+        performerMap[rep].assigned += 1;
+        if (isLeadWon(lead)) {
+          performerMap[rep].won += 1;
+        }
       }
     });
 

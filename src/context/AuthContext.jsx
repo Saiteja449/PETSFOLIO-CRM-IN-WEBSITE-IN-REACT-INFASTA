@@ -7,20 +7,34 @@ import { API_ENDPOINTS } from "../utils/constants.js";
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [allUsers, setAllUsers] = useState(() => {
-    const saved = localStorage.getItem("petsfolio_users");
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch (e) {
-        console.error(
-          "Failed to parse saved users, falling back to initial data.",
-          e,
-        );
-      }
+  const [allUsers, setAllUsers] = useState([]);
+
+  // Fetch users from backend
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get(API_ENDPOINTS.USERS.BASE);
+
+      const roleMap = {
+        "sales manager": "Sales Manager",
+        "sales person": "Sales Representative",
+        user: "User",
+      };
+
+      const formattedUsers = response.data.map((user) => ({
+        id: user._id,
+        name: user.name || user.email.split("@")[0],
+        email: user.email,
+        role: roleMap[user.role?.toLowerCase()] || user.role,
+        avatar: (user.name || user.email).substring(0, 2).toUpperCase(),
+      }));
+
+      setAllUsers(formattedUsers);
+    } catch (error) {
+      console.error("Failed to fetch users:", error);
     }
-    return users;
-  });
+  };
+
+
 
   const [currentUser, setCurrentUser] = useState(() => {
     const savedSession = localStorage.getItem("petsfolio_session_user");
@@ -42,8 +56,8 @@ export function AuthProvider({ children }) {
   });
 
   useEffect(() => {
-    localStorage.setItem("petsfolio_users", JSON.stringify(allUsers));
-  }, [allUsers]);
+    fetchUsers();
+  }, [isAuthenticated]); // Re-fetch when auth status changes
 
   // Request OTP from backend
   const sendOtp = async (email) => {
@@ -111,39 +125,43 @@ export function AuthProvider({ children }) {
     localStorage.removeItem("petsfolio_session_user");
   };
 
-  const addSalesPerson = (name, email) => {
-    const initials = name
-      .split(" ")
-      .map((w) => w[0])
-      .join("")
-      .toUpperCase()
-      .slice(0, 2);
+  const addSalesPerson = async (name, email) => {
+    try {
+      const response = await axios.post(API_ENDPOINTS.USERS.BASE, {
+        name,
+        email,
+      });
 
-    // Check if salesperson with same email of name already exists
-    if (allUsers.some((u) => u.email.toLowerCase() === email.toLowerCase())) {
-      throw new Error("A representative with this email already exists!");
+      // Refresh the users list
+      await fetchUsers();
+      return response.data;
+    } catch (error) {
+      console.error("Add salesperson error:", error);
+      const message =
+        error.response?.data?.message || "Failed to add representative.";
+      throw new Error(message);
     }
-
-    const newUser = {
-      id: "u_" + Date.now(),
-      name,
-      role: "Sales Representative",
-      email,
-      avatar: initials || "SR",
-    };
-
-    setAllUsers((prev) => [...prev, newUser]);
-    return newUser;
   };
 
-  const deleteSalesPerson = (userId) => {
+  const deleteSalesPerson = async (userId) => {
     // Prevent self-deletion if logged in
     if (currentUser && currentUser.id === userId) {
       throw new Error(
         "You cannot delete your own logged-in representative account!",
       );
     }
-    setAllUsers((prev) => prev.filter((u) => u.id !== userId));
+
+    try {
+      await axios.delete(`${API_ENDPOINTS.USERS.BASE}/${userId}`);
+      // Refresh the users list
+      await fetchUsers();
+    } catch (error) {
+      console.error("Delete salesperson error:", error);
+      const message =
+        error.response?.data?.message ||
+        "Could not delete this representative.";
+      throw new Error(message);
+    }
   };
 
   return (

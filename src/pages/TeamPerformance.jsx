@@ -40,7 +40,7 @@ export default function TeamPerformance() {
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [deleteError, setDeleteError] = useState("");
 
-  const handleCreateSubmit = (e) => {
+  const handleCreateSubmit = async (e) => {
     e.preventDefault();
     setCreateError("");
 
@@ -50,7 +50,7 @@ export default function TeamPerformance() {
     }
 
     try {
-      addSalesPerson(newName.trim(), newEmail.trim());
+      await addSalesPerson(newName.trim(), newEmail.trim());
       setNewName("");
       setNewEmail("");
       setCreateOpen(false);
@@ -59,12 +59,12 @@ export default function TeamPerformance() {
     }
   };
 
-  const handleDeleteConfirm = () => {
+  const handleDeleteConfirm = async () => {
     setDeleteError("");
     if (!deleteTarget) return;
 
     try {
-      deleteSalesPerson(deleteTarget.id);
+      await deleteSalesPerson(deleteTarget.id);
       setDeleteTarget(null);
     } catch (err) {
       setDeleteError(err.message || "Could not delete this representative.");
@@ -261,7 +261,9 @@ export default function TeamPerformance() {
                     </span>
                   </div>
                 </td>
-                <td className="py-3 px-4 font-bold text-brand-primary">{p.name}</td>
+                <td className="py-3 px-4 font-bold text-brand-primary">
+                  {p.name}
+                </td>
                 <td className="py-3 px-4 text-brand-primary">{p.assigned}</td>
                 <td className="py-3 px-4 text-brand-primary">{p.won}</td>
                 <td className="py-3 px-4">
@@ -425,7 +427,9 @@ export default function TeamPerformance() {
               )}
               <p className="text-sm text-brand-primary leading-relaxed">
                 Are you sure you want to delete{" "}
-                <strong className="text-brand-primary">{deleteTarget?.name}</strong>{" "}
+                <strong className="text-brand-primary">
+                  {deleteTarget?.name}
+                </strong>{" "}
                 from Petsfolio Workspace? This will remove their profile from
                 the dynamic leaderboards and team allocations.
               </p>

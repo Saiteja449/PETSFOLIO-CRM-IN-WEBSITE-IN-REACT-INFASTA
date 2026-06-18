@@ -46,13 +46,13 @@ export default function Leads() {
     }
   };
 
-  const { leads, addLead, updateLead, deleteLead, stages, activeServices } =
+  const { leads, addLead, updateLead, deleteLead, activeServices } =
     useLeads();
   const { allUsers, currentUser } = useAuth();
 
   const [search, setSearch] = useState("");
   const [service, setService] = useState("All");
-  const [stage, setStage] = useState("All");
+
   const [salesperson, setSalesperson] = useState("All");
   const [status, setStatus] = useState("All");
   const [leadTypeTab, setLeadTypeTab] = useState("New");
@@ -71,7 +71,7 @@ export default function Leads() {
     email: "",
     source: "Manual Entry",
     service: "Grooming",
-    stage: "New Lead",
+
     assignedTo: currentUser?.name || "Alex Mercer",
     nextFollowUp: "2026-05-26",
     status: "New",
@@ -103,7 +103,7 @@ export default function Leads() {
   const rawProcessedLeads = filterLeads(viewableLeads, {
     search,
     service,
-    stage,
+
     salesperson,
     status,
   });
@@ -162,7 +162,7 @@ export default function Leads() {
     setAddOpen(true);
   };
 
-  const handleSaveAdd = (e) => {
+  const handleSaveAdd = async (e) => {
     e.preventDefault();
     if (!formFields.name || !formFields.phone || !formFields.service) {
       alert(
@@ -171,8 +171,12 @@ export default function Leads() {
       return;
     }
     const toSave = { ...formFields, status: formFields.status || "New" };
-    addLead(toSave, currentUser?.name || "System");
-    setAddOpen(false);
+    try {
+      await addLead(toSave, currentUser?.name || "System");
+      setAddOpen(false);
+    } catch (error) {
+      alert("Failed to add lead. Please try again.");
+    }
   };
 
   const handleOpenEdit = (lead) => {
@@ -183,7 +187,7 @@ export default function Leads() {
       email: lead.email || "",
       source: lead.source,
       service: lead.service,
-      stage: lead.stage,
+
       assignedTo: lead.assignedTo,
       nextFollowUp: lead.nextFollowUp || "",
       status: lead.status || "New",
@@ -193,12 +197,16 @@ export default function Leads() {
     setEditOpen(true);
   };
 
-  const handleSaveEdit = (e) => {
+  const handleSaveEdit = async (e) => {
     e.preventDefault();
-    updateLead(selectedLead.id, formFields, currentUser?.name || "System");
-    setEditOpen(false);
-    if (selectedLead ) {
-      setSelectedLead({ ...selectedLead, ...formFields });
+    try {
+      await updateLead(selectedLead.id, formFields, currentUser?.name || "System");
+      setEditOpen(false);
+      if (selectedLead ) {
+        setSelectedLead({ ...selectedLead, ...formFields });
+      }
+    } catch (error) {
+      alert("Failed to update lead. Please try again.");
     }
   };
 
@@ -228,20 +236,7 @@ export default function Leads() {
     }
   };
 
-  const getTwStageColor = (stageName) => {
-    const s = stageName?.toLowerCase() || "";
-    if (s.includes("new"))
-      return "bg-teal-500/10 text-teal-500 border border-teal-500/20";
-    if (s.includes("contacted") || s.includes("discuss"))
-      return "bg-blue-500/10 text-blue-500 border border-blue-500/20";
-    if (s.includes("trial") || s.includes("meeting"))
-      return "bg-purple-500/10 text-purple-500 border border-purple-500/20";
-    if (s.includes("won") || s.includes("job posted") || s.includes("job assigned") || s.includes("hired") || s.includes("joined"))
-      return "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20";
-    if (s.includes("lost"))
-      return "bg-red-500/10 text-red-500 border border-red-500/20";
-    return "bg-brand-secondary/40 text-brand-primary/70 border border-brand-secondary/50";
-  };
+
 
   return (
     <div className="p-4 md:p-6 space-y-6 w-full max-w-full overflow-x-hidden">
@@ -346,7 +341,6 @@ export default function Leads() {
               value={service}
               onChange={(e) => {
                 setService(e.target.value);
-                setStage("All");
               }}
               className="w-full px-3 py-2 bg-brand-light border border-brand-secondary rounded-lg text-sm text-brand-primary focus:outline-none focus:border-teal-500 transition-colors appearance-none"
             >
@@ -359,21 +353,7 @@ export default function Leads() {
             </select>
           </div>
 
-          {/* <div className="md:col-span-2">
-            <select
-              value={stage}
-              onChange={(e) => setStage(e.target.value)}
-              className="w-full px-3 py-2 bg-brand-light border border-brand-secondary rounded-lg text-sm text-brand-primary focus:outline-none focus:border-teal-500 transition-colors appearance-none"
-            >
-              <option value="All">All Stages</option>
-              {service !== "All" &&
-                stages[service]?.map((stg) => (
-                  <option key={stg} value={stg}>
-                    {stg}
-                  </option>
-                ))}
-            </select>
-          </div> */}
+
 
           <div className="md:col-span-2">
             <select
@@ -888,12 +868,9 @@ export default function Leads() {
                       value={formFields.service}
                       onChange={(e) => {
                         const selService = e.target.value;
-                        const initialStage =
-                          stages[selService]?.[0] || "New Lead";
                         setFormFields({
                           ...formFields,
                           service: selService,
-                          stage: initialStage,
                         });
                       }}
                       className="w-full bg-brand-light border border-brand-secondary rounded-lg px-3 py-2 text-sm text-brand-primary focus:outline-none focus:border-teal-500"
@@ -1016,9 +993,13 @@ export default function Leads() {
                 Cancel
               </button>
               <button
-                onClick={() => {
-                  deleteLead(deleteId);
-                  setDeleteId(null);
+                onClick={async () => {
+                  try {
+                    await deleteLead(deleteId);
+                    setDeleteId(null);
+                  } catch (error) {
+                    alert("Failed to delete lead.");
+                  }
                 }}
                 className="px-4 py-2 bg-red-500 hover:bg-red-600 text-brand-primary text-sm font-bold rounded-lg transition-colors"
               >

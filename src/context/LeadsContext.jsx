@@ -1,19 +1,31 @@
 import React from "react";
-import { useState, createContext, useContext } from "react";
-import {
-  initialLeads,
-  services,
-  stages as initialStages,
-  initialFollowups,
-  initialActivities,
-} from "../data.js";
+import { useState, createContext, useContext, useEffect } from "react";
+import axios from "axios";
+import { API_ENDPOINTS } from "../utils/constants.js";
+import { services, initialFollowups, initialActivities } from "../data.js";
 
 const LeadsContext = createContext(null);
 
 export function LeadsProvider({ children }) {
-  const [leads, setLeads] = useState(initialLeads);
+  const [leads, setLeads] = useState([]);
+
+  useEffect(() => {
+    const fetchLeads = async () => {
+      try {
+        const response = await axios.get(API_ENDPOINTS.LEADS.BASE);
+        const mappedLeads = response.data.map((lead) => ({
+          ...lead,
+          id: lead._id,
+        }));
+        setLeads(mappedLeads);
+      } catch (error) {
+        console.error("Error fetching leads:", error);
+      }
+    };
+    fetchLeads();
+  }, []);
+
   const [activeServices, setActiveServices] = useState(services);
-  const [stages, setStages] = useState(initialStages);
   const [followups, setFollowups] = useState(initialFollowups);
   const [activities, setActivities] = useState(initialActivities);
 
@@ -33,98 +45,85 @@ export function LeadsProvider({ children }) {
   };
 
   // Add a new lead
-  const addLead = (leadData, author = "System") => {
-    const newLeadId = "lead_" + Date.now();
-    const newLead = {
-      id: newLeadId,
-      ...leadData,
-      status: leadData.status || "New",
-      createdAt: new Date().toISOString().split("T")[0],
-    };
-    setLeads((prev) => [newLead, ...prev]);
-    addActivity(
-      newLeadId,
-      "Lead Created",
-      `Lead was registered by ${author} for service "${leadData.service}"`,
-      author,
-    );
+  const addLead = async (leadData, author = "System") => {
+    try {
+      const response = await axios.post(API_ENDPOINTS.LEADS.BASE, leadData);
+      const newLead = { ...response.data, id: response.data._id };
+      setLeads((prev) => [newLead, ...prev]);
 
-    // If there's a next follow-up date, automatically create a follow-up item
-    if (leadData.nextFollowUp) {
-      const newFw = {
-        id: "fw_" + Date.now(),
-        leadId: newLeadId,
-        leadName: leadData.name,
-        petName: leadData.petName || "Pet",
-        type: "Call", // Default helper
-        date: leadData.nextFollowUp,
-        time: "10:00 AM",
-        priority: "Medium",
-        done: false,
-        notes: `Initial follow-up scheduled for ${leadData.name}`,
-      };
-      setFollowups((prev) => [newFw, ...prev]);
+      addActivity(
+        newLead.id,
+        "Lead Created",
+        `Lead was registered by ${author} for service "${leadData.service}"`,
+        author,
+      );
+
+      // If there's a next follow-up date, automatically create a follow-up item
+      if (leadData.nextFollowUp) {
+        const newFw = {
+          id: "fw_" + Date.now(),
+          leadId: newLead.id,
+          leadName: leadData.name,
+          petName: leadData.petName || "Pet",
+          type: "Call", // Default helper
+          date: leadData.nextFollowUp,
+          time: "10:00 AM",
+          priority: "Medium",
+          done: false,
+          notes: `Initial follow-up scheduled for ${leadData.name}`,
+        };
+        setFollowups((prev) => [newFw, ...prev]);
+      }
+      return newLead.id;
+    } catch (error) {
+      console.error("Error adding lead:", error);
+      throw error;
     }
-    return newLeadId;
   };
 
   // Edit existing lead
-  const updateLead = (leadId, updatedFields, author = "System") => {
-    setLeads((prev) =>
-      prev.map((lead) => {
-        if (lead.id === leadId) {
-          // Detect changed fields to log activity
-          const changes = [];
-          if (updatedFields.stage && updatedFields.stage !== lead.stage) {
-            changes.push(
-              `stage from "${lead.stage}" to "${updatedFields.stage}"`,
-            );
-          }
-          if (
-            updatedFields.assignedTo &&
-            updatedFields.assignedTo !== lead.assignedTo
-          ) {
-            changes.push(
-              `assignee from "${lead.assignedTo}" to "${updatedFields.assignedTo}"`,
-            );
-          }
-          if (updatedFields.status && updatedFields.status !== lead.status) {
-            changes.push(`status to "${updatedFields.status}"`);
-          }
+  const updateLead = async (leadId, updatedFields, author = "System") => {
+    try {
+      const response = await axios.put(
+        `${API_ENDPOINTS.LEADS.BASE}/${leadId}`,
+        updatedFields,
+      );
+      const updatedLead = { ...response.data, id: response.data._id };
 
-          if (changes.length > 0) {
-            addActivity(
-              leadId,
-              "Lead Edited",
-              `Updated properties: ${changes.join(", ")} by ${author}`,
-              author,
-            );
-          }
-          return { ...lead, ...updatedFields };
-        }
-        return lead;
-      }),
-    );
-  };
+      setLeads((prev) =>
+        prev.map((lead) => {
+          if (lead.id === leadId) {
+            // Detect changed fields to log activity
+            const changes = [];
+            if (
+              updatedFields.assignedTo &&
+              updatedFields.assignedTo !== lead.assignedTo
+            ) {
+              changes.push(
+                `assignee from "${lead.assignedTo}" to "${updatedFields.assignedTo}"`,
+              );
+            }
+            if (updatedFields.status && updatedFields.status !== lead.status) {
+              changes.push(`status to "${updatedFields.status}"`);
+            }
 
-  // Move lead stage (designed specifically for drag & drop Kanban board)
-  const updateLeadStage = (leadId, newStage, author = "System") => {
-    setLeads((prev) =>
-      prev.map((lead) => {
-        if (lead.id === leadId) {
-          if (lead.stage !== newStage) {
-            addActivity(
-              leadId,
-              "Stage Changed",
-              `Status stage advanced from "${lead.stage}" to "${newStage}" by ${author}`,
-              author,
-            );
-            return { ...lead, stage: newStage };
+            if (changes.length > 0) {
+              addActivity(
+                leadId,
+                "Lead Edited",
+                `Updated properties: ${changes.join(", ")} by ${author}`,
+                author,
+              );
+            }
+            return updatedLead;
           }
-        }
-        return lead;
-      }),
-    );
+          return lead;
+        }),
+      );
+    } catch (error) {
+      console.error("Error updating lead:", error);
+      throw error;
+    }
   };
 
   // Toggle service enabled/disabled in Service Management
@@ -135,67 +134,6 @@ export function LeadsProvider({ children }) {
           return { ...s, active: !s.active };
         }
         return s;
-      }),
-    );
-  };
-
-  // Add new stage to a service
-  const addStage = (serviceName, stageName) => {
-    setStages((prev) => {
-      const currentStages = prev[serviceName] || [];
-      if (currentStages.includes(stageName)) return prev; // Avoid duplicate stages
-      return {
-        ...prev,
-        [serviceName]: [...currentStages, stageName],
-      };
-    });
-  };
-
-  // Edit an existing stage name in a service
-  const editStage = (serviceName, oldStageName, newStageName) => {
-    setStages((prev) => {
-      const currentStages = prev[serviceName] || [];
-      const updatedStages = currentStages.map((s) =>
-        s === oldStageName ? newStageName : s,
-      );
-      return {
-        ...prev,
-        [serviceName]: updatedStages,
-      };
-    });
-
-    // Mirror in existing leads
-    setLeads((prevLeads) =>
-      prevLeads.map((l) => {
-        if (l.service === serviceName && l.stage === oldStageName) {
-          return { ...l, stage: newStageName };
-        }
-        return l;
-      }),
-    );
-  };
-
-  // Remove a stage and optionally remap leads to first stage
-  const deleteStage = (serviceName, stageName) => {
-    setStages((prev) => {
-      const currentStages = prev[serviceName] || [];
-      const updatedStages = currentStages.filter((s) => s !== stageName);
-      return {
-        ...prev,
-        [serviceName]: updatedStages,
-      };
-    });
-
-    // Remap leads in the deleted stage to the first stage of that service
-    const remainingStages = stages[serviceName].filter((s) => s !== stageName);
-    const fallbackStage = remainingStages[0] || "New Lead";
-
-    setLeads((prevLeads) =>
-      prevLeads.map((l) => {
-        if (l.service === serviceName && l.stage === stageName) {
-          return { ...l, stage: fallbackStage };
-        }
-        return l;
       }),
     );
   };
@@ -234,10 +172,15 @@ export function LeadsProvider({ children }) {
   };
 
   // Delete a lead and its related records
-  const deleteLead = (leadId) => {
-    setLeads((prev) => prev.filter((l) => l.id !== leadId));
-    setFollowups((prev) => prev.filter((f) => f.leadId !== leadId));
-    setActivities((prev) => prev.filter((a) => a.leadId !== leadId));
+  const deleteLead = async (leadId) => {
+    try {
+      await axios.delete(`${API_ENDPOINTS.LEADS.BASE}/${leadId}`);
+      setLeads((prev) => prev.filter((l) => l.id !== leadId));
+      setFollowups((prev) => prev.filter((f) => f.leadId !== leadId));
+      setActivities((prev) => prev.filter((a) => a.leadId !== leadId));
+    } catch (error) {
+      console.error("Error deleting lead:", error);
+    }
   };
 
   return (
@@ -246,16 +189,11 @@ export function LeadsProvider({ children }) {
         leads,
         setLeads,
         activeServices,
-        stages,
         followups,
         activities,
         addLead,
         updateLead,
-        updateLeadStage,
         toggleServiceActive,
-        addStage,
-        editStage,
-        deleteStage,
         addActivity,
         addFollowup,
         toggleFollowupDone,

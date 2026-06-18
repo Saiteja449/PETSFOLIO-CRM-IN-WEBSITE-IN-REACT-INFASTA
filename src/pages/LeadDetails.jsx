@@ -25,8 +25,6 @@ export default function LeadDetails() {
   const {
     leads,
     updateLead,
-    updateLeadStage,
-    stages,
     activities,
     followups,
     addFollowup,
@@ -108,11 +106,7 @@ export default function LeadDetails() {
 
   const [followupType, setFollowupType] = useState("Call");
 
-  // Move stage directly
-  const handleStageChange = (e) => {
-    const nextStg = e.target.value;
-    updateLeadStage(currentLead.id, nextStg, currentUser?.name || "System");
-  };
+
 
   // Move Status directly
   const handleStatusChange = (e) => {
