@@ -178,7 +178,9 @@ export default function Settings() {
                     onChange={(e) => setAccentColor(e.target.value)}
                     className="text-teal-500 focus:ring-teal-500 bg-brand-light border-brand-secondary w-4 h-4"
                   />
-                  <span className="text-sm text-brand-primary">Sapphire Blue</span>
+                  <span className="text-sm text-brand-primary">
+                    Sapphire Blue
+                  </span>
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
@@ -201,7 +203,9 @@ export default function Settings() {
                     onChange={(e) => setAccentColor(e.target.value)}
                     className="text-teal-500 focus:ring-teal-500 bg-brand-light border-brand-secondary w-4 h-4"
                   />
-                  <span className="text-sm text-brand-primary">Amethyst Purple</span>
+                  <span className="text-sm text-brand-primary">
+                    Amethyst Purple
+                  </span>
                 </label>
               </div>
             </div>
@@ -237,7 +241,9 @@ export default function Settings() {
                     })
                   }
                   className={`relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 focus:ring-offset-brand-light ${
-                    notifications.emailAlerts ? "bg-teal-500" : "bg-brand-secondary/30"
+                    notifications.emailAlerts
+                      ? "bg-teal-500"
+                      : "bg-brand-secondary/30"
                   }`}
                 >
                   <span
@@ -264,7 +270,9 @@ export default function Settings() {
                     })
                   }
                   className={`relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 focus:ring-offset-brand-light ${
-                    notifications.overdueTasks ? "bg-teal-500" : "bg-brand-secondary/30"
+                    notifications.overdueTasks
+                      ? "bg-teal-500"
+                      : "bg-brand-secondary/30"
                   }`}
                 >
                   <span
@@ -292,7 +300,9 @@ export default function Settings() {
                     })
                   }
                   className={`relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 focus:ring-offset-brand-light ${
-                    notifications.insurances ? "bg-teal-500" : "bg-brand-secondary/30"
+                    notifications.insurances
+                      ? "bg-teal-500"
+                      : "bg-brand-secondary/30"
                   }`}
                 >
                   <span

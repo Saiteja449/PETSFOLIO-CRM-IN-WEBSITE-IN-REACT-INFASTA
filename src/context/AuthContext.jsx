@@ -34,8 +34,6 @@ export function AuthProvider({ children }) {
     }
   };
 
-
-
   const [currentUser, setCurrentUser] = useState(() => {
     const savedSession = localStorage.getItem("petsfolio_session_user");
     if (savedSession) {

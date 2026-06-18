@@ -10,5 +10,5 @@ export const API_ENDPOINTS = {
   },
   LEADS: {
     BASE: `${API_BASE_URL}/leads`,
-  }
+  },
 };

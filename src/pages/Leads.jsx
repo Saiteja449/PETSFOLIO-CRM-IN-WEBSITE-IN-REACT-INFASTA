@@ -42,12 +42,14 @@ export default function Leads() {
   const handleScroll = (direction) => {
     if (scrollContainerRef.current) {
       const scrollAmount = 250;
-      scrollContainerRef.current.scrollBy({ left: direction === "left" ? -scrollAmount : scrollAmount, behavior: "smooth" });
+      scrollContainerRef.current.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth",
+      });
     }
   };
 
-  const { leads, addLead, updateLead, deleteLead, activeServices } =
-    useLeads();
+  const { leads, addLead, updateLead, deleteLead, activeServices } = useLeads();
   const { allUsers, currentUser } = useAuth();
 
   const [search, setSearch] = useState("");
@@ -113,9 +115,10 @@ export default function Leads() {
   const newCount = rawProcessedLeads.filter(
     (l) => l.status?.toLowerCase() === "new",
   ).length;
-  
+
   const todayFollowupsCount = rawProcessedLeads.filter(
-    (l) => l.status?.toLowerCase() === "follow up" && l.nextFollowUp === todayStr,
+    (l) =>
+      l.status?.toLowerCase() === "follow up" && l.nextFollowUp === todayStr,
   ).length;
 
   const upcomingFollowupsCount = rawProcessedLeads.filter(
@@ -132,26 +135,44 @@ export default function Leads() {
     (l) => l.status?.toLowerCase() === "joined",
   ).length;
   const notAttendedCount = rawProcessedLeads.filter((l) => {
-    return l.status?.toLowerCase() === "not attended" || (l.status?.toLowerCase() === "follow up" && l.nextFollowUp < todayStr);
+    return (
+      l.status?.toLowerCase() === "not attended" ||
+      (l.status?.toLowerCase() === "follow up" && l.nextFollowUp < todayStr)
+    );
   }).length;
-  
+
   const lostCount = rawProcessedLeads.filter((l) => {
     const s = l.status?.toLowerCase();
-    return s === "price issue" || s === "not responding" || s === "not answered" || s === "not interested";
+    return (
+      s === "price issue" ||
+      s === "not responding" ||
+      s === "not answered" ||
+      s === "not interested"
+    );
   }).length;
 
   const processedLeads = rawProcessedLeads.filter((lead) => {
     const s = lead.status?.toLowerCase() || "";
     if (leadTypeTab === "New") return s === "new";
-    if (leadTypeTab === "TodayFollowup") return s === "follow up" && lead.nextFollowUp === todayStr;
-    if (leadTypeTab === "UpcomingFollowup") return s === "follow up" && lead.nextFollowUp > todayStr;
+    if (leadTypeTab === "TodayFollowup")
+      return s === "follow up" && lead.nextFollowUp === todayStr;
+    if (leadTypeTab === "UpcomingFollowup")
+      return s === "follow up" && lead.nextFollowUp > todayStr;
     if (leadTypeTab === "JobPosted") return s === "job posted";
     if (leadTypeTab === "Converted") return s === "job assigned";
     if (leadTypeTab === "Joined") return s === "joined";
     if (leadTypeTab === "Lost")
-      return s === "price issue" || s === "not responding" || s === "not answered" || s === "not interested";
+      return (
+        s === "price issue" ||
+        s === "not responding" ||
+        s === "not answered" ||
+        s === "not interested"
+      );
     if (leadTypeTab === "NotAttended")
-      return s === "not attended" || (s === "follow up" && lead.nextFollowUp < todayStr);
+      return (
+        s === "not attended" ||
+        (s === "follow up" && lead.nextFollowUp < todayStr)
+      );
     return true;
   });
 
@@ -200,17 +221,19 @@ export default function Leads() {
   const handleSaveEdit = async (e) => {
     e.preventDefault();
     try {
-      await updateLead(selectedLead.id, formFields, currentUser?.name || "System");
+      await updateLead(
+        selectedLead.id,
+        formFields,
+        currentUser?.name || "System",
+      );
       setEditOpen(false);
-      if (selectedLead ) {
+      if (selectedLead) {
         setSelectedLead({ ...selectedLead, ...formFields });
       }
     } catch (error) {
       alert("Failed to update lead. Please try again.");
     }
   };
-
- 
 
   // Convert MUI color keywords to Tailwind classes
   const getTwStatusColor = (statusName) => {
@@ -236,8 +259,6 @@ export default function Leads() {
     }
   };
 
-
-
   return (
     <div className="p-4 md:p-6 space-y-6 w-full max-w-full overflow-x-hidden">
       {/* Header and Add button */}
@@ -253,14 +274,14 @@ export default function Leads() {
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1 border border-brand-secondary rounded-lg p-1 bg-brand-light">
             <button
-              onClick={() => handleScroll('left')}
+              onClick={() => handleScroll("left")}
               className="p-1.5 rounded hover:bg-brand-secondary/50 text-brand-primary transition-colors"
               title="Scroll Tabs Left"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
             <button
-              onClick={() => handleScroll('right')}
+              onClick={() => handleScroll("right")}
               className="p-1.5 rounded hover:bg-brand-secondary/50 text-brand-primary transition-colors"
               title="Scroll Tabs Right"
             >
@@ -279,18 +300,34 @@ export default function Leads() {
       </div>
 
       <div className="border-b border-brand-secondary w-full overflow-hidden">
-        <div 
+        <div
           ref={scrollContainerRef}
           className="flex overflow-x-auto scroll-smooth w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']"
         >
           {[
             { name: "New", label: "New Leads", count: newCount },
-            { name: "TodayFollowup", label: "Today Followups", count: todayFollowupsCount },
-            { name: "UpcomingFollowup", label: "Upcoming Followups", count: upcomingFollowupsCount },
-            { name: "NotAttended", label: "Not Attended", count: notAttendedCount },
+            {
+              name: "TodayFollowup",
+              label: "Today Followups",
+              count: todayFollowupsCount,
+            },
+            {
+              name: "UpcomingFollowup",
+              label: "Upcoming Followups",
+              count: upcomingFollowupsCount,
+            },
+            {
+              name: "NotAttended",
+              label: "Not Attended",
+              count: notAttendedCount,
+            },
             { name: "Joined", label: "Joined Leads", count: joinedCount },
             { name: "JobPosted", label: "Job Posted", count: jobPostedCount },
-            { name: "Converted", label: "Converted Leads", count: convertedCount },
+            {
+              name: "Converted",
+              label: "Converted Leads",
+              count: convertedCount,
+            },
             { name: "Lost", label: "Lost Leads", count: lostCount },
           ].map((tab) => (
             <button
@@ -352,8 +389,6 @@ export default function Leads() {
               ))}
             </select>
           </div>
-
-
 
           <div className="md:col-span-2">
             <select
@@ -509,7 +544,6 @@ export default function Leads() {
                       </td>
                       <td className="px-4 py-3 text-right">
                         <div className="flex items-center justify-end gap-1">
-                         
                           <button
                             onClick={() => handleOpenEdit(lead)}
                             className="p-1.5 text-brand-primary/70 hover:text-brand-primary hover:bg-brand-secondary/30 rounded transition-colors"
@@ -906,9 +940,6 @@ export default function Leads() {
                     </select>
                   </div>
 
-
-
-
                   <div>
                     <label className="block text-xs font-bold text-brand-primary/70 mb-1">
                       Lead Overall Status
@@ -931,7 +962,6 @@ export default function Leads() {
                       <option value="Job Assigned">Job Assigned</option>
                     </select>
                   </div>
-
 
                   <div className="md:col-span-2">
                     <label className="block text-xs font-bold text-brand-primary/70 mb-1">

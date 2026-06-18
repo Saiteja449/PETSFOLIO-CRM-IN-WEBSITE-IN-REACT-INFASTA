@@ -304,7 +304,13 @@ export default function Dashboard() {
           </div>
         </div>
       )}
-      <div className={currentUser?.role === "Sales Manager" ? "grid grid-cols-1 lg:grid-cols-2 gap-6" : "grid grid-cols-1"}>
+      <div
+        className={
+          currentUser?.role === "Sales Manager"
+            ? "grid grid-cols-1 lg:grid-cols-2 gap-6"
+            : "grid grid-cols-1"
+        }
+      >
         {currentUser?.role === "Sales Manager" && (
           <div className="bg-brand-light border border-brand-secondary rounded-3xl p-5 min-h-[400px]">
             <div className="flex justify-between items-center mb-6 px-2">
@@ -323,12 +329,16 @@ export default function Dashboard() {
             <ul className="space-y-0">
               {stats.performersList.map((p, index) => (
                 <React.Fragment key={p.name}>
-                  {index > 0 && <li className="h-px bg-brand-secondary/30 my-2" />}
+                  {index > 0 && (
+                    <li className="h-px bg-brand-secondary/30 my-2" />
+                  )}
                   <li className="flex items-center px-2 py-3">
                     <div className="relative shrink-0 mr-4">
                       <div
                         className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-brand-light ${
-                          index === 0 ? "bg-teal-500" : "bg-brand-secondary/30 text-brand-primary"
+                          index === 0
+                            ? "bg-teal-500"
+                            : "bg-brand-secondary/30 text-brand-primary"
                         }`}
                       >
                         {p.name
@@ -379,7 +389,9 @@ export default function Dashboard() {
           <ul className="space-y-0">
             {stats.recentActivities.slice(0, 5).map((act, index) => (
               <React.Fragment key={act.id}>
-                {index > 0 && <li className="h-px bg-brand-secondary/30 my-2" />}
+                {index > 0 && (
+                  <li className="h-px bg-brand-secondary/30 my-2" />
+                )}
                 <li className="flex items-start px-2 py-3">
                   <div className="shrink-0 mr-4 mt-1">
                     <div

@@ -106,30 +106,38 @@ export default function LeadDetails() {
 
   const [followupType, setFollowupType] = useState("Call");
 
-
-
   // Move Status directly
-  const handleStatusChange = (e) => {
-    const nextStatus = e.target.value;
-    updateLead(
-      currentLead.id,
-      { status: nextStatus },
-      currentUser?.name || "System",
-    );
+  const handleStatusChange = async (e) => {
+    try {
+      const nextStatus = e.target.value;
+      await updateLead(
+        currentLead.id,
+        { status: nextStatus },
+        currentUser?.name || "System",
+      );
+    } catch (error) {
+      console.error(error);
+      alert("Failed to update status");
+    }
   };
 
   // Change assignee directly
-  const handleAssigneeChange = (e) => {
-    const nextAssignee = e.target.value;
-    updateLead(
-      currentLead.id,
-      { assignedTo: nextAssignee },
-      currentUser?.name || "System",
-    );
+  const handleAssigneeChange = async (e) => {
+    try {
+      const nextAssignee = e.target.value;
+      await updateLead(
+        currentLead.id,
+        { assignedTo: nextAssignee },
+        currentUser?.name || "System",
+      );
+    } catch (error) {
+      console.error(error);
+      alert("Failed to update assignee");
+    }
   };
 
   // Handle lead form submit
-  const handleUpdateLeadFormSubmit = (e) => {
+  const handleUpdateLeadFormSubmit = async (e) => {
     e.preventDefault();
 
     if (formData.status === "Follow Up" && !formData.nextFollowUp) {
@@ -155,73 +163,90 @@ export default function LeadDetails() {
     }
 
     const authorName = currentUser?.name || "System";
-    updateLead(currentLead.id, updatedFields, authorName);
 
-    // If "Follow Up" is selected, automatically schedule a follow-up task
-    if (formData.status === "Follow Up") {
+    try {
+      await updateLead(currentLead.id, updatedFields, authorName);
+
+      // If "Follow Up" is selected, automatically schedule a follow-up task
+      if (formData.status === "Follow Up") {
+        addFollowup({
+          leadId: currentLead.id,
+          leadName: currentLead.name,
+
+          type: followupType,
+          date: formData.nextFollowUp,
+          time: formData.appointmentTime || "11:00 AM",
+          priority: formData.importantLead ? "High" : "Medium",
+          notes:
+            formData.comments ||
+            `Routine followup scheduled via ${followupType}`,
+          author: authorName,
+        });
+      }
+
+      // Also record it under historical timeline activities
+      if (formData.comments) {
+        addActivity(
+          currentLead.id,
+          "Comment Added",
+          formData.comments,
+          authorName,
+        );
+      }
+
+      // Reset local comments box after submitting
+      setFormData((prev) => ({ ...prev, comments: "" }));
+      alert("Customer lead records were updated successfully.");
+    } catch (error) {
+      console.error(error);
+      alert("Failed to update lead records.");
+    }
+  };
+
+  // Save general profile notes
+  const handleSaveNotes = async () => {
+    try {
+      await updateLead(
+        currentLead.id,
+        { notes: notesText },
+        currentUser?.name || "Alex Mercer",
+      );
+      setEditingNotes(false);
+    } catch (error) {
+      console.error(error);
+      alert("Failed to save notes");
+    }
+  };
+
+  // Save rescheduled follow up
+  const handleSaveFollowup = async (e) => {
+    e.preventDefault();
+    try {
       addFollowup({
         leadId: currentLead.id,
         leadName: currentLead.name,
 
-        type: followupType,
-        date: formData.nextFollowUp,
-        time: formData.appointmentTime || "11:00 AM",
-        priority: formData.importantLead ? "High" : "Medium",
-        notes:
-          formData.comments || `Routine followup scheduled via ${followupType}`,
-        author: authorName,
+        type: newFw.type,
+        date: newFw.date,
+        time: newFw.time,
+        priority: newFw.priority,
+        notes: newFw.notes,
+        author: currentUser?.name || "Alex Mercer",
       });
+      // Record as lead's next follow up date
+      await updateLead(currentLead.id, { nextFollowUp: newFw.date });
+      setFollowupOpen(false);
+      setNewFw({
+        type: "Call",
+        date: "2026-05-26",
+        time: "11:00 AM",
+        priority: "Medium",
+        notes: "",
+      });
+    } catch (error) {
+      console.error(error);
+      alert("Failed to update follow-up date");
     }
-
-    // Also record it under historical timeline activities
-    if (formData.comments) {
-      addActivity(
-        currentLead.id,
-        "Comment Added",
-        formData.comments,
-        authorName,
-      );
-    }
-
-    // Reset local comments box after submitting
-    setFormData((prev) => ({ ...prev, comments: "" }));
-    alert("Customer lead records were updated successfully.");
-  };
-
-  // Save general profile notes
-  const handleSaveNotes = () => {
-    updateLead(
-      currentLead.id,
-      { notes: notesText },
-      currentUser?.name || "Alex Mercer",
-    );
-    setEditingNotes(false);
-  };
-
-  // Save rescheduled follow up
-  const handleSaveFollowup = (e) => {
-    e.preventDefault();
-    addFollowup({
-      leadId: currentLead.id,
-      leadName: currentLead.name,
-
-      type: newFw.type,
-      date: newFw.date,
-      time: newFw.time,
-      priority: newFw.priority,
-      notes: newFw.notes,
-      author: currentUser?.name || "Alex Mercer",
-    });
-    // Record as lead's next follow up date
-    updateLead(currentLead.id, { nextFollowUp: newFw.date });
-    setFollowupOpen(false);
-    setNewFw({
-      type: "Call",
-      date: "2026-05-26",
-      time: "11:00 AM",
-      priority: "Medium",
-      notes: "",
-    });
   };
 
   // Log active sales interaction
@@ -303,7 +328,7 @@ export default function LeadDetails() {
 
           <hr className="border-brand-secondary mb-5" />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="flex items-start gap-3">
               <Phone className="text-brand-primary/70 mt-0.5" size={18} />
               <div className="min-w-0">
@@ -352,28 +377,7 @@ export default function LeadDetails() {
                 )}
               </div>
             </div>
-            <div className="flex items-start gap-3">
-              <MapPin className="text-brand-primary/70 mt-0.5" size={18} />
-              <div className="min-w-0">
-                <span className="text-xs text-brand-primary/70 block mb-0.5">
-                  City
-                </span>
-                <span className="text-sm font-semibold text-brand-primary truncate block">
-                  {currentLead.city || "Not specified"}
-                </span>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <MessageSquare className="text-brand-primary/70 mt-0.5" size={18} />
-              <div className="min-w-0">
-                <span className="text-xs text-brand-primary/70 block mb-0.5">
-                  Preferred Contact
-                </span>
-                <span className="text-sm font-semibold text-brand-primary truncate block">
-                  {currentLead.preferredContactMethod || "Not specified"}
-                </span>
-              </div>
-            </div>
+
             <div className="flex items-start gap-3">
               <Calendar className="text-brand-primary/70 mt-0.5" size={18} />
               <div className="min-w-0">
@@ -443,7 +447,9 @@ export default function LeadDetails() {
         {/* 3. Update Lead Details Form */}
         <div className="bg-brand-light border border-brand-secondary rounded-xl overflow-hidden shadow-sm">
           <div className="p-4 border-b border-brand-secondary bg-brand-light/50">
-            <h3 className="font-bold text-brand-primary">Update Lead Details</h3>
+            <h3 className="font-bold text-brand-primary">
+              Update Lead Details
+            </h3>
           </div>
           <div className="p-5">
             <form onSubmit={handleUpdateLeadFormSubmit} className="space-y-4">
@@ -767,8 +773,6 @@ export default function LeadDetails() {
           </div>
         </div>
       )}
-
-
     </div>
   );
 }

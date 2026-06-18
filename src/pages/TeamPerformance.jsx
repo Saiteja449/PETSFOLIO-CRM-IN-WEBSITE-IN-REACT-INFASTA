@@ -178,7 +178,7 @@ export default function TeamPerformance() {
                   Score: {p.activityScore} / 100
                 </div>
 
-                <div className="grid grid-cols-2 gap-2 text-left mb-5">
+                {/* <div className="grid grid-cols-2 gap-2 text-left mb-5">
                   <div>
                     <span className="text-[10px] uppercase font-bold text-brand-primary/70 block mb-0.5">
                       Conversion
@@ -187,9 +187,9 @@ export default function TeamPerformance() {
                       {p.conversionRate}%
                     </span>
                   </div>
-                </div>
+                </div> */}
 
-                <div>
+                {/* <div>
                   <div className="flex justify-between text-[10px] font-bold text-brand-primary/70 mb-1.5 uppercase">
                     <span>Follow-up</span>
                     <span
@@ -204,7 +204,7 @@ export default function TeamPerformance() {
                       style={{ width: `${p.fwCompletionRate}%` }}
                     />
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           );

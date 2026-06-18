@@ -124,19 +124,38 @@ export default function FollowUpReport() {
                           </td>
                           <td className="p-4">
                             <div className="text-sm text-brand-primary/80 flex flex-col gap-1.5">
-                              <span className="flex items-center gap-1.5"><Phone size={14} className="text-brand-primary/50" /> {lead.phone}</span>
-                              <span className="flex items-center gap-1.5"><Mail size={14} className="text-brand-primary/50" /> <span className="truncate max-w-[150px]">{lead.email || "No email"}</span></span>
+                              <span className="flex items-center gap-1.5">
+                                <Phone
+                                  size={14}
+                                  className="text-brand-primary/50"
+                                />{" "}
+                                {lead.phone}
+                              </span>
+                              <span className="flex items-center gap-1.5">
+                                <Mail
+                                  size={14}
+                                  className="text-brand-primary/50"
+                                />{" "}
+                                <span className="truncate max-w-[150px]">
+                                  {lead.email || "No email"}
+                                </span>
+                              </span>
                             </div>
                           </td>
                           <td className="p-4">
                             <div className="text-sm text-brand-primary/80">
                               <div className="font-medium">{lead.service}</div>
-                              <div className="text-xs text-brand-primary/60 mt-0.5">{lead.stage}</div>
+                              <div className="text-xs text-brand-primary/60 mt-0.5">
+                                {lead.stage}
+                              </div>
                             </div>
                           </td>
                           <td className="p-4">
                             <div className="text-sm text-brand-primary/80 flex items-center gap-1.5">
-                              <Calendar size={14} className="text-brand-primary/50" />
+                              <Calendar
+                                size={14}
+                                className="text-brand-primary/50"
+                              />
                               {formatDate(lead.joinedAt || lead.createdAt)}
                             </div>
                           </td>

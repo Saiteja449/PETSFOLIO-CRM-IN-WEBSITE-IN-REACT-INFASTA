@@ -46,11 +46,16 @@ const LeadCard = ({ lead, navigate }) => (
     <div className="mt-4 pt-4 border-t border-brand-secondary flex justify-between items-center">
       <div className="flex items-center gap-1.5 text-xs font-semibold text-brand-primary/70">
         <Calendar size={12} className="text-brand-primary/50" />
-        {lead.nextFollowUp ? `Follow Up: ${formatDate(lead.nextFollowUp)}` : `Enquired: ${formatDate(lead.joinedAt || lead.createdAt)}`}
+        {lead.nextFollowUp
+          ? `Follow Up: ${formatDate(lead.nextFollowUp)}`
+          : `Enquired: ${formatDate(lead.joinedAt || lead.createdAt)}`}
       </div>
       <span
         className={`px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider ${
-          lead.status?.toLowerCase() === "not attended" || (lead.nextFollowUp && lead.nextFollowUp < new Date().toISOString().split("T")[0] && lead.status === "Follow Up")
+          lead.status?.toLowerCase() === "not attended" ||
+          (lead.nextFollowUp &&
+            lead.nextFollowUp < new Date().toISOString().split("T")[0] &&
+            lead.status === "Follow Up")
             ? "bg-red-500/10 text-red-500 border border-red-500/20"
             : lead.status === "New"
               ? "bg-blue-500/10 text-blue-500 border border-blue-500/20"
@@ -74,7 +79,7 @@ export default function DailyAgenda() {
     // Current date logic
     const today = new Date();
     const todayStr = today.toISOString().split("T")[0]; // YYYY-MM-DD
-    
+
     // 24 hours ago for "Not Attended" calculation
     const yesterday = new Date(today);
     yesterday.setDate(yesterday.getDate() - 1);
@@ -82,7 +87,10 @@ export default function DailyAgenda() {
 
     const myLeads =
       currentUser?.role === "Sales Representative"
-        ? leads.filter((l) => l.assignedTo?.toLowerCase() === currentUser.name?.toLowerCase())
+        ? leads.filter(
+            (l) =>
+              l.assignedTo?.toLowerCase() === currentUser.name?.toLowerCase(),
+          )
         : leads; // For managers, show all (or they wouldn't use this view as much)
 
     const urgent = [];
@@ -91,9 +99,15 @@ export default function DailyAgenda() {
 
     myLeads.forEach((lead) => {
       const status = lead.status?.toLowerCase() || "new";
-      
+
       // Ignore won/lost leads
-      if (status === "joined" || status === "price issue" || status === "not responding" || status === "not answered" || status === "not interested") {
+      if (
+        status === "joined" ||
+        status === "price issue" ||
+        status === "not responding" ||
+        status === "not answered" ||
+        status === "not interested"
+      ) {
         return;
       }
 
@@ -103,7 +117,9 @@ export default function DailyAgenda() {
       if (
         status === "not attended" ||
         (status === "new" && joinedStr <= yesterdayStr) ||
-        (status === "follow up" && lead.nextFollowUp && lead.nextFollowUp < todayStr)
+        (status === "follow up" &&
+          lead.nextFollowUp &&
+          lead.nextFollowUp < todayStr)
       ) {
         urgent.push({ ...lead, isUrgent: true });
         return;
@@ -125,10 +141,12 @@ export default function DailyAgenda() {
     return { urgentLeads: urgent, newLeads: fresh, todayFollowups: scheduled };
   }, [leads, currentUser]);
 
-  const displayedLeads = 
-    activeTab === "Urgent" ? urgentLeads : 
-    activeTab === "New" ? newLeads : 
-    todayFollowups;
+  const displayedLeads =
+    activeTab === "Urgent"
+      ? urgentLeads
+      : activeTab === "New"
+        ? newLeads
+        : todayFollowups;
 
   return (
     <div className="p-4 md:p-6 space-y-6">
@@ -139,16 +157,32 @@ export default function DailyAgenda() {
             My Daily Agenda
           </h1>
           <p className="text-sm text-brand-primary/70 mt-1">
-            Your prioritized task list. Handle New leads first, then Urgent issues and scheduled follow-ups.
+            Your prioritized task list. Handle New leads first, then Urgent
+            issues and scheduled follow-ups.
           </p>
         </div>
       </div>
 
       <div className="border-b border-brand-secondary flex overflow-x-auto no-scrollbar mb-6">
         {[
-          { name: "New", label: "New Leads", count: newLeads.length, icon: <Zap size={16} className="mr-2" /> },
-          { name: "Urgent", label: "Urgent Action", count: urgentLeads.length, icon: <AlertCircle size={16} className="mr-2" /> },
-          { name: "Scheduled", label: "Scheduled Today", count: todayFollowups.length, icon: <CalendarDays size={16} className="mr-2" /> },
+          {
+            name: "New",
+            label: "New Leads",
+            count: newLeads.length,
+            icon: <Zap size={16} className="mr-2" />,
+          },
+          {
+            name: "Urgent",
+            label: "Urgent Action",
+            count: urgentLeads.length,
+            icon: <AlertCircle size={16} className="mr-2" />,
+          },
+          {
+            name: "Scheduled",
+            label: "Scheduled Today",
+            count: todayFollowups.length,
+            icon: <CalendarDays size={16} className="mr-2" />,
+          },
         ].map((tab) => (
           <button
             key={tab.name}
@@ -177,7 +211,9 @@ export default function DailyAgenda() {
       {displayedLeads.length === 0 ? (
         <div className="bg-brand-light border border-brand-secondary rounded-2xl p-12 text-center">
           <CalendarDays className="w-16 h-16 text-brand-primary/70 mx-auto mb-4" />
-          <h3 className="text-lg font-bold text-brand-primary">No tasks here</h3>
+          <h3 className="text-lg font-bold text-brand-primary">
+            No tasks here
+          </h3>
           <p className="text-sm text-brand-primary/70 mt-1">
             You're all caught up with this bucket.
           </p>
@@ -220,26 +256,42 @@ export default function DailyAgenda() {
                     </td>
                     <td className="p-4">
                       <div className="text-sm text-brand-primary/80 flex flex-col gap-1.5">
-                        <span className="flex items-center gap-1.5"><Phone size={14} className="text-brand-primary/50" /> {lead.phone}</span>
-                        <span className="flex items-center gap-1.5"><Mail size={14} className="text-brand-primary/50" /> <span className="truncate max-w-[150px]">{lead.email || "No email"}</span></span>
+                        <span className="flex items-center gap-1.5">
+                          <Phone size={14} className="text-brand-primary/50" />{" "}
+                          {lead.phone}
+                        </span>
+                        <span className="flex items-center gap-1.5">
+                          <Mail size={14} className="text-brand-primary/50" />{" "}
+                          <span className="truncate max-w-[150px]">
+                            {lead.email || "No email"}
+                          </span>
+                        </span>
                       </div>
                     </td>
                     <td className="p-4">
                       <div className="text-sm text-brand-primary/80">
                         <div className="font-medium">{lead.service}</div>
-                        <div className="text-xs text-brand-primary/60 mt-0.5">{lead.stage}</div>
+                        <div className="text-xs text-brand-primary/60 mt-0.5">
+                          {lead.stage}
+                        </div>
                       </div>
                     </td>
                     <td className="p-4">
                       <div className="text-sm text-brand-primary/80 flex items-center gap-1.5">
                         <Calendar size={14} className="text-brand-primary/50" />
-                        {lead.nextFollowUp ? `Follow Up: ${formatDate(lead.nextFollowUp)}` : `Enquired: ${formatDate(lead.joinedAt || lead.createdAt)}`}
+                        {lead.nextFollowUp
+                          ? `Follow Up: ${formatDate(lead.nextFollowUp)}`
+                          : `Enquired: ${formatDate(lead.joinedAt || lead.createdAt)}`}
                       </div>
                     </td>
                     <td className="p-4 text-right">
                       <span
                         className={`px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-wider ${
-                          lead.status?.toLowerCase() === "not attended" || (lead.nextFollowUp && lead.nextFollowUp < new Date().toISOString().split("T")[0] && lead.status === "Follow Up")
+                          lead.status?.toLowerCase() === "not attended" ||
+                          (lead.nextFollowUp &&
+                            lead.nextFollowUp <
+                              new Date().toISOString().split("T")[0] &&
+                            lead.status === "Follow Up")
                             ? "bg-red-500/10 text-red-500 border border-red-500/20"
                             : lead.status === "New"
                               ? "bg-blue-500/10 text-blue-500 border border-blue-500/20"

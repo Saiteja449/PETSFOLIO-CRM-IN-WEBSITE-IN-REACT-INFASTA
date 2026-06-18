@@ -13,11 +13,7 @@ export function LeadsProvider({ children }) {
     const fetchLeads = async () => {
       try {
         const response = await axios.get(API_ENDPOINTS.LEADS.BASE);
-        const mappedLeads = response.data.map((lead) => ({
-          ...lead,
-          id: lead._id,
-        }));
-        setLeads(mappedLeads);
+        setLeads(response.data);
       } catch (error) {
         console.error("Error fetching leads:", error);
       }
@@ -48,7 +44,7 @@ export function LeadsProvider({ children }) {
   const addLead = async (leadData, author = "System") => {
     try {
       const response = await axios.post(API_ENDPOINTS.LEADS.BASE, leadData);
-      const newLead = { ...response.data, id: response.data._id };
+      const newLead = response.data;
       setLeads((prev) => [newLead, ...prev]);
 
       addActivity(
@@ -88,7 +84,7 @@ export function LeadsProvider({ children }) {
         `${API_ENDPOINTS.LEADS.BASE}/${leadId}`,
         updatedFields,
       );
-      const updatedLead = { ...response.data, id: response.data._id };
+      const updatedLead = response.data;
 
       setLeads((prev) =>
         prev.map((lead) => {

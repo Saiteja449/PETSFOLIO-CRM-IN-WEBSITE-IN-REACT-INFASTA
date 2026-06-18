@@ -136,7 +136,7 @@ export function DashboardProvider({ children }) {
     // Fill metrics using raw global leads list
     rawLeads.forEach((lead) => {
       const rep = lead.assignedTo;
-      
+
       // Only track metrics for legitimate Sales Representatives currently in the system
       if (rep && performerMap[rep]) {
         performerMap[rep].assigned += 1;
@@ -166,30 +166,32 @@ export function DashboardProvider({ children }) {
         if (repLeadsData.length > 0) {
           let totalResponseMs = 0;
           let respondedLeadsCount = 0;
-          
+
           repLeadsData.forEach((lead) => {
             const repActivities = rawActivities.filter(
-              (a) => a.leadId === lead.id && a.author === p.name
+              (a) => a.leadId === lead.id && a.author === p.name,
             );
             if (repActivities.length > 0) {
               repActivities.sort((a, b) => new Date(a.date) - new Date(b.date));
               const firstActivityDate = new Date(repActivities[0].date);
-              
+
               const leadCreationDate = new Date(lead.createdAt);
               leadCreationDate.setHours(9, 0, 0, 0);
-              
+
               let diffMs = firstActivityDate - leadCreationDate;
               if (diffMs < 0) diffMs = 0;
-              
+
               totalResponseMs += diffMs;
               respondedLeadsCount++;
             }
           });
-          
+
           if (respondedLeadsCount > 0) {
-            const avgHours = (totalResponseMs / respondedLeadsCount) / (1000 * 60 * 60);
+            const avgHours =
+              totalResponseMs / respondedLeadsCount / (1000 * 60 * 60);
             if (avgHours < 1) {
-              dynamicResponseTime = Math.max(1, Math.round(avgHours * 60)) + " mins";
+              dynamicResponseTime =
+                Math.max(1, Math.round(avgHours * 60)) + " mins";
             } else {
               dynamicResponseTime = avgHours.toFixed(1) + " hrs";
             }

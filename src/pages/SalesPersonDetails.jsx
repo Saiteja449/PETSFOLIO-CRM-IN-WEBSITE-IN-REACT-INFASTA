@@ -30,32 +30,44 @@ export default function SalesPersonDetails() {
   const repLeads = leads.filter((l) => l.assignedTo === decodedName);
 
   const newLeads = repLeads.filter((l) => l.status?.toLowerCase() === "new");
-  const followupLeads = repLeads.filter((l) => l.status?.toLowerCase() === "follow up");
-  const convertedLeads = repLeads.filter((l) => l.status?.toLowerCase() === "job assigned");
-  const jobPostedLeads = repLeads.filter((l) => l.status?.toLowerCase() === "job posted");
-  const joinedLeads = repLeads.filter((l) => l.status?.toLowerCase() === "joined");
-  const notAttendedLeads = repLeads.filter((l) => l.status?.toLowerCase() === "not attended");
+  const followupLeads = repLeads.filter(
+    (l) => l.status?.toLowerCase() === "follow up",
+  );
+  const convertedLeads = repLeads.filter(
+    (l) => l.status?.toLowerCase() === "job assigned",
+  );
+  const jobPostedLeads = repLeads.filter(
+    (l) => l.status?.toLowerCase() === "job posted",
+  );
+  const joinedLeads = repLeads.filter(
+    (l) => l.status?.toLowerCase() === "joined",
+  );
+  const notAttendedLeads = repLeads.filter(
+    (l) => l.status?.toLowerCase() === "not attended",
+  );
   const lostLeads = repLeads.filter((l) => {
     const s = l.status?.toLowerCase();
-    return s === "price issue" || s === "not responding" || s === "not answered";
+    return (
+      s === "price issue" || s === "not responding" || s === "not answered"
+    );
   });
 
   const displayedLeads =
     activeTab === "New Leads"
       ? newLeads
       : activeTab === "Followup Leads"
-      ? followupLeads
-      : activeTab === "Converted Leads"
-      ? convertedLeads
-      : activeTab === "Lost Leads"
-      ? lostLeads
-      : activeTab === "Job Posted"
-      ? jobPostedLeads
-      : activeTab === "Joined Leads"
-      ? joinedLeads
-      : activeTab === "Not Attended"
-      ? notAttendedLeads
-      : repLeads;
+        ? followupLeads
+        : activeTab === "Converted Leads"
+          ? convertedLeads
+          : activeTab === "Lost Leads"
+            ? lostLeads
+            : activeTab === "Job Posted"
+              ? jobPostedLeads
+              : activeTab === "Joined Leads"
+                ? joinedLeads
+                : activeTab === "Not Attended"
+                  ? notAttendedLeads
+                  : repLeads;
 
   const handleExport = () => {
     exportToCSV(
@@ -154,7 +166,9 @@ export default function SalesPersonDetails() {
       {displayedLeads.length === 0 ? (
         <div className="bg-brand-light border border-brand-secondary rounded-2xl p-12 text-center">
           <PawPrint className="w-16 h-16 text-brand-primary/70 mx-auto mb-4" />
-          <h3 className="text-lg font-bold text-brand-primary">No Assigned Leads</h3>
+          <h3 className="text-lg font-bold text-brand-primary">
+            No Assigned Leads
+          </h3>
           <p className="text-sm text-brand-primary/70 mt-1">
             This representative currently has no leads assigned to them.
           </p>
