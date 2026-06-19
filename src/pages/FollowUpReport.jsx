@@ -12,7 +12,7 @@ import { formatDate } from "../utils/helpers.js";
 
 export default function FollowUpReport() {
   const navigate = useNavigate();
-  const { leads, activities, followups } = useLeads();
+  const { leads, followups } = useLeads();
 
   const reportData = useMemo(() => {
     const today = new Date();
@@ -21,13 +21,6 @@ export default function FollowUpReport() {
 
     // Get all leads that have an activity or followup in the last 5 days
     const activeLeadIds = new Set();
-
-    activities.forEach((act) => {
-      const actDate = new Date(act.date);
-      if (actDate >= fiveDaysAgo && actDate <= today) {
-        activeLeadIds.add(act.leadId);
-      }
-    });
 
     followups.forEach((fw) => {
       const fwDate = new Date(fw.date);
@@ -52,7 +45,7 @@ export default function FollowUpReport() {
     return Object.entries(grouped).sort(([repA], [repB]) =>
       repA.localeCompare(repB),
     );
-  }, [leads, activities, followups]);
+  }, [leads, followups]);
 
   return (
     <div className="p-4 md:p-6 space-y-6">

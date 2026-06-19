@@ -17,6 +17,7 @@ import {
 import { useLeads } from "../context/LeadsContext.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
 import { formatDate } from "../utils/helpers.js";
+import DatePicker from "../components/DatePicker.jsx";
 
 export default function LeadDetails() {
   const { allUsers, currentUser } = useAuth();
@@ -25,11 +26,9 @@ export default function LeadDetails() {
   const {
     leads,
     updateLead,
-    activities,
     followups,
     addFollowup,
     toggleFollowupDone,
-    addActivity,
   } = useLeads();
 
   const currentLead = leads.find((l) => l.id === id);
@@ -83,6 +82,8 @@ export default function LeadDetails() {
     author: currentUser?.name || "Alex Mercer",
   });
 
+  const [followupType, setFollowupType] = useState("Call");
+
   if (!currentLead) {
     return (
       <div className="p-4 text-center">
@@ -100,11 +101,22 @@ export default function LeadDetails() {
     );
   }
 
-  // Filter activities and followups related to this single lead
-  const leadActivities = activities.filter((a) => a.leadId === currentLead.id);
   const leadFollowups = followups.filter((f) => f.leadId === currentLead.id);
 
-  const [followupType, setFollowupType] = useState("Call");
+  const combinedHistory = leadFollowups.map(f => {
+      const d = new Date(f.date + "T" + (f.time || "00:00:00"));
+      return {
+        id: f.id,
+        isFollowup: !f.done,
+        type: f.type,
+        priority: f.priority,
+        rawDate: d.getTime(),
+        date: f.date,
+        time: f.time || "",
+        notes: f.notes,
+        author: f.author || currentLead.assignedTo || "System"
+      };
+    }).sort((a, b) => b.rawDate - a.rawDate);
 
   // Move Status directly
   const handleStatusChange = async (e) => {
@@ -140,9 +152,15 @@ export default function LeadDetails() {
   const handleUpdateLeadFormSubmit = async (e) => {
     e.preventDefault();
 
-    if (formData.status === "Follow Up" && !formData.nextFollowUp) {
-      alert("Please supply a valid Follow Up Date.");
-      return;
+    if (formData.status === "Follow Up") {
+      if (
+        !formData.nextFollowUp ||
+        !followupType ||
+        !formData.comments.trim()
+      ) {
+        alert("Please supply a valid Follow Up Date, Type, and Comments.");
+        return;
+      }
     }
 
     const updatedFields = {
@@ -153,14 +171,6 @@ export default function LeadDetails() {
       assignedTo: formData.assignedTo,
       importantLead: formData.importantLead,
     };
-
-    // Append comments to internal requirements logs
-    if (formData.comments) {
-      updatedFields.notes = currentLead.notes
-        ? currentLead.notes + "\n" + formData.comments
-        : formData.comments;
-      setNotesText(updatedFields.notes);
-    }
 
     const authorName = currentUser?.name || "System";
 
@@ -184,15 +194,7 @@ export default function LeadDetails() {
         });
       }
 
-      // Also record it under historical timeline activities
-      if (formData.comments) {
-        addActivity(
-          currentLead.id,
-          "Comment Added",
-          formData.comments,
-          authorName,
-        );
-      }
+
 
       // Reset local comments box after submitting
       setFormData((prev) => ({ ...prev, comments: "" }));
@@ -221,6 +223,10 @@ export default function LeadDetails() {
   // Save rescheduled follow up
   const handleSaveFollowup = async (e) => {
     e.preventDefault();
+    if (!newFw.date || !newFw.type || !newFw.notes.trim()) {
+      alert("Please supply a valid Follow Up Date, Type, and Notes.");
+      return;
+    }
     try {
       addFollowup({
         leadId: currentLead.id,
@@ -256,7 +262,18 @@ export default function LeadDetails() {
       alert("Please provide the activity details content.");
       return;
     }
-    addActivity(currentLead.id, newAct.type, newAct.content, newAct.author);
+    // Changed to manual addFollowup for user-initiated activity logs from the modal
+    addFollowup({
+      leadId: currentLead.id,
+      leadName: currentLead.name,
+      type: newAct.type,
+      date: new Date().toISOString().split("T")[0],
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      priority: "Low",
+      notes: newAct.content,
+      author: newAct.author,
+      done: true
+    });
     setActivityOpen(false);
     setNewAct({
       type: "Call Completed",
@@ -445,8 +462,8 @@ export default function LeadDetails() {
         </div>
 
         {/* 3. Update Lead Details Form */}
-        <div className="bg-brand-light border border-brand-secondary rounded-xl overflow-hidden shadow-sm">
-          <div className="p-4 border-b border-brand-secondary bg-brand-light/50">
+        <div className="bg-brand-light border border-brand-secondary rounded-xl shadow-sm">
+          <div className="p-4 border-b border-brand-secondary bg-brand-light/50 rounded-t-xl">
             <h3 className="font-bold text-brand-primary">
               Update Lead Details
             </h3>
@@ -509,8 +526,7 @@ export default function LeadDetails() {
                     <label className="block text-xs font-medium text-brand-primary/70 mb-1.5">
                       Follow Up Date
                     </label>
-                    <input
-                      type="date"
+                    <DatePicker
                       value={formData.nextFollowUp}
                       onChange={(e) =>
                         setFormData({
@@ -518,8 +534,6 @@ export default function LeadDetails() {
                           nextFollowUp: e.target.value,
                         })
                       }
-                      className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 outline-none"
-                      style={{ colorScheme: "dark" }}
                     />
                   </div>
                 )}
@@ -578,7 +592,7 @@ export default function LeadDetails() {
         </div>
 
         {/* 4. Upcoming Followups schedule */}
-        {currentLead.status === "Follow Up" && (
+        {true && (
           <div className="bg-brand-light border border-teal-500/30 rounded-xl overflow-hidden shadow-sm">
             <div className="p-5">
               <div className="flex justify-between items-center mb-5">
@@ -588,14 +602,14 @@ export default function LeadDetails() {
               </div>
 
               <div className="space-y-3">
-                {leadFollowups.length === 0 && (
+                {combinedHistory.length === 0 && (
                   <div className="text-center py-8 border border-dashed border-brand-secondary rounded-lg">
                     <p className="text-sm text-brand-primary/70">
-                      No follow-up reminders scheduled yet.
+                      No follow-up reminders or activities recorded yet.
                     </p>
                   </div>
                 )}
-                {leadFollowups.map((f) => (
+                {combinedHistory.map((f) => (
                   <div
                     key={f.id}
                     className="p-4 bg-brand-light border border-brand-secondary rounded-xl flex justify-between items-start"
@@ -604,7 +618,7 @@ export default function LeadDetails() {
                       <div className="min-w-0 flex-grow">
                         <div className="flex flex-wrap items-center gap-2 mb-1.5">
                           <h4 className="text-sm font-bold text-brand-primary">
-                            {f.type} Engagement Channel
+                            {f.type} {f.isFollowup ? "Engagement Channel" : "Log"}
                           </h4>
                           <span
                             className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
@@ -622,7 +636,7 @@ export default function LeadDetails() {
                         <div className="flex items-center gap-1.5 text-xs text-brand-primary/70 mb-2">
                           <Calendar size={14} />
                           <span>
-                            Scheduled: {formatDate(f.date)} • {f.time}
+                            {f.isFollowup ? "Scheduled" : "Logged"}: {formatDate(f.date)} {f.time ? `• ${f.time}` : ""}
                           </span>
                         </div>
 
@@ -634,8 +648,8 @@ export default function LeadDetails() {
 
                         <div className="text-xs font-bold text-teal-500 flex items-center gap-1.5">
                           <User size={12} />
-                          Followed up by:{" "}
-                          {f.author || currentLead.assignedTo || "System"}
+                          {f.isFollowup ? "Followed up by" : "Logged by"}:{" "}
+                          {f.author}
                         </div>
                       </div>
                     </div>
@@ -650,8 +664,8 @@ export default function LeadDetails() {
       {/* Modals/Dialogs */}
       {followupOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-brand-light/50 backdrop-blur-sm">
-          <div className="bg-brand-light border border-brand-secondary rounded-2xl w-full max-w-md overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
-            <div className="flex justify-between items-center p-4 border-b border-brand-secondary">
+          <div className="bg-brand-light border border-brand-secondary rounded-2xl w-full max-w-md shadow-2xl flex flex-col max-h-[90vh]">
+            <div className="flex justify-between items-center p-4 border-b border-brand-secondary rounded-t-2xl">
               <h3 className="font-bold text-brand-primary text-lg">
                 Schedule Agenda Follow-up
               </h3>
@@ -695,14 +709,11 @@ export default function LeadDetails() {
                     <label className="block text-xs font-medium text-brand-primary/70 mb-1.5">
                       Due Date
                     </label>
-                    <input
-                      type="date"
+                    <DatePicker
                       value={newFw.date}
                       onChange={(e) =>
                         setNewFw({ ...newFw, date: e.target.value })
                       }
-                      className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block p-2.5 outline-none"
-                      style={{ colorScheme: "dark" }}
                     />
                   </div>
                   <div>

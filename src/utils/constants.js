@@ -11,4 +11,10 @@ export const API_ENDPOINTS = {
   LEADS: {
     BASE: `${API_BASE_URL}/leads`,
   },
+  ACTIVITIES: {
+    BASE: `${API_BASE_URL}/activities`,
+  },
+  FOLLOWUPS: {
+    BASE: `${API_BASE_URL}/followups`,
+  },
 };

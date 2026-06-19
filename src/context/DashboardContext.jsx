@@ -7,11 +7,8 @@ const DashboardContext = createContext(null);
 
 export function DashboardProvider({ children }) {
   const { currentUser, allUsers } = useAuth();
-  const {
-    leads: rawLeads,
-    followups: rawFollowups,
-    activities: rawActivities,
-  } = useLeads();
+
+  const { leads: rawLeads, followups: rawFollowups } = useLeads();
 
   // Filter based on user role: if Sales Representative, only show their assigned leads for simple dashboard KPIs
   const leads = useMemo(() => {
@@ -35,19 +32,6 @@ export function DashboardProvider({ children }) {
     }
     return rawFollowups;
   }, [rawFollowups, rawLeads, currentUser]);
-
-  const activities = useMemo(() => {
-    if (currentUser && currentUser.role === "Sales Representative") {
-      return rawActivities.filter((act) => {
-        const lead = rawLeads.find((l) => l.id === act.leadId);
-        return (
-          lead &&
-          lead.assignedTo?.toLowerCase() === currentUser.name?.toLowerCase()
-        );
-      });
-    }
-    return rawActivities;
-  }, [rawActivities, rawLeads, currentUser]);
 
   const stats = useMemo(() => {
     const totalLeads = leads.length;
@@ -168,8 +152,8 @@ export function DashboardProvider({ children }) {
           let respondedLeadsCount = 0;
 
           repLeadsData.forEach((lead) => {
-            const repActivities = rawActivities.filter(
-              (a) => a.leadId === lead.id && a.author === p.name,
+            const repActivities = rawFollowups.filter(
+              (a) => a.done && a.leadId === lead.id && a.author === p.name,
             );
             if (repActivities.length > 0) {
               repActivities.sort((a, b) => new Date(a.date) - new Date(b.date));
@@ -224,9 +208,9 @@ export function DashboardProvider({ children }) {
       overdueFollowupsCount: overdueFws.length,
       leadSourceData,
       performersList,
-      recentActivities: activities.slice(0, 10),
+      recentActivities: followups.filter((f) => f.done).slice(0, 10),
     };
-  }, [leads, followups, activities, rawLeads, rawFollowups, allUsers]);
+  }, [leads, followups, rawLeads, rawFollowups, allUsers]);
 
   return (
     <DashboardContext.Provider value={stats}>
