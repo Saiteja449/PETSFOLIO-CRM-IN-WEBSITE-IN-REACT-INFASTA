@@ -76,7 +76,9 @@ export function LeadsProvider({ children }) {
           );
         }
         if (updatedFields.status && updatedFields.status !== lead.status) {
-          changes.push(`status to "${updatedFields.status}"`);
+          if (updatedFields.status !== "Follow Up") {
+            changes.push(`status to "${updatedFields.status}"`);
+          }
         }
 
         if (changes.length > 0) {

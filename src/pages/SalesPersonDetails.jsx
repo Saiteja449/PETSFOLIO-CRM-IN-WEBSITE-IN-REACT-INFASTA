@@ -48,7 +48,7 @@ export default function SalesPersonDetails() {
   const lostLeads = repLeads.filter((l) => {
     const s = l.status?.toLowerCase();
     return (
-      s === "price issue" || s === "not responding" || s === "not answered"
+      s === "price issue" || s === "not answered" || s === "not interested"
     );
   });
 
@@ -90,7 +90,7 @@ export default function SalesPersonDetails() {
         return "bg-indigo-500/10 text-indigo-500 border border-indigo-500/20 font-extrabold";
       case "not attended":
       case "price issue":
-      case "not responding":
+
       case "not answered":
         return "bg-red-500/10 text-red-500 border border-red-500/20";
       default:

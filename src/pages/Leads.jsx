@@ -145,7 +145,6 @@ export default function Leads() {
     const s = l.status?.toLowerCase();
     return (
       s === "price issue" ||
-      s === "not responding" ||
       s === "not answered" ||
       s === "not interested"
     );
@@ -164,7 +163,6 @@ export default function Leads() {
     if (leadTypeTab === "Lost")
       return (
         s === "price issue" ||
-        s === "not responding" ||
         s === "not answered" ||
         s === "not interested"
       );
@@ -250,7 +248,6 @@ export default function Leads() {
         return "bg-indigo-500/10 text-indigo-500 border border-indigo-500/20 font-extrabold";
       case "not attended":
       case "price issue":
-      case "not responding":
       case "not answered":
       case "not interested":
         return "bg-red-500/10 text-red-500 border border-red-500/20";
@@ -416,7 +413,7 @@ export default function Leads() {
               <option value="New">New</option>
               <option value="Follow Up">Follow Up</option>
               <option value="Not Interested">Not Interested</option>
-              <option value="Not Responding">Not Responding</option>
+              <option value="Not Attended">Not Attended</option>
               <option value="Price Issue">Price Issue</option>
               <option value="Joined">Joined</option>
               <option value="Job Posted">Job Posted</option>
@@ -954,7 +951,7 @@ export default function Leads() {
                       <option value="New">New</option>
                       <option value="Follow Up">Follow Up</option>
                       <option value="Not Attended">Not Attended</option>
-                      <option value="Not Responding">Not Responding</option>
+
                       <option value="Not Answered">Not Answered</option>
                       <option value="Price Issue">Price Issue</option>
                       <option value="Joined">Joined</option>

@@ -104,7 +104,6 @@ export default function DailyAgenda() {
       if (
         status === "joined" ||
         status === "price issue" ||
-        status === "not responding" ||
         status === "not answered" ||
         status === "not interested"
       ) {

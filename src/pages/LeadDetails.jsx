@@ -491,7 +491,7 @@ export default function LeadDetails() {
                     <option value="New">New</option>
                     <option value="Follow Up">Follow Up</option>
                     <option value="Not Interested">Not Interested</option>
-                    <option value="Not Responding">Not Responding</option>
+                    <option value="Not Attended">Not Attended</option>
                     <option value="Price Issue">Price Issue</option>
                     <option value="Joined">Joined</option>
                     <option value="Job Posted">Job Posted</option>

@@ -79,7 +79,7 @@ export function getStatusColor(status) {
   if (st === "follow up" || st === "followup" || st === "followups")
     return "primary";
   if (st === "not interested" || st === "not intersted") return "error";
-  if (st === "not responding") return "warning";
+  if (st === "not attended") return "warning";
   if (st === "price issue") return "error";
   if (st === "job posted") return "secondary";
   if (st === "joined") return "success";
