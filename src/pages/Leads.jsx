@@ -285,14 +285,12 @@ export default function Leads() {
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>
-          {currentUser?.role !== "Sales Representative" && (
-            <button
-              onClick={handleOpenAdd}
-              className="flex items-center gap-2 px-4 py-2 bg-sky-600 hover:bg-sky-700 text-brand-primary text-sm font-bold rounded-lg transition-colors"
-            >
-              <Plus className="w-4 h-4" /> Add New Lead
-            </button>
-          )}
+          <button
+            onClick={handleOpenAdd}
+            className="flex items-center gap-2 px-4 py-2 bg-sky-600 hover:bg-sky-700 text-brand-primary text-sm font-bold rounded-lg transition-colors"
+          >
+            <Plus className="w-4 h-4" /> Add New Lead
+          </button>
         </div>
       </div>
 
