@@ -100,17 +100,20 @@ export default function LeadDetails() {
 
   const combinedHistory = leadFollowups
     .map((f) => {
-      const d = new Date(f.date + "T" + (f.time || "00:00:00"));
+      const scheduledD = new Date(f.date + "T" + (f.time || "00:00:00"));
+      const creationDateStr = f.createdAt || new Date().toISOString();
+      const creationD = new Date(creationDateStr);
       return {
         id: f.id,
         isFollowup: !f.done,
         type: f.type,
         priority: f.priority,
-        rawDate: d.getTime(),
-        date: f.date,
-        time: f.time || "",
+        rawDate: creationD.getTime(),
+        scheduledDate: f.date,
+        scheduledTime: f.time || "",
         notes: f.notes,
         author: f.author || currentLead.assignedTo || "System",
+        createdAt: creationDateStr,
       };
     })
     .sort((a, b) => b.rawDate - a.rawDate);
@@ -614,29 +617,40 @@ export default function LeadDetails() {
                   >
                     <div className="flex gap-4 items-start w-full">
                       <div className="min-w-0 flex-grow">
-                        <div className="flex flex-wrap items-center gap-2 mb-1.5">
-                          <h4 className="text-sm font-bold text-brand-primary">
-                            {f.type}{" "}
-                            {f.isFollowup ? "Engagement Channel" : "Log"}
-                          </h4>
-                          <span
-                            className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
-                              f.priority === "High"
-                                ? "bg-red-500/10 text-red-500 border border-red-500/20"
-                                : f.priority === "Medium"
-                                  ? "bg-blue-500/10 text-blue-500 border border-blue-500/20"
-                                  : "bg-brand-secondary/30 text-brand-primary/70 border border-brand-secondary"
-                            }`}
-                          >
-                            {f.priority}
-                          </span>
+                        <div className="flex justify-between items-start mb-1.5">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <h4 className="text-sm font-bold text-brand-primary">
+                              {f.type}{" "}
+                              {f.isFollowup ? "Engagement Channel" : "Log"}
+                            </h4>
+                            <span
+                              className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
+                                f.priority === "High"
+                                  ? "bg-red-500/10 text-red-500 border border-red-500/20"
+                                  : f.priority === "Medium"
+                                    ? "bg-blue-500/10 text-blue-500 border border-blue-500/20"
+                                    : "bg-brand-secondary/30 text-brand-primary/70 border border-brand-secondary"
+                              }`}
+                            >
+                              {f.priority}
+                            </span>
+                          </div>
+                          
+                          {f.isFollowup && (
+                            <div className="text-right">
+                              <span className="block text-[10px] font-bold text-brand-primary/70 uppercase tracking-wider">Scheduled {f.type}</span>
+                              <span className="text-xs font-bold text-teal-600 bg-teal-500/10 px-2 py-1 rounded">
+                                {formatDate(f.scheduledDate)} {f.scheduledTime ? `• ${f.scheduledTime}` : ""}
+                              </span>
+                            </div>
+                          )}
                         </div>
 
                         <div className="flex items-center gap-1.5 text-xs text-brand-primary/70 mb-2">
                           <Calendar size={14} />
                           <span>
                             {f.isFollowup ? "Updated on" : "Logged on"}:{" "}
-                            {formatDate(f.date)} {f.time ? `• ${f.time}` : ""}
+                            {formatDate(f.createdAt)} • {new Date(f.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                           </span>
                         </div>
 

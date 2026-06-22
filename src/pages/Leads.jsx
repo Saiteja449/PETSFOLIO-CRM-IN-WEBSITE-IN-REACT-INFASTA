@@ -117,12 +117,19 @@ export default function Leads() {
   ).length;
 
   const todayFollowupsCount = rawProcessedLeads.filter(
-    (l) =>
-      l.status?.toLowerCase() === "follow up" && l.nextFollowUp === todayStr,
+    (l) => {
+      if (l.status?.toLowerCase() !== "follow up") return false;
+      const fDate = l.nextFollowUp?.split("T")[0];
+      return !fDate || fDate <= todayStr;
+    }
   ).length;
 
   const upcomingFollowupsCount = rawProcessedLeads.filter(
-    (l) => l.status?.toLowerCase() === "follow up" && l.nextFollowUp > todayStr,
+    (l) => {
+      if (l.status?.toLowerCase() !== "follow up") return false;
+      const fDate = l.nextFollowUp?.split("T")[0];
+      return fDate && fDate > todayStr;
+    }
   ).length;
 
   const jobPostedCount = rawProcessedLeads.filter(
@@ -135,42 +142,35 @@ export default function Leads() {
     (l) => l.status?.toLowerCase() === "joined",
   ).length;
   const notAttendedCount = rawProcessedLeads.filter((l) => {
-    return (
-      l.status?.toLowerCase() === "not attended" ||
-      (l.status?.toLowerCase() === "follow up" && l.nextFollowUp < todayStr)
-    );
+    return l.status?.toLowerCase() === "not attended";
   }).length;
 
   const lostCount = rawProcessedLeads.filter((l) => {
     const s = l.status?.toLowerCase();
     return (
-      s === "price issue" ||
-      s === "not answered" ||
-      s === "not interested"
+      s === "price issue" || s === "not answered" || s === "not interested"
     );
   }).length;
 
   const processedLeads = rawProcessedLeads.filter((lead) => {
     const s = lead.status?.toLowerCase() || "";
     if (leadTypeTab === "New") return s === "new";
-    if (leadTypeTab === "TodayFollowup")
-      return s === "follow up" && lead.nextFollowUp === todayStr;
-    if (leadTypeTab === "UpcomingFollowup")
-      return s === "follow up" && lead.nextFollowUp > todayStr;
+    if (leadTypeTab === "TodayFollowup") {
+      const fDate = lead.nextFollowUp?.split("T")[0];
+      return s === "follow up" && (!fDate || fDate <= todayStr);
+    }
+    if (leadTypeTab === "UpcomingFollowup") {
+      const fDate = lead.nextFollowUp?.split("T")[0];
+      return s === "follow up" && (fDate && fDate > todayStr);
+    }
     if (leadTypeTab === "JobPosted") return s === "job posted";
     if (leadTypeTab === "Converted") return s === "job assigned";
     if (leadTypeTab === "Joined") return s === "joined";
     if (leadTypeTab === "Lost")
       return (
-        s === "price issue" ||
-        s === "not answered" ||
-        s === "not interested"
+        s === "price issue" || s === "not answered" || s === "not interested"
       );
-    if (leadTypeTab === "NotAttended")
-      return (
-        s === "not attended" ||
-        (s === "follow up" && lead.nextFollowUp < todayStr)
-      );
+    if (leadTypeTab === "NotAttended") return s === "not attended";
     return true;
   });
 

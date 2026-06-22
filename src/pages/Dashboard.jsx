@@ -119,14 +119,14 @@ export default function Dashboard() {
                   : "text-brand-primary/70"
               }`}
             >
-              {stats.overdueFollowupsCount > 0 ? (
+              {/* {stats.overdueFollowupsCount > 0 ? (
                 <>
                   <AlertTriangle className="w-3.5 h-3.5" />
                   {stats.overdueFollowupsCount} Overdue Backlogs
                 </>
               ) : (
                 "Fully streamlined"
-              )}
+              )} */}
             </div>
           </div>
           <div

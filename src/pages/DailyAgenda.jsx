@@ -54,7 +54,7 @@ const LeadCard = ({ lead, navigate }) => (
         className={`px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider ${
           lead.status?.toLowerCase() === "not attended" ||
           (lead.nextFollowUp &&
-            lead.nextFollowUp < new Date().toISOString().split("T")[0] &&
+            lead.nextFollowUp.split("T")[0] < new Date().toISOString().split("T")[0] &&
             lead.status === "Follow Up")
             ? "bg-red-500/10 text-red-500 border border-red-500/20"
             : lead.status === "New"
@@ -118,7 +118,7 @@ export default function DailyAgenda() {
         (status === "new" && joinedStr <= yesterdayStr) ||
         (status === "follow up" &&
           lead.nextFollowUp &&
-          lead.nextFollowUp < todayStr)
+          lead.nextFollowUp.split("T")[0] < todayStr)
       ) {
         urgent.push({ ...lead, isUrgent: true });
         return;
@@ -131,7 +131,7 @@ export default function DailyAgenda() {
       }
 
       // Rule 3: Today's Followups
-      if (status === "follow up" && lead.nextFollowUp === todayStr) {
+      if (status === "follow up" && lead.nextFollowUp?.split("T")[0] === todayStr) {
         scheduled.push(lead);
         return;
       }
@@ -288,7 +288,7 @@ export default function DailyAgenda() {
                         className={`px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-wider ${
                           lead.status?.toLowerCase() === "not attended" ||
                           (lead.nextFollowUp &&
-                            lead.nextFollowUp <
+                            lead.nextFollowUp.split("T")[0] <
                               new Date().toISOString().split("T")[0] &&
                             lead.status === "Follow Up")
                             ? "bg-red-500/10 text-red-500 border border-red-500/20"

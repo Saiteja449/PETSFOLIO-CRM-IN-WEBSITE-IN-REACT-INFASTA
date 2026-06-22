@@ -30,9 +30,19 @@ export default function SalesPersonDetails() {
   const repLeads = leads.filter((l) => l.assignedTo === decodedName);
 
   const newLeads = repLeads.filter((l) => l.status?.toLowerCase() === "new");
-  const followupLeads = repLeads.filter(
-    (l) => l.status?.toLowerCase() === "follow up",
-  );
+  const todayStr = new Date().toISOString().split("T")[0];
+
+  const todayFollowups = repLeads.filter((l) => {
+    if (l.status?.toLowerCase() !== "follow up") return false;
+    const fDate = l.nextFollowUp?.split("T")[0];
+    return !fDate || fDate <= todayStr;
+  });
+
+  const upcomingFollowups = repLeads.filter((l) => {
+    if (l.status?.toLowerCase() !== "follow up") return false;
+    const fDate = l.nextFollowUp?.split("T")[0];
+    return fDate && fDate > todayStr;
+  });
   const convertedLeads = repLeads.filter(
     (l) => l.status?.toLowerCase() === "job assigned",
   );
@@ -55,9 +65,11 @@ export default function SalesPersonDetails() {
   const displayedLeads =
     activeTab === "New Leads"
       ? newLeads
-      : activeTab === "Followup Leads"
-        ? followupLeads
-        : activeTab === "Converted Leads"
+      : activeTab === "Today Followups"
+        ? todayFollowups
+        : activeTab === "Upcoming Followups"
+          ? upcomingFollowups
+          : activeTab === "Converted Leads"
           ? convertedLeads
           : activeTab === "Lost Leads"
             ? lostLeads
@@ -134,7 +146,8 @@ export default function SalesPersonDetails() {
         {[
           { name: "New Leads", count: newLeads.length },
           { name: "Not Attended", count: notAttendedLeads.length },
-          { name: "Followup Leads", count: followupLeads.length },
+          { name: "Today Followups", count: todayFollowups.length },
+          { name: "Upcoming Followups", count: upcomingFollowups.length },
           { name: "Converted Leads", count: convertedLeads.length },
           { name: "Job Posted", count: jobPostedLeads.length },
           { name: "Joined Leads", count: joinedLeads.length },

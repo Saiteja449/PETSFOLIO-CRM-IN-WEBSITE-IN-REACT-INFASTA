@@ -54,7 +54,7 @@ export function DashboardProvider({ children }) {
     const wonLeads = leads.filter(isLeadWon);
     const totalWonCount = wonLeads.length;
     const jobsAssignedCount = leads.filter(
-      (l) => l.assignedTo && l.assignedTo.trim() !== "",
+      (l) => l.status === "Job Assigned",
     ).length;
 
     // Conversion %
@@ -86,7 +86,7 @@ export function DashboardProvider({ children }) {
     }));
 
     // Today's Date
-    const TODAY = "2026-05-26";
+    const TODAY = new Date().toISOString().split("T")[0];
     const todaysFws = followups.filter((fw) => fw.date === TODAY && !fw.done);
     const overdueFws = followups.filter((fw) => fw.date < TODAY && !fw.done);
 
