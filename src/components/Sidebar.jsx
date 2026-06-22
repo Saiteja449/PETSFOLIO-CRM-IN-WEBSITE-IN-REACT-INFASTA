@@ -46,7 +46,12 @@ export default function Sidebar({ mobileOpen, handleDrawerToggle }) {
   ];
 
   const handleNav = (path) => {
-    navigate(path);
+    if (path === "/leads") {
+      const storedPath = sessionStorage.getItem("lastLeadsPath") || "/leads/new";
+      navigate(storedPath);
+    } else {
+      navigate(path);
+    }
     if (handleDrawerToggle && mobileOpen) {
       handleDrawerToggle();
     }

@@ -58,7 +58,8 @@ export default function App() {
           <Route path="/login" element={<Login />} />
           <Route element={<AppLayout />}>
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/leads" element={<Leads />} />
+            <Route path="/leads" element={<Navigate to="/leads/new" replace />} />
+            <Route path="/leads/:statusParam" element={<Leads />} />
             <Route path="/lead-details/:id" element={<LeadDetails />} />
             <Route
               path="/pipeline"

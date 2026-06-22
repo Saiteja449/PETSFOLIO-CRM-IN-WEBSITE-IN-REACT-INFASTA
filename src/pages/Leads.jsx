@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Plus,
   Search,
@@ -15,6 +15,8 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
+import axios from "axios";
+import { API_ENDPOINTS } from "../utils/constants.js";
 import { useLeads } from "../context/LeadsContext.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
 import {
@@ -37,6 +39,7 @@ const Badge = ({ children, colorClass, className = "" }) => (
 
 export default function Leads() {
   const navigate = useNavigate();
+  const { statusParam } = useParams();
   const scrollContainerRef = useRef(null);
 
   const handleScroll = (direction) => {
@@ -49,18 +52,44 @@ export default function Leads() {
     }
   };
 
-  const { leads, addLead, updateLead, deleteLead, activeServices } = useLeads();
+  const { addLead, updateLead, deleteLead, activeServices } = useLeads();
   const { allUsers, currentUser } = useAuth();
+
+  const paramToTab = {
+    new: "New",
+    todayfollowups: "TodayFollowup",
+    upcomingfollowups: "UpcomingFollowup",
+    notattended: "NotAttended",
+    joined: "Joined",
+    jobposted: "JobPosted",
+    converted: "Converted",
+    lost: "Lost",
+  };
+  const tabToParam = {
+    New: "new",
+    TodayFollowup: "todayfollowups",
+    UpcomingFollowup: "upcomingfollowups",
+    NotAttended: "notattended",
+    Joined: "joined",
+    JobPosted: "jobposted",
+    Converted: "converted",
+    Lost: "lost",
+  };
 
   const [search, setSearch] = useState("");
   const [service, setService] = useState("All");
 
   const [salesperson, setSalesperson] = useState("All");
   const [status, setStatus] = useState("All");
-  const [leadTypeTab, setLeadTypeTab] = useState("New");
+
+  const leadTypeTab = paramToTab[statusParam?.toLowerCase()] || "New";
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [paginatedLeads, setPaginatedLeads] = useState([]);
+  const [totalLeadsCount, setTotalLeadsCount] = useState(0);
+  const [tabCounts, setTabCounts] = useState({});
+  const [triggerFetch, setTriggerFetch] = useState(0);
 
   const [addOpen, setAddOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
@@ -85,6 +114,32 @@ export default function Leads() {
   const [deleteId, setDeleteId] = useState(null);
 
   const salespeople = (allUsers || []).map((u) => u.name);
+  const tabsData = [
+    { name: "New", label: "New Leads", count: tabCounts.New || 0 },
+    {
+      name: "TodayFollowup",
+      label: "Today Followups",
+      count: tabCounts.TodayFollowup || 0,
+    },
+    {
+      name: "UpcomingFollowup",
+      label: "Upcoming Followups",
+      count: tabCounts.UpcomingFollowup || 0,
+    },
+    {
+      name: "NotAttended",
+      label: "Not Attended",
+      count: tabCounts.NotAttended || 0,
+    },
+    { name: "Joined", label: "Joined", count: tabCounts.Joined || 0 },
+    { name: "JobPosted", label: "Job Posted", count: tabCounts.JobPosted || 0 },
+    {
+      name: "Converted",
+      label: "Job Assigned",
+      count: tabCounts.Converted || 0,
+    },
+    { name: "Lost", label: "Lost/Dropped", count: tabCounts.Lost || 0 },
+  ];
   const sources = [
     "Email",
     "WhatsApp",
@@ -94,87 +149,53 @@ export default function Leads() {
     "Manual Entry",
   ];
 
-  const viewableLeads =
-    currentUser && currentUser.role === "Sales Representative"
-      ? leads.filter(
-          (l) =>
-            l.assignedTo?.toLowerCase() === currentUser.name?.toLowerCase(),
-        )
-      : leads;
-
-  const rawProcessedLeads = filterLeads(viewableLeads, {
+  React.useEffect(() => {
+    const fetchLeads = async () => {
+      try {
+        const queryParams = new URLSearchParams({
+          page,
+          limit: rowsPerPage,
+          search,
+          service,
+          salesperson,
+          status,
+          leadTypeTab,
+          currentUserRole: currentUser?.role || "",
+          currentUserName: currentUser?.name || "",
+        });
+        const res = await axios.get(
+          `${API_ENDPOINTS.LEADS.BASE}/paginated?${queryParams}`,
+        );
+        setPaginatedLeads(res.data.leads || []);
+        setTotalLeadsCount(res.data.totalCount || 0);
+        setTabCounts(res.data.tabCounts || {});
+      } catch (error) {
+        console.error("Error fetching paginated leads:", error);
+      }
+    };
+    if (currentUser) {
+      fetchLeads();
+    }
+  }, [
+    page,
+    rowsPerPage,
     search,
     service,
-
     salesperson,
     status,
-  });
+    leadTypeTab,
+    currentUser,
+    triggerFetch,
+  ]);
 
-  const todayStr = new Date().toISOString().split("T")[0];
-
-  const newCount = rawProcessedLeads.filter(
-    (l) => l.status?.toLowerCase() === "new",
-  ).length;
-
-  const todayFollowupsCount = rawProcessedLeads.filter(
-    (l) => {
-      if (l.status?.toLowerCase() !== "follow up") return false;
-      const fDate = l.nextFollowUp?.split("T")[0];
-      return !fDate || fDate <= todayStr;
-    }
-  ).length;
-
-  const upcomingFollowupsCount = rawProcessedLeads.filter(
-    (l) => {
-      if (l.status?.toLowerCase() !== "follow up") return false;
-      const fDate = l.nextFollowUp?.split("T")[0];
-      return fDate && fDate > todayStr;
-    }
-  ).length;
-
-  const jobPostedCount = rawProcessedLeads.filter(
-    (l) => l.status?.toLowerCase() === "job posted",
-  ).length;
-  const convertedCount = rawProcessedLeads.filter(
-    (l) => l.status?.toLowerCase() === "job assigned",
-  ).length;
-  const joinedCount = rawProcessedLeads.filter(
-    (l) => l.status?.toLowerCase() === "joined",
-  ).length;
-  const notAttendedCount = rawProcessedLeads.filter((l) => {
-    return l.status?.toLowerCase() === "not attended";
-  }).length;
-
-  const lostCount = rawProcessedLeads.filter((l) => {
-    const s = l.status?.toLowerCase();
-    return (
-      s === "price issue" || s === "not answered" || s === "not interested"
+  React.useEffect(() => {
+    sessionStorage.setItem(
+      "lastLeadsPath",
+      `/leads/${tabToParam[leadTypeTab] || "new"}`,
     );
-  }).length;
+  }, [leadTypeTab]);
 
-  const processedLeads = rawProcessedLeads.filter((lead) => {
-    const s = lead.status?.toLowerCase() || "";
-    if (leadTypeTab === "New") return s === "new";
-    if (leadTypeTab === "TodayFollowup") {
-      const fDate = lead.nextFollowUp?.split("T")[0];
-      return s === "follow up" && (!fDate || fDate <= todayStr);
-    }
-    if (leadTypeTab === "UpcomingFollowup") {
-      const fDate = lead.nextFollowUp?.split("T")[0];
-      return s === "follow up" && (fDate && fDate > todayStr);
-    }
-    if (leadTypeTab === "JobPosted") return s === "job posted";
-    if (leadTypeTab === "Converted") return s === "job assigned";
-    if (leadTypeTab === "Joined") return s === "joined";
-    if (leadTypeTab === "Lost")
-      return (
-        s === "price issue" || s === "not answered" || s === "not interested"
-      );
-    if (leadTypeTab === "NotAttended") return s === "not attended";
-    return true;
-  });
-
-  const totalPages = Math.ceil(processedLeads.length / rowsPerPage);
+  const totalPages = Math.ceil(totalLeadsCount / rowsPerPage);
 
   const handleOpenAdd = () => {
     setFormFields(defaultFormFields);
@@ -193,6 +214,7 @@ export default function Leads() {
     try {
       await addLead(toSave, currentUser?.name || "System");
       setAddOpen(false);
+      setTriggerFetch((prev) => prev + 1);
     } catch (error) {
       alert("Failed to add lead. Please try again.");
     }
@@ -225,9 +247,7 @@ export default function Leads() {
         currentUser?.name || "System",
       );
       setEditOpen(false);
-      if (selectedLead) {
-        setSelectedLead({ ...selectedLead, ...formFields });
-      }
+      setTriggerFetch((prev) => prev + 1);
     } catch (error) {
       alert("Failed to update lead. Please try again.");
     }
@@ -299,39 +319,14 @@ export default function Leads() {
           ref={scrollContainerRef}
           className="flex overflow-x-auto scroll-smooth w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']"
         >
-          {[
-            { name: "New", label: "New Leads", count: newCount },
-            {
-              name: "TodayFollowup",
-              label: "Today Followups",
-              count: todayFollowupsCount,
-            },
-            {
-              name: "UpcomingFollowup",
-              label: "Upcoming Followups",
-              count: upcomingFollowupsCount,
-            },
-            {
-              name: "NotAttended",
-              label: "Not Attended",
-              count: notAttendedCount,
-            },
-            { name: "Joined", label: "Joined Leads", count: joinedCount },
-            { name: "JobPosted", label: "Job Posted", count: jobPostedCount },
-            {
-              name: "Converted",
-              label: "Converted Leads",
-              count: convertedCount,
-            },
-            { name: "Lost", label: "Lost Leads", count: lostCount },
-          ].map((tab) => (
+          {tabsData.map((tab) => (
             <button
               key={tab.name}
               onClick={() => {
-                setLeadTypeTab(tab.name);
                 setPage(0);
+                navigate(`/leads/${tabToParam[tab.name]}`);
               }}
-              className={`flex items-center gap-2 px-4 py-3 text-sm font-bold whitespace-nowrap border-b-2 transition-colors shrink-0 ${
+              className={`flex-shrink-0 px-4 py-3 text-sm font-bold border-b-2 whitespace-nowrap transition-colors ${
                 leadTypeTab === tab.name
                   ? "border-teal-500 text-teal-500"
                   : "border-transparent text-brand-primary/70 hover:text-brand-primary hover:border-brand-secondary"
@@ -339,7 +334,7 @@ export default function Leads() {
             >
               {tab.label}
               <span
-                className={`px-1.5 py-0.5 rounded text-[10px] ${
+                className={`ml-2 px-1.5 py-0.5 rounded text-[10px] ${
                   leadTypeTab === tab.name
                     ? "bg-teal-500/20 text-teal-500"
                     : "bg-brand-secondary/30 text-brand-primary/70"
@@ -422,201 +417,196 @@ export default function Leads() {
       </div>
 
       {/* Leads Result Area */}
-      {processedLeads.length === 0 ? (
-        <div className="bg-brand-light border border-brand-secondary rounded-2xl p-12 text-center">
-          <PawPrint className="w-16 h-16 text-brand-primary/70 mx-auto mb-4" />
-          <h3 className="text-lg font-bold text-brand-primary">
-            No Leads Matching Query
-          </h3>
-          <p className="text-sm text-brand-primary/70 mt-1">
-            Try adjusting your search criteria or add filters to see results.
-          </p>
-        </div>
-      ) : (
-        <div className="bg-brand-light border border-brand-secondary rounded-2xl overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse min-w-[800px]">
-              <thead>
-                <tr className="bg-brand-light border-b border-brand-secondary">
-                  <th className="px-4 py-3 text-xs font-bold text-brand-primary uppercase tracking-wider">
-                    Client Name
-                  </th>
-                  <th className="px-4 py-3 text-xs font-bold text-brand-primary uppercase tracking-wider">
-                    Phone Number
-                  </th>
-                  <th className="px-4 py-3 text-xs font-bold text-brand-primary uppercase tracking-wider">
-                    Source
-                  </th>
-                  <th className="px-4 py-3 text-xs font-bold text-brand-primary uppercase tracking-wider">
-                    Service
-                  </th>
+      <div className="bg-brand-light border border-brand-secondary rounded-2xl overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse min-w-[800px]">
+            <thead>
+              <tr className="bg-brand-light border-b border-brand-secondary">
+                <th className="px-4 py-3 text-xs font-bold text-brand-primary uppercase tracking-wider">
+                  Client Name
+                </th>
+                <th className="px-4 py-3 text-xs font-bold text-brand-primary uppercase tracking-wider">
+                  Phone Number
+                </th>
+                <th className="px-4 py-3 text-xs font-bold text-brand-primary uppercase tracking-wider">
+                  Source
+                </th>
+                <th className="px-4 py-3 text-xs font-bold text-brand-primary uppercase tracking-wider">
+                  Service
+                </th>
 
-                  {currentUser?.role !== "Sales Representative" && (
-                    <th className="px-4 py-3 text-xs font-bold text-brand-primary uppercase tracking-wider">
-                      Assigned to
-                    </th>
-                  )}
+                {currentUser?.role !== "Sales Representative" && (
                   <th className="px-4 py-3 text-xs font-bold text-brand-primary uppercase tracking-wider">
-                    Enquired On
+                    Assigned to
                   </th>
-                  <th className="px-4 py-3 text-xs font-bold text-brand-primary uppercase tracking-wider">
-                    Status
-                  </th>
-                  <th className="px-4 py-3 text-xs font-bold text-brand-primary uppercase tracking-wider text-right">
-                    Tools
-                  </th>
+                )}
+                <th className="px-4 py-3 text-xs font-bold text-brand-primary uppercase tracking-wider">
+                  Enquired On
+                </th>
+                <th className="px-4 py-3 text-xs font-bold text-brand-primary uppercase tracking-wider">
+                  Status
+                </th>
+                <th className="px-4 py-3 text-xs font-bold text-brand-primary uppercase tracking-wider text-right">
+                  Tools
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {paginatedLeads.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan="8"
+                    className="py-8 text-center text-sm text-brand-primary/70"
+                  >
+                    No customer files found for the current configuration.
+                  </td>
                 </tr>
-              </thead>
-              <tbody className="divide-y divide-brand-secondary">
-                {processedLeads
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((lead) => (
-                    <tr
-                      key={lead.id}
-                      className="hover:bg-brand-secondary/30/50 transition-colors"
-                    >
-                      <td className="px-4 py-3">
-                        <div className="flex flex-col gap-1">
-                          <div className="flex items-center gap-2">
-                            <button
-                              onClick={() =>
-                                navigate(`/lead-details/${lead.id}`)
-                              }
-                              className="text-sm font-bold text-teal-400 hover:text-teal-300 hover:underline text-left"
-                            >
-                              {lead.name}
-                            </button>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-4 py-3 text-sm text-brand-primary">
-                        {lead.phone}
-                      </td>
-                      <td className="px-4 py-3">
-                        <Badge
-                          colorClass="bg-brand-secondary/30 text-brand-primary border border-brand-secondary"
-                          className="font-medium"
-                        >
-                          {lead.source}
-                        </Badge>
-                      </td>
-                      <td className="px-4 py-3">
+              ) : (
+                paginatedLeads.map((lead) => (
+                  <tr
+                    key={lead.id}
+                    className="hover:bg-brand-secondary/30/50 transition-colors border-b-1 border-b-brand-secondary"
+                  >
+                    <td className="px-4 py-3">
+                      <div className="flex flex-col gap-1">
                         <div className="flex items-center gap-2">
-                          <div
-                            className="w-2 h-2 rounded-full"
-                            style={{
-                              backgroundColor: getServiceColor(lead.service),
-                            }}
-                          ></div>
-                          <span className="text-sm font-semibold text-brand-primary">
-                            {lead.service}
-                          </span>
-                        </div>
-                      </td>
-                      {currentUser?.role !== "Sales Representative" && (
-                        <td className="px-4 py-3 text-sm text-brand-primary">
-                          {lead.assignedTo || "Unassigned"}
-                        </td>
-                      )}
-                      <td className="px-4 py-3 text-sm">
-                        {lead.joinedAt ? (
-                          <div
-                            className={`flex items-center gap-1.5 ${
-                              lead.joinedAt < "2026-05-26"
-                                ? "text-red-400"
-                                : "text-brand-primary/70"
-                            }`}
-                          >
-                            <Calendar className="w-3.5 h-3.5" />
-                            {formatDate(lead.joinedAt)}
-                          </div>
-                        ) : (
-                          <span className="text-brand-primary/70">-</span>
-                        )}
-                      </td>
-                      <td className="px-4 py-3">
-                        <Badge
-                          colorClass={getTwStatusColor(lead.status || "New")}
-                        >
-                          {lead.status || "New"}
-                        </Badge>
-                      </td>
-                      <td className="px-4 py-3 text-right">
-                        <div className="flex items-center justify-end gap-1">
-                          <button
-                            onClick={() => handleOpenEdit(lead)}
-                            className="p-1.5 text-brand-primary/70 hover:text-brand-primary hover:bg-brand-secondary/30 rounded transition-colors"
-                            title="Edit"
-                          >
-                            <Edit2 className="w-4 h-4" />
-                          </button>
                           <button
                             onClick={() => navigate(`/lead-details/${lead.id}`)}
-                            className="p-1.5 text-teal-500 hover:text-teal-400 hover:bg-teal-500/10 rounded transition-colors"
-                            title="Open Detail"
+                            className="text-sm font-bold text-teal-400 hover:text-teal-300 hover:underline text-left"
                           >
-                            <ExternalLink className="w-4 h-4" />
+                            {lead.name}
                           </button>
-                          {currentUser?.role !== "Sales Representative" && (
-                            <button
-                              onClick={() => setDeleteId(lead.id)}
-                              className="p-1.5 text-red-500 hover:text-red-400 hover:bg-red-500/10 rounded transition-colors"
-                              title="Delete"
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </button>
-                          )}
                         </div>
+                      </div>
+                    </td>
+                    <td className="px-4 py-3 text-sm text-brand-primary">
+                      {lead.phone}
+                    </td>
+                    <td className="px-4 py-3">
+                      <Badge
+                        colorClass="bg-brand-secondary/30 text-brand-primary border border-brand-secondary"
+                        className="font-medium"
+                      >
+                        {lead.source}
+                      </Badge>
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-2">
+                        <div
+                          className="w-2 h-2 rounded-full"
+                          style={{
+                            backgroundColor: getServiceColor(lead.service),
+                          }}
+                        ></div>
+                        <span className="text-sm font-semibold text-brand-primary">
+                          {lead.service}
+                        </span>
+                      </div>
+                    </td>
+                    {currentUser?.role !== "Sales Representative" && (
+                      <td className="px-4 py-3 text-sm text-brand-primary">
+                        {lead.assignedTo || "Unassigned"}
                       </td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
-          </div>
+                    )}
+                    <td className="px-4 py-3 text-sm">
+                      {lead.joinedAt ? (
+                        <div
+                          className={`flex items-center gap-1.5 ${
+                            lead.joinedAt < "2026-05-26"
+                              ? "text-red-400"
+                              : "text-brand-primary/70"
+                          }`}
+                        >
+                          <Calendar className="w-3.5 h-3.5" />
+                          {formatDate(lead.joinedAt)}
+                        </div>
+                      ) : (
+                        <span className="text-brand-primary/70">-</span>
+                      )}
+                    </td>
+                    <td className="px-4 py-3">
+                      <Badge
+                        colorClass={getTwStatusColor(lead.status || "New")}
+                      >
+                        {lead.status || "New"}
+                      </Badge>
+                    </td>
+                    <td className="px-4 py-3 text-right">
+                      <div className="flex items-center justify-end gap-1">
+                        <button
+                          onClick={() => handleOpenEdit(lead)}
+                          className="p-1.5 text-brand-primary/70 hover:text-brand-primary hover:bg-brand-secondary/30 rounded transition-colors"
+                          title="Edit"
+                        >
+                          <Edit2 className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() => navigate(`/lead-details/${lead.id}`)}
+                          className="p-1.5 text-teal-500 hover:text-teal-400 hover:bg-teal-500/10 rounded transition-colors"
+                          title="Open Detail"
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                        </button>
+                        {currentUser?.role !== "Sales Representative" && (
+                          <button
+                            onClick={() => setDeleteId(lead.id)}
+                            className="p-1.5 text-red-500 hover:text-red-400 hover:bg-red-500/10 rounded transition-colors"
+                            title="Delete"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
 
-          {/* Pagination */}
-          <div className="px-4 py-3 border-t border-brand-secondary flex items-center justify-between">
-            <div className="flex items-center gap-2 text-sm text-brand-primary/70">
-              <span>Rows per page:</span>
-              <select
-                value={rowsPerPage}
-                onChange={(e) => {
-                  setRowsPerPage(Number(e.target.value));
-                  setPage(0);
-                }}
-                className="bg-brand-light border border-brand-secondary rounded px-2 py-1 focus:outline-none focus:border-teal-500"
+        {/* Pagination */}
+        <div className="px-4 py-3 border-t border-brand-secondary flex items-center justify-between">
+          <div className="flex items-center gap-2 text-sm text-brand-primary/70">
+            <span>Rows per page:</span>
+            <select
+              value={rowsPerPage}
+              onChange={(e) => {
+                setRowsPerPage(Number(e.target.value));
+                setPage(0);
+              }}
+              className="bg-brand-light border border-brand-secondary rounded px-2 py-1 focus:outline-none focus:border-teal-500"
+            >
+              <option value={5}>5</option>
+              <option value={10}>10</option>
+              <option value={25}>25</option>
+            </select>
+          </div>
+          <div className="flex items-center gap-4 text-sm text-brand-primary/70">
+            <span>
+              {totalLeadsCount === 0 ? 0 : page * rowsPerPage + 1}-
+              {Math.min((page + 1) * rowsPerPage, totalLeadsCount)} of{" "}
+              {totalLeadsCount}
+            </span>
+            <div className="flex gap-1">
+              <button
+                onClick={() => setPage(Math.max(0, page - 1))}
+                disabled={page === 0}
+                className="px-2 py-1 hover:bg-brand-secondary/30 rounded disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <option value={5}>5</option>
-                <option value={10}>10</option>
-                <option value={25}>25</option>
-              </select>
-            </div>
-            <div className="flex items-center gap-4 text-sm text-brand-primary/70">
-              <span>
-                {page * rowsPerPage + 1}-
-                {Math.min((page + 1) * rowsPerPage, processedLeads.length)} of{" "}
-                {processedLeads.length}
-              </span>
-              <div className="flex gap-1">
-                <button
-                  onClick={() => setPage(Math.max(0, page - 1))}
-                  disabled={page === 0}
-                  className="px-2 py-1 hover:bg-brand-secondary/30 rounded disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  Prev
-                </button>
-                <button
-                  onClick={() => setPage(Math.min(totalPages - 1, page + 1))}
-                  disabled={page >= totalPages - 1}
-                  className="px-2 py-1 hover:bg-brand-secondary/30 rounded disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  Next
-                </button>
-              </div>
+                Prev
+              </button>
+              <button
+                onClick={() => setPage(Math.min(totalPages - 1, page + 1))}
+                disabled={page >= totalPages - 1}
+                className="px-2 py-1 hover:bg-brand-secondary/30 rounded disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Next
+              </button>
             </div>
           </div>
         </div>
-      )}
+      </div>
 
       {/* Drawer */}
       {/* {drawerOpen && selectedLead && (
@@ -1026,6 +1016,7 @@ export default function Leads() {
                   try {
                     await deleteLead(deleteId);
                     setDeleteId(null);
+                    setTriggerFetch((prev) => prev + 1);
                   } catch (error) {
                     alert("Failed to delete lead.");
                   }
