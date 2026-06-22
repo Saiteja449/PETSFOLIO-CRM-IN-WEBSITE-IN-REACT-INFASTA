@@ -124,7 +124,7 @@ export function LeadsProvider({ children }) {
     try {
       const response = await axios.post(API_ENDPOINTS.FOLLOWUPS.BASE, {
         ...fwData,
-        done: false,
+        done: fwData.done !== undefined ? fwData.done : false,
       });
       setFollowups((prev) => [response.data, ...prev]);
     } catch (error) {

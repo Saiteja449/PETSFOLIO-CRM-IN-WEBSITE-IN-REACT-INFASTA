@@ -8,6 +8,9 @@ export const API_ENDPOINTS = {
   USERS: {
     BASE: `${API_BASE_URL}/users`,
   },
+  NOTIFICATIONS: {
+    BASE: `${API_BASE_URL}/notifications`,
+  },
   LEADS: {
     BASE: `${API_BASE_URL}/leads`,
   },

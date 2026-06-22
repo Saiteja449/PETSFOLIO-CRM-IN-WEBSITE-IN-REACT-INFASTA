@@ -103,8 +103,8 @@ export default function TeamPerformance() {
             Team Sales Performance Reports
           </h1>
           <p className="text-sm text-brand-primary/70">
-            Track conversion weights, response times, follow-up index
-            completions, and converted leads per representative.
+            Track conversion weights, follow-up index completions, and converted
+            leads per representative.
           </p>
         </div>
 
@@ -233,9 +233,7 @@ export default function TeamPerformance() {
               <th className="py-3 px-4 text-xs font-bold text-brand-primary uppercase tracking-wider">
                 Follow-up %
               </th>
-              <th className="py-3 px-4 text-xs font-bold text-brand-primary uppercase tracking-wider">
-                Avg Response Time
-              </th>
+
               <th className="py-3 px-4 text-xs font-bold text-brand-primary uppercase tracking-wider">
                 Activity Rating
               </th>
@@ -274,12 +272,7 @@ export default function TeamPerformance() {
                 <td className="py-3 px-4 text-brand-primary">
                   {p.fwCompletionRate}%
                 </td>
-                <td className="py-3 px-4">
-                  <div className="flex items-center gap-1.5 text-brand-primary/70 text-sm">
-                    <Clock size={14} />
-                    <span>{p.responseTime}</span>
-                  </div>
-                </td>
+
                 <td className="py-3 px-4">
                   <div className="flex items-center text-amber-500">
                     {[1, 2, 3, 4, 5].map((star) => (

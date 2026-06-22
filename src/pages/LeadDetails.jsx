@@ -23,13 +23,8 @@ export default function LeadDetails() {
   const { allUsers, currentUser } = useAuth();
   const { id } = useParams();
   const navigate = useNavigate();
-  const {
-    leads,
-    updateLead,
-    followups,
-    addFollowup,
-    toggleFollowupDone,
-  } = useLeads();
+  const { leads, updateLead, followups, addFollowup, toggleFollowupDone } =
+    useLeads();
 
   const currentLead = leads.find((l) => l.id === id);
 
@@ -103,7 +98,8 @@ export default function LeadDetails() {
 
   const leadFollowups = followups.filter((f) => f.leadId === currentLead.id);
 
-  const combinedHistory = leadFollowups.map(f => {
+  const combinedHistory = leadFollowups
+    .map((f) => {
       const d = new Date(f.date + "T" + (f.time || "00:00:00"));
       return {
         id: f.id,
@@ -114,9 +110,10 @@ export default function LeadDetails() {
         date: f.date,
         time: f.time || "",
         notes: f.notes,
-        author: f.author || currentLead.assignedTo || "System"
+        author: f.author || currentLead.assignedTo || "System",
       };
-    }).sort((a, b) => b.rawDate - a.rawDate);
+    })
+    .sort((a, b) => b.rawDate - a.rawDate);
 
   // Move Status directly
   const handleStatusChange = async (e) => {
@@ -194,8 +191,6 @@ export default function LeadDetails() {
         });
       }
 
-
-
       // Reset local comments box after submitting
       setFormData((prev) => ({ ...prev, comments: "" }));
       alert("Customer lead records were updated successfully.");
@@ -268,11 +263,14 @@ export default function LeadDetails() {
       leadName: currentLead.name,
       type: newAct.type,
       date: new Date().toISOString().split("T")[0],
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      time: new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
       priority: "Low",
       notes: newAct.content,
       author: newAct.author,
-      done: true
+      done: true,
     });
     setActivityOpen(false);
     setNewAct({
@@ -618,7 +616,8 @@ export default function LeadDetails() {
                       <div className="min-w-0 flex-grow">
                         <div className="flex flex-wrap items-center gap-2 mb-1.5">
                           <h4 className="text-sm font-bold text-brand-primary">
-                            {f.type} {f.isFollowup ? "Engagement Channel" : "Log"}
+                            {f.type}{" "}
+                            {f.isFollowup ? "Engagement Channel" : "Log"}
                           </h4>
                           <span
                             className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
@@ -636,7 +635,8 @@ export default function LeadDetails() {
                         <div className="flex items-center gap-1.5 text-xs text-brand-primary/70 mb-2">
                           <Calendar size={14} />
                           <span>
-                            {f.isFollowup ? "Scheduled" : "Logged"}: {formatDate(f.date)} {f.time ? `• ${f.time}` : ""}
+                            {f.isFollowup ? "Updated on" : "Logged on"}:{" "}
+                            {formatDate(f.date)} {f.time ? `• ${f.time}` : ""}
                           </span>
                         </div>
 

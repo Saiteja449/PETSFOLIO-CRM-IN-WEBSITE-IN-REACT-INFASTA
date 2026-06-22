@@ -19,6 +19,8 @@ export default function NotificationsPage() {
     markAllAsRead,
     deleteNotification,
     unreadCount,
+    loadMore,
+    hasMore,
   } = useNotifications();
 
   const getAlertColor = (type) => {
@@ -141,6 +143,17 @@ export default function NotificationsPage() {
             </div>
           )}
         </ul>
+
+        {hasMore && (
+          <div className="p-4 sm:p-5 border-t border-brand-secondary bg-brand-light/50 flex justify-center">
+            <button
+              onClick={loadMore}
+              className="px-6 py-2.5 bg-teal-500 hover:bg-teal-600 text-white text-sm font-bold rounded-lg transition-colors shadow-sm"
+            >
+              Load Older Notifications
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
