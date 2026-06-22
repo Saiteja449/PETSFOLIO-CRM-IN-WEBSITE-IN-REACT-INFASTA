@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
@@ -8,6 +8,8 @@ import {
   Calendar,
   PawPrint,
   Download,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { useLeads } from "../context/LeadsContext.jsx";
 import { getServiceColor, formatDate, exportToCSV } from "../utils/helpers.js";
@@ -24,9 +26,20 @@ export default function SalesPersonDetails() {
   const { name } = useParams();
   const navigate = useNavigate();
   const { leads } = useLeads();
-  const [activeTab, setActiveTab] = useState("New Leads");
-
   const decodedName = decodeURIComponent(name);
+  const [activeTab, setActiveTab] = useState("New Leads");
+  const scrollContainerRef = useRef(null);
+
+  const handleScroll = (direction) => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = 200;
+      scrollContainerRef.current.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth",
+      });
+    }
+  };
+
   const repLeads = leads.filter((l) => l.assignedTo === decodedName);
 
   const newLeads = repLeads.filter((l) => l.status?.toLowerCase() === "new");
@@ -134,16 +147,38 @@ export default function SalesPersonDetails() {
             </p>
           </div>
         </div>
-        <button
-          onClick={handleExport}
-          className="flex items-center gap-2 px-4 py-2 bg-teal-600 hover:bg-teal-700 text-brand-primary text-sm font-bold rounded-lg transition-colors"
-        >
-          <Download className="w-4 h-4" /> Export
-        </button>
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1 border border-brand-secondary rounded-lg p-1 bg-brand-light">
+            <button
+              onClick={() => handleScroll("left")}
+              className="p-1.5 rounded hover:bg-brand-secondary/50 text-brand-primary transition-colors"
+              title="Scroll Tabs Left"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => handleScroll("right")}
+              className="p-1.5 rounded hover:bg-brand-secondary/50 text-brand-primary transition-colors"
+              title="Scroll Tabs Right"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+          <button
+            onClick={handleExport}
+            className="flex items-center gap-2 px-4 py-2 bg-teal-600 hover:bg-teal-700 text-brand-primary text-sm font-bold rounded-lg transition-colors"
+          >
+            <Download className="w-4 h-4" /> Export
+          </button>
+        </div>
       </div>
 
-      <div className="border-b border-brand-secondary flex overflow-x-auto no-scrollbar mb-6">
-        {[
+      <div className="border-b border-brand-secondary w-full overflow-hidden mb-6">
+        <div
+          ref={scrollContainerRef}
+          className="flex overflow-x-auto scroll-smooth w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']"
+        >
+          {[
           { name: "New Leads", count: newLeads.length },
           { name: "Not Attended", count: notAttendedLeads.length },
           { name: "Today Followups", count: todayFollowups.length },
@@ -174,6 +209,7 @@ export default function SalesPersonDetails() {
             </span>
           </button>
         ))}
+        </div>
       </div>
 
       {displayedLeads.length === 0 ? (

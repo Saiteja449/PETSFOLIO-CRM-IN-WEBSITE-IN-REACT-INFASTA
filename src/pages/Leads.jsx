@@ -451,9 +451,11 @@ export default function Leads() {
                     Service
                   </th>
 
-                  <th className="px-4 py-3 text-xs font-bold text-brand-primary uppercase tracking-wider">
-                    Assigned to
-                  </th>
+                  {currentUser?.role !== "Sales Representative" && (
+                    <th className="px-4 py-3 text-xs font-bold text-brand-primary uppercase tracking-wider">
+                      Assigned to
+                    </th>
+                  )}
                   <th className="px-4 py-3 text-xs font-bold text-brand-primary uppercase tracking-wider">
                     Enquired On
                   </th>
@@ -511,9 +513,11 @@ export default function Leads() {
                           </span>
                         </div>
                       </td>
-                      <td className="px-4 py-3 text-sm text-brand-primary">
-                        {lead.assignedTo || "Unassigned"}
-                      </td>
+                      {currentUser?.role !== "Sales Representative" && (
+                        <td className="px-4 py-3 text-sm text-brand-primary">
+                          {lead.assignedTo || "Unassigned"}
+                        </td>
+                      )}
                       <td className="px-4 py-3 text-sm">
                         {lead.joinedAt ? (
                           <div
