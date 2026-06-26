@@ -17,6 +17,7 @@ import TeamPerformance from "./pages/TeamPerformance.jsx";
 import NotificationsPage from "./pages/NotificationsPage.jsx";
 import FollowUpReport from "./pages/FollowUpReport.jsx";
 import SalesPersonDetails from "./pages/SalesPersonDetails.jsx";
+import WhatsAppChat from "./pages/WhatsAppChat.jsx";
 
 import Sidebar from "./components/Sidebar.jsx";
 import Header from "./components/Header.jsx";
@@ -73,6 +74,7 @@ export default function App() {
             <Route path="/performance" element={<TeamPerformance />} />
             <Route path="/salesperson/:name" element={<SalesPersonDetails />} />
             <Route path="/notifications" element={<NotificationsPage />} />
+            <Route path="/whatsapp" element={<WhatsAppChat />} />
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
           </Route>
           <Route path="*" element={<Navigate to="/dashboard" replace />} />

@@ -342,6 +342,14 @@ export default function LeadDetails() {
             >
               {currentLead.source}
             </span>
+            <button
+              type="button"
+              onClick={() => navigate("/whatsapp", { state: { selectLeadId: currentLead.id } })}
+              className="px-2.5 py-1 bg-teal-500/10 hover:bg-teal-500/20 text-teal-600 border border-teal-500/30 rounded-md text-xs font-bold transition-all flex items-center gap-1 cursor-pointer"
+            >
+              <MessageSquare size={14} />
+              Open WhatsApp Chat
+            </button>
           </div>
 
           <hr className="border-brand-secondary mb-5" />
