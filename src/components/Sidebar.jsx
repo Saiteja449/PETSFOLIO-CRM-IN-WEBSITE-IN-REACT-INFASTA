@@ -106,7 +106,8 @@ export default function Sidebar({ mobileOpen, handleDrawerToggle }) {
             const isActive =
               location.pathname === item.path ||
               (item.path === "/leads" &&
-                location.pathname.startsWith("/lead-details"));
+                (location.pathname.startsWith("/leads") ||
+                 location.pathname.startsWith("/lead-details")));
             return (
               <li key={item.text}>
                 <button

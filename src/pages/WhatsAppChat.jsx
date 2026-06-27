@@ -75,6 +75,8 @@ export default function WhatsAppChat() {
     petType: "",
     breed: "",
     city: "",
+    petAge: "",
+    specialRequirements: "",
     intent: "",
     budget: "",
     urgency: "Medium",
@@ -273,6 +275,8 @@ export default function WhatsAppChat() {
         petType: lead.aiQualification?.petType || "",
         breed: lead.aiQualification?.breed || "",
         city: lead.aiQualification?.city || "",
+        petAge: lead.aiQualification?.petAge || "",
+        specialRequirements: lead.aiQualification?.specialRequirements || "",
         intent: lead.aiQualification?.intent || "",
         budget: lead.aiQualification?.budget || "",
         urgency: lead.aiQualification?.urgency || "Medium",
@@ -1005,6 +1009,32 @@ export default function WhatsAppChat() {
                     onChange={(e) => setQualForm({ ...qualForm, city: e.target.value })}
                     className="w-full bg-[#101b3f] border border-[#20346c] text-white text-xs rounded-lg p-2 outline-none"
                     placeholder="Hyderabad, Delhi"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-brand-secondary/60 mb-1">
+                    Pet Age
+                  </label>
+                  <input
+                    type="text"
+                    value={qualForm.petAge}
+                    onChange={(e) => setQualForm({ ...qualForm, petAge: e.target.value })}
+                    className="w-full bg-[#101b3f] border border-[#20346c] text-white text-xs rounded-lg p-2 outline-none"
+                    placeholder="E.g., 2 years, 3 months"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-brand-secondary/60 mb-1">
+                    Health Issues
+                  </label>
+                  <input
+                    type="text"
+                    value={qualForm.specialRequirements}
+                    onChange={(e) => setQualForm({ ...qualForm, specialRequirements: e.target.value })}
+                    className="w-full bg-[#101b3f] border border-[#20346c] text-white text-xs rounded-lg p-2 outline-none"
+                    placeholder="E.g., Skin allergies, none"
                   />
                 </div>
 
