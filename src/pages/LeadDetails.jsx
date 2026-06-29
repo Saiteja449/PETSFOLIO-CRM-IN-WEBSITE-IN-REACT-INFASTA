@@ -462,6 +462,71 @@ export default function LeadDetails() {
           )}
         </div>
 
+        {/* AI Captured Details (Conditional) */}
+        {(currentLead.aiQualification?.petType || currentLead.aiQualification?.breed || currentLead.aiQualification?.city || currentLead.aiQualification?.intent || currentLead.aiQualification?.budget) && (
+          <div className="bg-brand-light border border-teal-500/30 rounded-xl shadow-sm overflow-hidden mb-6">
+            <div className="p-4 border-b border-teal-500/20 bg-teal-500/5">
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></span>
+                <h3 className="font-bold text-teal-600">AI Captured Details</h3>
+                <span className="ml-auto text-xs font-semibold px-2 py-0.5 rounded bg-teal-500/10 text-teal-600">
+                  Auto-extracted
+                </span>
+              </div>
+            </div>
+            <div className="p-5 grid grid-cols-2 md:grid-cols-4 gap-4">
+              {currentLead.aiQualification?.petType && (
+                <div className="bg-brand-secondary/10 p-3 rounded-lg border border-brand-secondary/30">
+                  <span className="text-[10px] uppercase font-bold text-brand-primary/60 block mb-1">Pet Type</span>
+                  <span className="text-sm font-semibold text-brand-primary capitalize">{currentLead.aiQualification.petType}</span>
+                </div>
+              )}
+              {currentLead.aiQualification?.breed && (
+                <div className="bg-brand-secondary/10 p-3 rounded-lg border border-brand-secondary/30">
+                  <span className="text-[10px] uppercase font-bold text-brand-primary/60 block mb-1">Breed</span>
+                  <span className="text-sm font-semibold text-brand-primary capitalize">{currentLead.aiQualification.breed}</span>
+                </div>
+              )}
+              {currentLead.aiQualification?.petAge && (
+                <div className="bg-brand-secondary/10 p-3 rounded-lg border border-brand-secondary/30">
+                  <span className="text-[10px] uppercase font-bold text-brand-primary/60 block mb-1">Pet Age</span>
+                  <span className="text-sm font-semibold text-brand-primary">{currentLead.aiQualification.petAge}</span>
+                </div>
+              )}
+              {currentLead.aiQualification?.city && (
+                <div className="bg-brand-secondary/10 p-3 rounded-lg border border-brand-secondary/30">
+                  <span className="text-[10px] uppercase font-bold text-brand-primary/60 block mb-1">City</span>
+                  <span className="text-sm font-semibold text-brand-primary capitalize">{currentLead.aiQualification.city}</span>
+                </div>
+              )}
+              {currentLead.aiQualification?.intent && (
+                <div className="bg-brand-secondary/10 p-3 rounded-lg border border-brand-secondary/30">
+                  <span className="text-[10px] uppercase font-bold text-brand-primary/60 block mb-1">Intent</span>
+                  <span className="text-sm font-semibold text-brand-primary capitalize">{currentLead.aiQualification.intent}</span>
+                </div>
+              )}
+              {currentLead.aiQualification?.budget && (
+                <div className="bg-brand-secondary/10 p-3 rounded-lg border border-brand-secondary/30">
+                  <span className="text-[10px] uppercase font-bold text-brand-primary/60 block mb-1">Budget</span>
+                  <span className="text-sm font-semibold text-brand-primary">{currentLead.aiQualification.budget}</span>
+                </div>
+              )}
+              {currentLead.aiQualification?.urgency && (
+                <div className="bg-brand-secondary/10 p-3 rounded-lg border border-brand-secondary/30">
+                  <span className="text-[10px] uppercase font-bold text-brand-primary/60 block mb-1">Urgency</span>
+                  <span className="text-sm font-semibold text-brand-primary capitalize">{currentLead.aiQualification.urgency}</span>
+                </div>
+              )}
+              {currentLead.aiQualification?.specialRequirements && (
+                <div className="col-span-2 md:col-span-4 bg-brand-secondary/10 p-3 rounded-lg border border-brand-secondary/30">
+                  <span className="text-[10px] uppercase font-bold text-brand-primary/60 block mb-1">AI Special Requirements Note</span>
+                  <span className="text-sm font-medium text-brand-primary">{currentLead.aiQualification.specialRequirements}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* 3. Update Lead Details Form */}
         <div className="bg-brand-light border border-brand-secondary rounded-xl shadow-sm">
           <div className="p-4 border-b border-brand-secondary bg-brand-light/50 rounded-t-xl">
