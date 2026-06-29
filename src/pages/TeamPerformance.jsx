@@ -34,6 +34,8 @@ export default function TeamPerformance() {
   const [createOpen, setCreateOpen] = useState(false);
   const [newName, setNewName] = useState("");
   const [newEmail, setNewEmail] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [createError, setCreateError] = useState("");
 
   // State controls for Deletion confirmation modal
@@ -44,15 +46,22 @@ export default function TeamPerformance() {
     e.preventDefault();
     setCreateError("");
 
-    if (!newName.trim() || !newEmail.trim()) {
+    if (!newName.trim() || !newEmail.trim() || !newPassword || !confirmPassword) {
       setCreateError("All fields are required.");
       return;
     }
 
+    if (newPassword !== confirmPassword) {
+      setCreateError("Passwords do not match.");
+      return;
+    }
+
     try {
-      await addSalesPerson(newName.trim(), newEmail.trim());
+      await addSalesPerson(newName.trim(), newEmail.trim(), newPassword);
       setNewName("");
       setNewEmail("");
+      setNewPassword("");
+      setConfirmPassword("");
       setCreateOpen(false);
     } catch (err) {
       setCreateError(err.message || "Failed to add representative.");
@@ -376,6 +385,34 @@ export default function TeamPerformance() {
                   value={newEmail}
                   onChange={(e) => setNewEmail(e.target.value)}
                   placeholder="e.g. rachel@petsfolio.com"
+                  className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block p-2.5 outline-none"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium text-brand-primary/70 mb-1.5">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  placeholder="Enter a secure password"
+                  className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block p-2.5 outline-none"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium text-brand-primary/70 mb-1.5">
+                  Confirm Password
+                </label>
+                <input
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="Confirm the password"
                   className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block p-2.5 outline-none"
                   required
                 />

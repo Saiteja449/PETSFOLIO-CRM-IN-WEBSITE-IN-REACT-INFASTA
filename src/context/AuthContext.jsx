@@ -20,7 +20,7 @@ export function AuthProvider({ children }) {
         user: "User",
       };
 
-      const formattedUsers = response.data.map((user) => ({
+      const formattedUsers = response.data.data.map((user) => ({
         id: user._id,
         name: user.name || user.email.split("@")[0],
         email: user.email,
@@ -57,32 +57,20 @@ export function AuthProvider({ children }) {
     fetchUsers();
   }, [isAuthenticated]); // Re-fetch when auth status changes
 
-  // Request OTP from backend
-  const sendOtp = async (email) => {
-    try {
-      const response = await axios.post(API_ENDPOINTS.AUTH.SEND_OTP, { email });
-      const data = response.data;
 
-      return {
-        success: true,
-        message: data.message || "OTP sent successfully",
-      };
-    } catch (error) {
-      console.error("Send OTP error:", error);
-      const message =
-        error.response?.data?.message || "Network error connecting to server.";
-      return { success: false, message };
-    }
-  };
 
-  // Authentication using OTP backend
-  const login = async (email, otp) => {
+  // Authentication using password
+  const login = async (email, password) => {
     try {
-      const response = await axios.post(API_ENDPOINTS.AUTH.VERIFY_OTP, {
+      const response = await axios.post(API_ENDPOINTS.AUTH.LOGIN, {
         email,
-        otp,
+        password,
       });
       const data = response.data;
+
+      if (data.success === false) {
+        return { success: false, message: data.message || "Login failed" };
+      }
 
       const roleMap = {
         "sales manager": "Sales Manager",
@@ -108,12 +96,13 @@ export function AuthProvider({ children }) {
         JSON.stringify(userWithToken),
       );
       localStorage.setItem("petsfolio_token", data.token);
-      return { success: true, user: userWithToken };
+      return { success: data.success ?? true, user: userWithToken };
     } catch (error) {
       console.error("Login error:", error);
       const message =
         error.response?.data?.message || "Network error connecting to server.";
-      return { success: false, message };
+      const success = error.response?.data?.success ?? false;
+      return { success, message };
     }
   };
 
@@ -123,11 +112,12 @@ export function AuthProvider({ children }) {
     localStorage.removeItem("petsfolio_session_user");
   };
 
-  const addSalesPerson = async (name, email) => {
+  const addSalesPerson = async (name, email, password) => {
     try {
       const response = await axios.post(API_ENDPOINTS.USERS.BASE, {
         name,
         email,
+        password,
       });
 
       // Refresh the users list
@@ -168,7 +158,6 @@ export function AuthProvider({ children }) {
         currentUser,
         isAuthenticated,
         allUsers,
-        sendOtp,
         login,
         logout,
         addSalesPerson,

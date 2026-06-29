@@ -1,59 +1,35 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Cat, Eye, EyeOff, Lock } from "lucide-react";
+import { Cat, Lock, Eye, EyeOff } from "lucide-react";
 import { useAuth } from "../context/AuthContext.jsx";
 
 export default function Login() {
   const navigate = useNavigate();
-  const { login, sendOtp } = useAuth();
+  const { login } = useAuth();
 
-  const [step, setStep] = useState(1);
   const [email, setEmail] = useState("");
-  const [otp, setOtp] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
 
-  const handleSendOtp = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
-    setMessage("");
 
-    if (!email) {
-      setError("Please enter your email address.");
+    if (!email || !password) {
+      setError("Please enter both email and password.");
       return;
     }
 
     setLoading(true);
-    const result = await sendOtp(email);
-    setLoading(false);
-
-    if (result.success) {
-      setStep(2);
-      setMessage(result.message || "OTP has been sent to your email.");
-    } else {
-      setError(result.message || "Failed to send OTP.");
-    }
-  };
-
-  const handleVerifyOtp = async (e) => {
-    e.preventDefault();
-    setError("");
-
-    if (!otp) {
-      setError("Please enter the OTP.");
-      return;
-    }
-
-    setLoading(true);
-    const result = await login(email?.toLowerCase(), otp);
+    const result = await login(email?.toLowerCase(), password);
     setLoading(false);
 
     if (result.success) {
       navigate("/dashboard");
     } else {
-      setError(result.message || "Invalid OTP. Please try again.");
-      setOtp("");
+      setError(result.message || "Invalid credentials. Please try again.");
     }
   };
 
@@ -86,99 +62,63 @@ export default function Login() {
             </div>
           )}
 
-          {message && (
-            <div className="bg-teal-500/10 text-teal-600 border border-teal-500/20 p-3 rounded-lg mb-6 text-sm">
-              {message}
+          <form onSubmit={handleLogin} noValidate className="space-y-6">
+            <div>
+              <label className="block text-xs font-medium text-brand-primary/70 mb-1.5">
+                Email Address
+              </label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="e.g. alex@petsfolio.com"
+                className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block p-3 outline-none"
+                disabled={loading}
+              />
             </div>
-          )}
 
-          {step === 1 ? (
-            <form onSubmit={handleSendOtp} noValidate className="space-y-6">
-              <div>
-                <label className="block text-xs font-medium text-brand-primary/70 mb-1.5">
-                  Email Address
-                </label>
+            <div>
+              <label className="block text-xs font-medium text-brand-primary/70 mb-1.5">
+                Password
+              </label>
+              <div className="relative">
                 <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="e.g. alex@petsfolio.com"
-                  className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block p-3 outline-none"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    if (error) setError("");
+                  }}
+                  placeholder="Enter your password"
+                  className={`w-full bg-brand-light border text-brand-primary text-sm rounded-lg block p-3 pr-10 outline-none transition-colors ${
+                    error
+                      ? "border-red-500 focus:ring-red-500 focus:border-red-500"
+                      : "border-brand-secondary focus:ring-teal-500 focus:border-teal-500"
+                  }`}
                   disabled={loading}
                 />
-              </div>
-
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full flex items-center justify-center gap-2 bg-teal-500 hover:bg-teal-600 text-brand-light font-bold py-3 px-4 rounded-xl transition-colors mt-2 disabled:opacity-70"
-              >
-                {loading ? "Sending..." : "Send OTP"}
-              </button>
-            </form>
-          ) : (
-            <form onSubmit={handleVerifyOtp} noValidate className="space-y-6">
-              <div>
-                <label className="block text-xs font-medium text-brand-primary/70 mb-1.5">
-                  Email Address
-                </label>
-                <input
-                  type="email"
-                  value={email}
-                  disabled
-                  className="w-full bg-gray-100 border border-brand-secondary text-brand-primary/60 text-sm rounded-lg block p-3 outline-none"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-medium text-brand-primary/70 mb-1.5">
-                  One-Time Password (OTP)
-                </label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={otp}
-                    onChange={(e) => {
-                      setOtp(e.target.value);
-                      if (error) setError("");
-                    }}
-                    placeholder="Enter 6-digit OTP"
-                    className={`w-full bg-brand-light border text-brand-primary text-sm rounded-lg block p-3 pr-10 outline-none tracking-widest transition-colors ${
-                      error
-                        ? "border-red-500 focus:ring-red-500 focus:border-red-500"
-                        : "border-brand-secondary focus:ring-teal-500 focus:border-teal-500"
-                    }`}
-                    disabled={loading}
-                    maxLength={6}
-                  />
-                  <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                    <Lock size={18} className="text-brand-primary/40" />
-                  </div>
+                <div 
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <EyeOff size={18} className="text-brand-primary/40 hover:text-teal-500 transition-colors" />
+                  ) : (
+                    <Eye size={18} className="text-brand-primary/40 hover:text-teal-500 transition-colors" />
+                  )}
                 </div>
               </div>
+            </div>
 
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full flex items-center justify-center gap-2 bg-teal-500 hover:bg-teal-600 text-brand-light font-bold py-3 px-4 rounded-xl transition-colors mt-2 disabled:opacity-70"
-              >
-                {loading ? "Verifying..." : "Verify & Sign In"}
-              </button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setStep(1);
-                  setOtp("");
-                  setError("");
-                  setMessage("");
-                }}
-                className="w-full text-center text-xs font-medium text-teal-600 hover:text-teal-700 mt-4"
-              >
-                Use a different email address
-              </button>
-            </form>
-          )}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full flex items-center justify-center gap-2 bg-teal-500 hover:bg-teal-600 text-brand-light font-bold py-3 px-4 rounded-xl transition-colors mt-2 disabled:opacity-70"
+            >
+              <Lock size={18} />
+              {loading ? "Signing in..." : "Sign In"}
+            </button>
+          </form>
         </div>
       </div>
     </div>

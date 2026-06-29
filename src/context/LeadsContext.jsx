@@ -18,8 +18,8 @@ export function LeadsProvider({ children }) {
         axios.get(API_ENDPOINTS.LEADS.BASE),
         axios.get(API_ENDPOINTS.FOLLOWUPS.BASE),
       ]);
-      setLeads(leadsRes.data);
-      setFollowups(followupsRes.data);
+      setLeads(leadsRes.data.data || leadsRes.data);
+      setFollowups(followupsRes.data.data || followupsRes.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -33,7 +33,7 @@ export function LeadsProvider({ children }) {
   const addLead = async (leadData, author = "System") => {
     try {
       const response = await axios.post(API_ENDPOINTS.LEADS.BASE, leadData);
-      const newLead = response.data;
+      const newLead = response.data.data || response.data;
       setLeads((prev) => [newLead, ...prev]);
 
       // If there's a next follow-up date, automatically create a follow-up item
@@ -62,7 +62,7 @@ export function LeadsProvider({ children }) {
         `${API_ENDPOINTS.LEADS.BASE}/${leadId}`,
         updatedFields,
       );
-      const updatedLead = response.data;
+      const updatedLead = response.data.data || response.data;
 
       const lead = leads.find((l) => l.id === leadId);
       if (lead) {
@@ -127,7 +127,7 @@ export function LeadsProvider({ children }) {
         ...fwData,
         done: fwData.done !== undefined ? fwData.done : false,
       });
-      setFollowups((prev) => [response.data, ...prev]);
+      setFollowups((prev) => [response.data.data || response.data, ...prev]);
     } catch (error) {
       console.error("Error adding followup:", error);
     }
@@ -143,8 +143,9 @@ export function LeadsProvider({ children }) {
         `${API_ENDPOINTS.FOLLOWUPS.BASE}/${fwId}`,
         { done: nextStatus },
       );
+      const updatedFollowup = response.data.data || response.data;
       setFollowups((prev) =>
-        prev.map((item) => (item.id === fwId ? response.data : item)),
+        prev.map((item) => (item.id === fwId ? updatedFollowup : item)),
       );
     } catch (error) {
       console.error("Error updating followup:", error);
