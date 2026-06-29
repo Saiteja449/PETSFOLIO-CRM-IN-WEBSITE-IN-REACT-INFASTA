@@ -1,4 +1,4 @@
-export const API_BASE_URL = "https://crm-backend-14p9.onrender.com/api";
+export const API_BASE_URL = "http://localhost:5000/api";
 
 export const API_ENDPOINTS = {
   AUTH: {
@@ -33,3 +33,6 @@ export const API_ENDPOINTS = {
     UPLOAD: `${API_BASE_URL}/whatsapp/upload`,
   },
 };
+
+export const BACKEND_URL = API_BASE_URL.replace(/\/api$/, "");
+

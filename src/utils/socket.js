@@ -1,6 +1,7 @@
 import { io } from "socket.io-client";
+import { BACKEND_URL } from "./constants.js";
 
 // Connect to backend server
-export const socket = io("http://localhost:5000", {
+export const socket = io(BACKEND_URL, {
   autoConnect: true,
 });

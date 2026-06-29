@@ -28,10 +28,10 @@ import {
   FolderMinus,
   Calendar,
   X,
-  UserPlus
+  UserPlus,
 } from "lucide-react";
 import { socket } from "../utils/socket.js";
-import { API_ENDPOINTS } from "../utils/constants.js";
+import { API_ENDPOINTS, BACKEND_URL } from "../utils/constants.js";
 import { useAuth } from "../context/AuthContext.jsx";
 
 export default function WhatsAppChat() {
@@ -39,14 +39,13 @@ export default function WhatsAppChat() {
   const navigate = useNavigate();
   const location = useLocation();
   const messagesEndRef = useRef(null);
-  const fileInputRef = useRef(null);
 
   // Connection & Session States
   const [session, setSession] = useState({
     status: "disconnected",
     qrCode: "",
     connectedPhone: "",
-    connectedName: ""
+    connectedName: "",
   });
   const [sessionLoading, setSessionLoading] = useState(false);
 
@@ -62,11 +61,6 @@ export default function WhatsAppChat() {
   const [inputValue, setInputValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
 
-
-  // Upload/Attachment State
-  const [attachedFile, setAttachedFile] = useState(null);
-  const [uploading, setUploading] = useState(false);
-
   // AI Lead Qualification Form
   const [qualForm, setQualForm] = useState({
     petType: "",
@@ -77,7 +71,7 @@ export default function WhatsAppChat() {
     intent: "",
     budget: "",
     urgency: "Medium",
-    interestScore: 0
+    interestScore: 0,
   });
   const [savingQual, setSavingQual] = useState(false);
   const [newTagInput, setNewTagInput] = useState("");
@@ -88,7 +82,7 @@ export default function WhatsAppChat() {
   const [newKB, setNewKB] = useState({
     title: "",
     content: "",
-    type: "faq"
+    type: "faq",
   });
   const [savingKB, setSavingKB] = useState(false);
 
@@ -99,7 +93,7 @@ export default function WhatsAppChat() {
     date: new Date().toISOString().split("T")[0],
     time: "11:00 AM",
     priority: "Medium",
-    notes: ""
+    notes: "",
   });
 
   // Load Status and FAQ Knowledge Base on mount
@@ -153,8 +147,8 @@ export default function WhatsAppChat() {
     // Reset unread count locally when active chat changes
     setConversations((prev) =>
       prev.map((c) =>
-        c.leadId?.id === selectedConv.leadId?.id ? { ...c, unreadCount: 0 } : c
-      )
+        c.leadId?.id === selectedConv.leadId?.id ? { ...c, unreadCount: 0 } : c,
+      ),
     );
 
     return () => {
@@ -185,8 +179,8 @@ export default function WhatsAppChat() {
       const res = await axios.get(API_ENDPOINTS.WHATSAPP.CONVERSATIONS, {
         params: {
           role: currentUser?.role,
-          name: currentUser?.name
-        }
+          name: currentUser?.name,
+        },
       });
       const data = res.data;
       setConversations(data);
@@ -200,13 +194,15 @@ export default function WhatsAppChat() {
         } else {
           // If no conversation thread exists yet, retrieve lead details and create a mock conversation
           try {
-            const leadRes = await axios.get(`${API_ENDPOINTS.LEADS.BASE}/${targetLeadId}`);
+            const leadRes = await axios.get(
+              `${API_ENDPOINTS.LEADS.BASE}/${targetLeadId}`,
+            );
             const newMockConv = {
               id: `mock_${targetLeadId}`,
               leadId: leadRes.data,
               unreadCount: 0,
               lastMessage: "No messages yet",
-              lastMessageTime: new Date()
+              lastMessageTime: new Date(),
             };
             setConversations((prev) => {
               if (prev.some((c) => c.leadId?.id === targetLeadId)) return prev;
@@ -214,7 +210,10 @@ export default function WhatsAppChat() {
             });
             handleSelectConversation(newMockConv);
           } catch (err) {
-            console.error("Failed to load lead details for mock conversation", err);
+            console.error(
+              "Failed to load lead details for mock conversation",
+              err,
+            );
           }
         }
       }
@@ -247,7 +246,10 @@ export default function WhatsAppChat() {
   };
 
   const handleLogout = async () => {
-    if (!window.confirm("Are you sure you want to disconnect WhatsApp session?")) return;
+    if (
+      !window.confirm("Are you sure you want to disconnect WhatsApp session?")
+    )
+      return;
     setSessionLoading(true);
     try {
       await axios.post(API_ENDPOINTS.WHATSAPP.LOGOUT);
@@ -263,8 +265,7 @@ export default function WhatsAppChat() {
     setSelectedConv(conv);
     setMessagesLoading(true);
     setMessages([]);
-    setSuggestions([]);
-    
+
     // Set up lead qualification state fields
     const lead = conv.leadId;
     if (lead) {
@@ -277,22 +278,22 @@ export default function WhatsAppChat() {
         intent: lead.aiQualification?.intent || "",
         budget: lead.aiQualification?.budget || "",
         urgency: lead.aiQualification?.urgency || "Medium",
-        interestScore: lead.aiQualification?.interestScore || 0
+        interestScore: lead.aiQualification?.interestScore || 0,
       });
     }
 
     try {
-      const res = await axios.get(API_ENDPOINTS.WHATSAPP.CONVERSATION(conv.leadId?.id));
+      const res = await axios.get(
+        API_ENDPOINTS.WHATSAPP.CONVERSATION(conv.leadId?.id),
+      );
       setMessages(res.data);
       setMessagesLoading(false);
       scrollToBottom();
-
     } catch (err) {
       console.error("Failed to load message logs", err);
       setMessagesLoading(false);
     }
   };
-
 
   // Toggle AI on/off for lead
   const handleToggleAI = async () => {
@@ -301,85 +302,53 @@ export default function WhatsAppChat() {
     try {
       const res = await axios.post(API_ENDPOINTS.WHATSAPP.AI_TOGGLE, {
         leadId: selectedConv.leadId?.id,
-        aiEnabled: nextState
+        aiEnabled: nextState,
       });
-      
+
       // Update local state
       const updatedLead = res.data.lead;
-      setSelectedConv(prev => ({
+      setSelectedConv((prev) => ({
         ...prev,
         leadId: {
           ...prev.leadId,
-          aiEnabled: updatedLead.aiEnabled
-        }
+          aiEnabled: updatedLead.aiEnabled,
+        },
       }));
-      setConversations(prev =>
-        prev.map(c =>
+      setConversations((prev) =>
+        prev.map((c) =>
           c.leadId?.id === selectedConv.leadId?.id
-            ? { ...c, leadId: { ...c.leadId, aiEnabled: updatedLead.aiEnabled } }
-            : c
-        )
+            ? {
+                ...c,
+                leadId: { ...c.leadId, aiEnabled: updatedLead.aiEnabled },
+              }
+            : c,
+        ),
       );
     } catch (err) {
       alert("Failed to toggle AI state.");
     }
   };
 
-  // File picker handler
-  const handleFileChange = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
 
-    setUploading(true);
-    const reader = new FileReader();
-    reader.onload = async () => {
-      const base64Data = reader.result.split(",")[1];
-      try {
-        const res = await axios.post(API_ENDPOINTS.WHATSAPP.UPLOAD, {
-          fileName: file.name,
-          base64Data
-        });
-        setAttachedFile({
-          name: file.name,
-          url: res.data.url,
-          type: file.type.startsWith("image/") ? "image" : file.type.startsWith("audio/") ? "audio" : "document"
-        });
-      } catch (err) {
-        alert("Failed to upload attachment file.");
-      } finally {
-        setUploading(false);
-      }
-    };
-    reader.readAsDataURL(file);
-  };
 
   const handleSend = async (e) => {
     e.preventDefault();
     if (!selectedConv) return;
-    if (!inputValue.trim() && !attachedFile) return;
+    if (!inputValue.trim()) return;
 
     const messageText = inputValue.trim();
     setInputValue("");
-    const file = attachedFile;
-    setAttachedFile(null);
 
     try {
-      // Send manual message
-      // Wait, if it has a file, let's submit it. For simplicity in the Baileys handler,
-      // we send a text explaining the file link or send the attachment link.
-      const fullText = file ? `${messageText} (Attached: ${file.name} - http://localhost:5000${file.url})` : messageText;
-      
       await axios.post(API_ENDPOINTS.WHATSAPP.SEND_MESSAGE, {
         leadId: selectedConv.leadId?.id,
-        text: fullText,
-        senderName: currentUser?.name || "System"
+        text: messageText,
+        senderName: currentUser?.name || "System",
       });
-
     } catch (err) {
       alert("Failed to send message.");
     }
   };
-
 
   // Update lead qualification parameters in DB
   const handleUpdateQualification = async (e) => {
@@ -389,9 +358,12 @@ export default function WhatsAppChat() {
 
     try {
       // Update CRM lead
-      await axios.put(`${API_ENDPOINTS.LEADS.BASE}/${selectedConv.leadId?.id}`, {
-        aiQualification: qualForm
-      });
+      await axios.put(
+        `${API_ENDPOINTS.LEADS.BASE}/${selectedConv.leadId?.id}`,
+        {
+          aiQualification: qualForm,
+        },
+      );
       alert("AI Qualification fields updated successfully!");
     } catch (err) {
       alert("Failed to save updates.");
@@ -404,16 +376,22 @@ export default function WhatsAppChat() {
   const handleAddTag = async (e) => {
     e.preventDefault();
     if (!selectedConv || !newTagInput.trim()) return;
-    
-    const nextTags = [...(selectedConv.leadId?.aiTags || []), newTagInput.trim()];
-    try {
-      const res = await axios.put(`${API_ENDPOINTS.LEADS.BASE}/${selectedConv.leadId?.id}`, {
-        aiTags: nextTags
-      });
 
-      setSelectedConv(prev => ({
+    const nextTags = [
+      ...(selectedConv.leadId?.aiTags || []),
+      newTagInput.trim(),
+    ];
+    try {
+      const res = await axios.put(
+        `${API_ENDPOINTS.LEADS.BASE}/${selectedConv.leadId?.id}`,
+        {
+          aiTags: nextTags,
+        },
+      );
+
+      setSelectedConv((prev) => ({
         ...prev,
-        leadId: { ...prev.leadId, aiTags: res.data.aiTags }
+        leadId: { ...prev.leadId, aiTags: res.data.aiTags },
       }));
       setNewTagInput("");
     } catch (err) {
@@ -424,15 +402,20 @@ export default function WhatsAppChat() {
   // Delete Tag
   const handleDeleteTag = async (tagToDelete) => {
     if (!selectedConv) return;
-    const nextTags = (selectedConv.leadId?.aiTags || []).filter(t => t !== tagToDelete);
+    const nextTags = (selectedConv.leadId?.aiTags || []).filter(
+      (t) => t !== tagToDelete,
+    );
     try {
-      const res = await axios.put(`${API_ENDPOINTS.LEADS.BASE}/${selectedConv.leadId?.id}`, {
-        aiTags: nextTags
-      });
+      const res = await axios.put(
+        `${API_ENDPOINTS.LEADS.BASE}/${selectedConv.leadId?.id}`,
+        {
+          aiTags: nextTags,
+        },
+      );
 
-      setSelectedConv(prev => ({
+      setSelectedConv((prev) => ({
         ...prev,
-        leadId: { ...prev.leadId, aiTags: res.data.aiTags }
+        leadId: { ...prev.leadId, aiTags: res.data.aiTags },
       }));
     } catch (err) {
       alert("Failed to remove tag.");
@@ -481,7 +464,7 @@ export default function WhatsAppChat() {
         time: followUpData.time,
         priority: followUpData.priority,
         notes: followUpData.notes,
-        author: currentUser?.name || "Agent"
+        author: currentUser?.name || "Agent",
       });
 
       alert("Follow up task scheduled successfully!");
@@ -491,7 +474,7 @@ export default function WhatsAppChat() {
         date: new Date().toISOString().split("T")[0],
         time: "11:00 AM",
         priority: "Medium",
-        notes: ""
+        notes: "",
       });
     } catch (err) {
       alert("Failed to schedule follow up.");
@@ -499,11 +482,13 @@ export default function WhatsAppChat() {
   };
 
   // Filter conversations
-  const filteredConversations = conversations.filter(c => {
+  const filteredConversations = conversations.filter((c) => {
     const name = c.leadId?.name || "Unknown";
     const phone = c.leadId?.phone || "";
     const cleanQuery = searchQuery.toLowerCase();
-    return name.toLowerCase().includes(cleanQuery) || phone.includes(cleanQuery);
+    return (
+      name.toLowerCase().includes(cleanQuery) || phone.includes(cleanQuery)
+    );
   });
 
   return (
@@ -515,15 +500,24 @@ export default function WhatsAppChat() {
             <MessageSquare className="w-6 h-6 text-teal-400" />
           </div>
           <div>
-            <h1 className="text-lg font-bold tracking-tight">WhatsApp AI Lead Hub</h1>
+            <h1 className="text-lg font-bold tracking-tight">
+              WhatsApp AI Lead Hub
+            </h1>
             <div className="flex items-center gap-2 mt-0.5">
-              <span className={`w-2.5 h-2.5 rounded-full ${
-                session.status === "connected" ? "bg-emerald-500 animate-pulse" :
-                session.status === "qr" ? "bg-amber-400" :
-                session.status === "connecting" ? "bg-blue-400 animate-spin border-t-transparent" : "bg-red-500"
-              }`} />
+              <span
+                className={`w-2.5 h-2.5 rounded-full ${
+                  session.status === "connected"
+                    ? "bg-emerald-500 animate-pulse"
+                    : session.status === "qr"
+                      ? "bg-amber-400"
+                      : session.status === "connecting"
+                        ? "bg-blue-400 animate-spin border-t-transparent"
+                        : "bg-red-500"
+                }`}
+              />
               <span className="text-xs font-semibold capitalize text-brand-secondary/80">
-                Connection Status: {session.status === "qr" ? "Scan QR Code" : session.status}
+                Connection Status:{" "}
+                {session.status === "qr" ? "Scan QR Code" : session.status}
               </span>
               {session.status === "connected" && session.connectedPhone && (
                 <span className="text-xs text-emerald-400 font-bold ml-1">
@@ -542,16 +536,16 @@ export default function WhatsAppChat() {
               disabled={sessionLoading}
               className="flex items-center gap-2 bg-teal-500 hover:bg-teal-600 disabled:opacity-50 text-white font-bold py-2 px-4 rounded-xl transition-all"
             >
-              <RefreshCw className={`w-4 h-4 ${sessionLoading ? "animate-spin" : ""}`} />
+              <RefreshCw
+                className={`w-4 h-4 ${sessionLoading ? "animate-spin" : ""}`}
+              />
               Link WhatsApp
             </button>
           )}
 
           {session.status === "qr" && session.qrCode && (
             <div className="relative group">
-              <button
-                className="flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-6 min-w-[200px] rounded-xl"
-              >
+              <button className="flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-6 min-w-[200px] rounded-xl">
                 Scan QR Code
               </button>
               {/* QR Popup */}
@@ -561,7 +555,9 @@ export default function WhatsAppChat() {
                   alt="WhatsApp QR Code"
                   className="w-48 h-48"
                 />
-                <p className="text-xs font-bold text-center mt-2 text-gray-600">Scan via WhatsApp Link Device</p>
+                <p className="text-xs font-bold text-center mt-2 text-gray-600">
+                  Scan via WhatsApp Link Device
+                </p>
                 <button
                   onClick={fetchSessionStatus}
                   className="mt-3 text-xs flex items-center gap-1 text-teal-600 hover:text-teal-700 font-bold"
@@ -594,7 +590,6 @@ export default function WhatsAppChat() {
 
       {/* Main Layout Pane */}
       <div className="flex flex-1 overflow-hidden min-h-0">
-        
         {/* Left Side: Conversation List */}
         <div className="w-80 flex flex-col border-r border-[#1c2d5a] bg-[#0c1635] shrink-0">
           <div className="p-3 border-b border-[#1c2d5a]">
@@ -645,18 +640,25 @@ export default function WhatsAppChat() {
                               {leadName}
                             </h3>
                             <span className="text-[10px] text-brand-secondary/50 font-medium">
-                              {conv.lastMessageTime ? new Date(conv.lastMessageTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ""}
+                              {conv.lastMessageTime
+                                ? new Date(
+                                    conv.lastMessageTime,
+                                  ).toLocaleTimeString([], {
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                  })
+                                : ""}
                             </span>
                           </div>
                           <p className="text-xs text-brand-secondary/70 truncate mt-0.5">
                             {conv.lastMessage || "No messages yet"}
                           </p>
-                          
+
                           <div className="flex items-center justify-between mt-2">
                             <span className="px-1.5 py-0.5 bg-teal-500/10 text-teal-400 text-[9px] rounded-md font-bold uppercase tracking-wider">
                               {status}
                             </span>
-                            
+
                             <div className="flex items-center gap-2">
                               {/* AI State badge */}
                               {lead?.aiEnabled ? (
@@ -695,7 +697,9 @@ export default function WhatsAppChat() {
               <div className="flex items-center justify-between p-3.5 border-b border-[#1c2d5a] bg-[#0c1635]">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-teal-500/10 text-teal-400 flex items-center justify-center font-bold text-sm shrink-0">
-                    {(selectedConv.leadId?.name || "Unknown").substring(0, 2).toUpperCase()}
+                    {(selectedConv.leadId?.name || "Unknown")
+                      .substring(0, 2)
+                      .toUpperCase()}
                   </div>
                   <div>
                     <h2 className="font-bold text-sm text-white">
@@ -710,23 +714,31 @@ export default function WhatsAppChat() {
                 <div className="flex items-center gap-4">
                   {/* AI toggle slider */}
                   <div className="flex items-center gap-2">
-                    <span className="text-xs text-brand-secondary/80 font-bold">Auto-AI:</span>
+                    <span className="text-xs text-brand-secondary/80 font-bold">
+                      Auto-AI:
+                    </span>
                     <button
                       onClick={handleToggleAI}
                       className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                        selectedConv.leadId?.aiEnabled ? "bg-teal-500" : "bg-[#1c2d5a]"
+                        selectedConv.leadId?.aiEnabled
+                          ? "bg-teal-500"
+                          : "bg-[#1c2d5a]"
                       }`}
                     >
                       <span
                         className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
-                          selectedConv.leadId?.aiEnabled ? "translate-x-5" : "translate-x-0"
+                          selectedConv.leadId?.aiEnabled
+                            ? "translate-x-5"
+                            : "translate-x-0"
                         }`}
                       />
                     </button>
                   </div>
 
                   <button
-                    onClick={() => navigate(`/lead-details/${selectedConv.leadId?.id}`)}
+                    onClick={() =>
+                      navigate(`/lead-details/${selectedConv.leadId?.id}`)
+                    }
                     className="text-xs font-bold text-teal-400 hover:text-teal-300 border border-teal-500/30 bg-teal-500/5 px-3 py-1.5 rounded-lg"
                   >
                     View Lead Record
@@ -745,7 +757,7 @@ export default function WhatsAppChat() {
                   <>
                     {messages.map((msg) => {
                       const isIncoming = msg.direction === "incoming";
-                      
+
                       return (
                         <div
                           key={msg.id || msg.messageId}
@@ -764,19 +776,22 @@ export default function WhatsAppChat() {
                                 <Bot className="w-2.5 h-2.5" /> AI Reply
                               </span>
                             )}
-                            
+
                             {/* Human Agent badge */}
-                            {!isIncoming && !msg.aiGenerated && msg.senderName && (
-                              <span className="inline-flex items-center gap-0.5 px-1 py-0.2 bg-[#0a1128]/20 text-white text-[9px] rounded font-semibold mb-1">
-                                <User className="w-2.5 h-2.5" /> {msg.senderName}
-                              </span>
-                            )}
+                            {!isIncoming &&
+                              !msg.aiGenerated &&
+                              msg.senderName && (
+                                <span className="inline-flex items-center gap-0.5 px-1 py-0.2 bg-[#0a1128]/20 text-white text-[9px] rounded font-semibold mb-1">
+                                  <User className="w-2.5 h-2.5" />{" "}
+                                  {msg.senderName}
+                                </span>
+                              )}
 
                             {/* Image Attachment Rendering */}
                             {msg.mediaUrl && msg.messageType === "image" && (
                               <div className="mb-2 max-w-sm rounded-lg overflow-hidden border border-black/20">
                                 <img
-                                  src={`http://localhost:5000${msg.mediaUrl}`}
+                                  src={`${BACKEND_URL}${msg.mediaUrl}`}
                                   alt="Attachment"
                                   className="w-full object-cover max-h-60"
                                 />
@@ -787,14 +802,18 @@ export default function WhatsAppChat() {
                             {msg.mediaUrl && msg.messageType === "audio" && (
                               <div className="mb-2 flex items-center gap-2 p-2 bg-black/10 rounded-lg">
                                 <Play className="w-4 h-4 text-teal-200 cursor-pointer" />
-                                <audio controls src={`http://localhost:5000${msg.mediaUrl}`} className="h-6 w-48 text-xs" />
+                                <audio
+                                  controls
+                                  src={`${BACKEND_URL}${msg.mediaUrl}`}
+                                  className="h-6 w-48 text-xs"
+                                />
                               </div>
                             )}
 
                             {/* Doc Attachment */}
                             {msg.mediaUrl && msg.messageType === "document" && (
                               <a
-                                href={`http://localhost:5000${msg.mediaUrl}`}
+                                href={`${BACKEND_URL}${msg.mediaUrl}`}
                                 target="_blank"
                                 rel="noreferrer"
                                 className="mb-2 flex items-center gap-2 p-2.5 bg-black/10 rounded-lg text-teal-100 hover:text-white border border-white/10"
@@ -816,15 +835,20 @@ export default function WhatsAppChat() {
 
                             {/* Text message content */}
                             {msg.messageType !== "document" && (
-                              <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.text}</p>
+                              <p className="text-sm leading-relaxed whitespace-pre-wrap">
+                                {msg.text}
+                              </p>
                             )}
 
                             {/* Date time and checkmarks status */}
                             <div className="flex items-center justify-end gap-1.5 mt-1.5 text-[9px] text-brand-secondary/65">
                               <span>
-                                {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                {new Date(msg.timestamp).toLocaleTimeString(
+                                  [],
+                                  { hour: "2-digit", minute: "2-digit" },
+                                )}
                               </span>
-                              
+
                               {!isIncoming && (
                                 <span>
                                   {msg.status === "read" ? (
@@ -847,7 +871,9 @@ export default function WhatsAppChat() {
                       <div className="flex justify-start">
                         <div className="bg-[#162145] text-teal-400 rounded-2xl rounded-tl-none p-3 border border-[#213264] flex items-center gap-2">
                           <Bot className="w-4 h-4 animate-bounce" />
-                          <span className="text-xs font-semibold">Gemini AI is crafting reply...</span>
+                          <span className="text-xs font-semibold">
+                            Gemini AI is crafting reply...
+                          </span>
                         </div>
                       </div>
                     )}
@@ -857,46 +883,18 @@ export default function WhatsAppChat() {
               </div>
 
               {/* Chat Input footer */}
-              <form onSubmit={handleSend} className="p-3 border-t border-[#1c2d5a] bg-[#0c1635] flex items-center gap-2">
-                <input
-                  type="file"
-                  ref={fileInputRef}
-                  onChange={handleFileChange}
-                  className="hidden"
-                />
-
-                <button
-                  type="button"
-                  onClick={() => fileInputRef.current?.click()}
-                  className="p-2.5 bg-[#1c2d5a] hover:bg-[#253b75] text-brand-secondary/80 rounded-xl transition-all relative"
-                  disabled={uploading}
-                >
-                  <Paperclip className={`w-5 h-5 ${uploading ? "animate-pulse text-amber-400" : ""}`} />
-                </button>
-
+              <form
+                onSubmit={handleSend}
+                className="p-3 border-t border-[#1c2d5a] bg-[#0c1635] flex items-center gap-2"
+              >
                 <div className="flex-1 relative flex items-center bg-[#101b3f] border border-[#20346c] rounded-xl px-4 py-2.5">
                   <input
                     type="text"
-                    placeholder={
-                      attachedFile
-                        ? `Attached file: ${attachedFile.name}`
-                        : "Type message..."
-                    }
+                    placeholder="Type message..."
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                     className="w-full bg-transparent outline-none text-white text-sm"
-                    disabled={attachedFile !== null}
                   />
-                  
-                  {attachedFile && (
-                    <button
-                      type="button"
-                      onClick={() => setAttachedFile(null)}
-                      className="absolute right-3 p-1 hover:bg-[#20346c] rounded-full text-red-400"
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
-                  )}
                 </div>
 
                 <button
@@ -910,9 +908,12 @@ export default function WhatsAppChat() {
           ) : (
             <div className="flex-1 flex flex-col items-center justify-center text-center p-8 text-brand-secondary/45">
               <MessageSquare className="w-16 h-16 mb-4 text-[#1d2d5a]" />
-              <h2 className="text-xl font-bold text-white mb-1">Select a Conversation</h2>
+              <h2 className="text-xl font-bold text-white mb-1">
+                Select a Conversation
+              </h2>
               <p className="text-sm max-w-xs text-brand-secondary/70">
-                Pick a chat thread from the left panel to begin managing customer inquiries or review AI actions.
+                Pick a chat thread from the left panel to begin managing
+                customer inquiries or review AI actions.
               </p>
             </div>
           )}
@@ -921,15 +922,19 @@ export default function WhatsAppChat() {
         {/* Right side: AI Qualification insights sidebar */}
         {selectedConv && (
           <div className="w-80 border-l border-[#1c2d5a] bg-[#0c1635] flex flex-col overflow-y-auto shrink-0 p-4 space-y-6">
-            
             {/* Qualification Form */}
             <div>
               <div className="flex items-center gap-2 mb-4 border-b border-[#1c2d5a] pb-2 text-white">
                 <Brain className="w-5 h-5 text-indigo-400" />
-                <h2 className="font-bold text-sm uppercase tracking-wide">Lead Qualifications</h2>
+                <h2 className="font-bold text-sm uppercase tracking-wide">
+                  Lead Qualifications
+                </h2>
               </div>
 
-              <form onSubmit={handleUpdateQualification} className="space-y-3.5">
+              <form
+                onSubmit={handleUpdateQualification}
+                className="space-y-3.5"
+              >
                 <div>
                   <label className="block text-[10px] font-bold uppercase tracking-wider text-brand-secondary/60 mb-1">
                     Pet Type
@@ -937,7 +942,9 @@ export default function WhatsAppChat() {
                   <input
                     type="text"
                     value={qualForm.petType}
-                    onChange={(e) => setQualForm({ ...qualForm, petType: e.target.value })}
+                    onChange={(e) =>
+                      setQualForm({ ...qualForm, petType: e.target.value })
+                    }
                     className="w-full bg-[#101b3f] border border-[#20346c] text-white text-xs rounded-lg p-2 outline-none"
                     placeholder="Dog, Cat, etc."
                   />
@@ -950,7 +957,9 @@ export default function WhatsAppChat() {
                   <input
                     type="text"
                     value={qualForm.breed}
-                    onChange={(e) => setQualForm({ ...qualForm, breed: e.target.value })}
+                    onChange={(e) =>
+                      setQualForm({ ...qualForm, breed: e.target.value })
+                    }
                     className="w-full bg-[#101b3f] border border-[#20346c] text-white text-xs rounded-lg p-2 outline-none"
                     placeholder="Labrador, German Shepherd"
                   />
@@ -963,7 +972,9 @@ export default function WhatsAppChat() {
                   <input
                     type="text"
                     value={qualForm.city}
-                    onChange={(e) => setQualForm({ ...qualForm, city: e.target.value })}
+                    onChange={(e) =>
+                      setQualForm({ ...qualForm, city: e.target.value })
+                    }
                     className="w-full bg-[#101b3f] border border-[#20346c] text-white text-xs rounded-lg p-2 outline-none"
                     placeholder="Hyderabad, Delhi"
                   />
@@ -976,7 +987,9 @@ export default function WhatsAppChat() {
                   <input
                     type="text"
                     value={qualForm.petAge}
-                    onChange={(e) => setQualForm({ ...qualForm, petAge: e.target.value })}
+                    onChange={(e) =>
+                      setQualForm({ ...qualForm, petAge: e.target.value })
+                    }
                     className="w-full bg-[#101b3f] border border-[#20346c] text-white text-xs rounded-lg p-2 outline-none"
                     placeholder="E.g., 2 years, 3 months"
                   />
@@ -989,7 +1002,12 @@ export default function WhatsAppChat() {
                   <input
                     type="text"
                     value={qualForm.specialRequirements}
-                    onChange={(e) => setQualForm({ ...qualForm, specialRequirements: e.target.value })}
+                    onChange={(e) =>
+                      setQualForm({
+                        ...qualForm,
+                        specialRequirements: e.target.value,
+                      })
+                    }
                     className="w-full bg-[#101b3f] border border-[#20346c] text-white text-xs rounded-lg p-2 outline-none"
                     placeholder="E.g., Skin allergies, none"
                   />
@@ -1003,7 +1021,9 @@ export default function WhatsAppChat() {
                     <input
                       type="text"
                       value={qualForm.intent}
-                      onChange={(e) => setQualForm({ ...qualForm, intent: e.target.value })}
+                      onChange={(e) =>
+                        setQualForm({ ...qualForm, intent: e.target.value })
+                      }
                       className="w-full bg-[#101b3f] border border-[#20346c] text-white text-xs rounded-lg p-2 outline-none"
                       placeholder="Buy / Adoption"
                     />
@@ -1014,7 +1034,9 @@ export default function WhatsAppChat() {
                     </label>
                     <select
                       value={qualForm.urgency}
-                      onChange={(e) => setQualForm({ ...qualForm, urgency: e.target.value })}
+                      onChange={(e) =>
+                        setQualForm({ ...qualForm, urgency: e.target.value })
+                      }
                       className="w-full bg-[#101b3f] border border-[#20346c] text-white text-xs rounded-lg p-2 outline-none"
                     >
                       <option value="High">High</option>
@@ -1032,7 +1054,9 @@ export default function WhatsAppChat() {
                     <input
                       type="text"
                       value={qualForm.budget}
-                      onChange={(e) => setQualForm({ ...qualForm, budget: e.target.value })}
+                      onChange={(e) =>
+                        setQualForm({ ...qualForm, budget: e.target.value })
+                      }
                       className="w-full bg-[#101b3f] border border-[#20346c] text-white text-xs rounded-lg p-2 outline-none"
                       placeholder="E.g. $500"
                     />
@@ -1046,7 +1070,12 @@ export default function WhatsAppChat() {
                       min="0"
                       max="10"
                       value={qualForm.interestScore}
-                      onChange={(e) => setQualForm({ ...qualForm, interestScore: parseInt(e.target.value) || 0 })}
+                      onChange={(e) =>
+                        setQualForm({
+                          ...qualForm,
+                          interestScore: parseInt(e.target.value) || 0,
+                        })
+                      }
                       className="w-full bg-[#101b3f] border border-[#20346c] text-white text-xs rounded-lg p-2 outline-none"
                     />
                   </div>
@@ -1066,7 +1095,9 @@ export default function WhatsAppChat() {
             <div>
               <div className="flex items-center gap-2 mb-3 border-b border-[#1c2d5a] pb-2 text-white">
                 <Tag className="w-5 h-5 text-teal-400" />
-                <h2 className="font-bold text-sm uppercase tracking-wide">Lead Tags</h2>
+                <h2 className="font-bold text-sm uppercase tracking-wide">
+                  Lead Tags
+                </h2>
               </div>
 
               <div className="flex flex-wrap gap-1.5 mb-3">
@@ -1107,19 +1138,22 @@ export default function WhatsAppChat() {
             <div>
               <div className="flex items-center gap-2 mb-3 border-b border-[#1c2d5a] pb-2 text-white">
                 <Sparkles className="w-5 h-5 text-indigo-400" />
-                <h2 className="font-bold text-sm uppercase tracking-wide">Conversation Insights</h2>
+                <h2 className="font-bold text-sm uppercase tracking-wide">
+                  Conversation Insights
+                </h2>
               </div>
-              
+
               <div className="space-y-3.5 bg-[#101b3f]/40 p-3 rounded-xl border border-[#1b2d5a]/60 text-xs">
                 <div>
                   <h4 className="text-[10px] font-bold uppercase tracking-wider text-brand-secondary/50 mb-1">
                     AI Summary
                   </h4>
                   <p className="text-brand-secondary/90 leading-relaxed font-medium">
-                    {selectedConv.leadId?.conversationSummary || "No summary compiled yet."}
+                    {selectedConv.leadId?.conversationSummary ||
+                      "No summary compiled yet."}
                   </p>
                 </div>
-                
+
                 <div className="grid grid-cols-2 gap-2">
                   <div>
                     <h4 className="text-[10px] font-bold uppercase tracking-wider text-brand-secondary/50 mb-0.5">
@@ -1155,9 +1189,11 @@ export default function WhatsAppChat() {
             <div>
               <div className="flex items-center gap-2 mb-3 border-b border-[#1c2d5a] pb-2 text-white">
                 <UserCheck className="w-5 h-5 text-teal-400" />
-                <h2 className="font-bold text-sm uppercase tracking-wide">CRM Actions</h2>
+                <h2 className="font-bold text-sm uppercase tracking-wide">
+                  CRM Actions
+                </h2>
               </div>
-              
+
               <div className="flex flex-col gap-2">
                 <button
                   onClick={() => setFollowUpOpen(true)}
@@ -1168,7 +1204,6 @@ export default function WhatsAppChat() {
                 </button>
               </div>
             </div>
-
           </div>
         )}
       </div>
@@ -1177,12 +1212,13 @@ export default function WhatsAppChat() {
       {kbOpen && (
         <div className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-xs">
           <div className="w-96 bg-[#0c1635] text-white h-full flex flex-col shadow-2xl border-l border-[#1c2d5a]">
-            
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b border-[#1c2d5a]">
               <div className="flex items-center gap-2">
                 <Shield className="w-5 h-5 text-teal-400" />
-                <h3 className="font-bold text-md text-white">AI Knowledge Base FAQs</h3>
+                <h3 className="font-bold text-md text-white">
+                  AI Knowledge Base FAQs
+                </h3>
               </div>
               <button
                 onClick={() => setKbOpen(false)}
@@ -1194,30 +1230,42 @@ export default function WhatsAppChat() {
 
             {/* KB Form & FAQs listing */}
             <div className="flex-1 overflow-y-auto p-4 space-y-6">
-              
               {/* FAQ insert form */}
-              <form onSubmit={handleCreateKB} className="bg-[#101b3f] p-3.5 rounded-xl border border-[#20346c] space-y-3">
-                <h4 className="font-bold text-xs uppercase tracking-wide text-teal-400">Add New AI Document</h4>
-                
+              <form
+                onSubmit={handleCreateKB}
+                className="bg-[#101b3f] p-3.5 rounded-xl border border-[#20346c] space-y-3"
+              >
+                <h4 className="font-bold text-xs uppercase tracking-wide text-teal-400">
+                  Add New AI Document
+                </h4>
+
                 <div>
-                  <label className="block text-[10px] text-brand-secondary/65 font-semibold mb-1">Document Title</label>
+                  <label className="block text-[10px] text-brand-secondary/65 font-semibold mb-1">
+                    Document Title
+                  </label>
                   <input
                     type="text"
                     required
                     value={newKB.title}
-                    onChange={(e) => setNewKB({ ...newKB, title: e.target.value })}
+                    onChange={(e) =>
+                      setNewKB({ ...newKB, title: e.target.value })
+                    }
                     className="w-full bg-[#0a1128] border border-[#20346c] text-white text-xs rounded-lg p-2 outline-none"
                     placeholder="e.g. Dog Boarding Price Sheet"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[10px] text-brand-secondary/65 font-semibold mb-1">Content Details / Policy text</label>
+                  <label className="block text-[10px] text-brand-secondary/65 font-semibold mb-1">
+                    Content Details / Policy text
+                  </label>
                   <textarea
                     required
                     rows={4}
                     value={newKB.content}
-                    onChange={(e) => setNewKB({ ...newKB, content: e.target.value })}
+                    onChange={(e) =>
+                      setNewKB({ ...newKB, content: e.target.value })
+                    }
                     className="w-full bg-[#0a1128] border border-[#20346c] text-white text-xs rounded-lg p-2 outline-none"
                     placeholder="e.g. Basic Grooming is $50, Full Training is $350..."
                   />
@@ -1225,10 +1273,14 @@ export default function WhatsAppChat() {
 
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <label className="block text-[10px] text-brand-secondary/65 font-semibold mb-1">Category</label>
+                    <label className="block text-[10px] text-brand-secondary/65 font-semibold mb-1">
+                      Category
+                    </label>
                     <select
                       value={newKB.type}
-                      onChange={(e) => setNewKB({ ...newKB, type: e.target.value })}
+                      onChange={(e) =>
+                        setNewKB({ ...newKB, type: e.target.value })
+                      }
                       className="w-full bg-[#0a1128] border border-[#20346c] text-white text-xs rounded-lg p-2 outline-none"
                     >
                       <option value="faq">FAQ</option>
@@ -1238,7 +1290,7 @@ export default function WhatsAppChat() {
                       <option value="policy">Terms & Policy</option>
                     </select>
                   </div>
-                  
+
                   <div className="flex items-end">
                     <button
                       type="submit"
@@ -1253,17 +1305,26 @@ export default function WhatsAppChat() {
 
               {/* List of active FAQs */}
               <div className="space-y-3">
-                <h4 className="font-bold text-xs uppercase tracking-wide text-indigo-400">Current Knowledge Base entries ({kbItems.length})</h4>
-                
+                <h4 className="font-bold text-xs uppercase tracking-wide text-indigo-400">
+                  Current Knowledge Base entries ({kbItems.length})
+                </h4>
+
                 {kbItems.length === 0 ? (
-                  <p className="text-xs text-brand-secondary/50 text-center py-4">No documents configured.</p>
+                  <p className="text-xs text-brand-secondary/50 text-center py-4">
+                    No documents configured.
+                  </p>
                 ) : (
                   <ul className="space-y-2.5">
-                    {kbItems.map(item => (
-                      <li key={item.id} className="bg-[#101b3f]/40 p-3 rounded-lg border border-[#1b2d5a]/60 text-xs">
+                    {kbItems.map((item) => (
+                      <li
+                        key={item.id}
+                        className="bg-[#101b3f]/40 p-3 rounded-lg border border-[#1b2d5a]/60 text-xs"
+                      >
                         <div className="flex items-start justify-between gap-2">
                           <div>
-                            <h5 className="font-bold text-white">{item.title}</h5>
+                            <h5 className="font-bold text-white">
+                              {item.title}
+                            </h5>
                             <span className="text-[9px] bg-indigo-500/10 text-indigo-300 font-bold px-1.5 py-0.5 rounded-md uppercase mt-1 inline-block">
                               {item.type}
                             </span>
@@ -1283,9 +1344,7 @@ export default function WhatsAppChat() {
                   </ul>
                 )}
               </div>
-
             </div>
-
           </div>
         </div>
       )}
@@ -1314,7 +1373,9 @@ export default function WhatsAppChat() {
                 </label>
                 <select
                   value={followUpData.type}
-                  onChange={(e) => setFollowUpData({ ...followUpData, type: e.target.value })}
+                  onChange={(e) =>
+                    setFollowUpData({ ...followUpData, type: e.target.value })
+                  }
                   className="w-full bg-[#101b3f] border border-[#20346c] text-white rounded-lg p-2.5 outline-none"
                 >
                   <option value="WhatsApp">WhatsApp Message</option>
@@ -1333,7 +1394,9 @@ export default function WhatsAppChat() {
                     type="date"
                     required
                     value={followUpData.date}
-                    onChange={(e) => setFollowUpData({ ...followUpData, date: e.target.value })}
+                    onChange={(e) =>
+                      setFollowUpData({ ...followUpData, date: e.target.value })
+                    }
                     className="w-full bg-[#101b3f] border border-[#20346c] text-white rounded-lg p-2.5 outline-none"
                   />
                 </div>
@@ -1345,7 +1408,9 @@ export default function WhatsAppChat() {
                     type="text"
                     required
                     value={followUpData.time}
-                    onChange={(e) => setFollowUpData({ ...followUpData, time: e.target.value })}
+                    onChange={(e) =>
+                      setFollowUpData({ ...followUpData, time: e.target.value })
+                    }
                     className="w-full bg-[#101b3f] border border-[#20346c] text-white rounded-lg p-2.5 outline-none"
                     placeholder="e.g. 11:00 AM"
                   />
@@ -1358,13 +1423,21 @@ export default function WhatsAppChat() {
                 </label>
                 <div className="flex gap-4 mt-1">
                   {["Low", "Medium", "High"].map((p) => (
-                    <label key={p} className="flex items-center gap-1.5 cursor-pointer">
+                    <label
+                      key={p}
+                      className="flex items-center gap-1.5 cursor-pointer"
+                    >
                       <input
                         type="radio"
                         name="priority"
                         value={p}
                         checked={followUpData.priority === p}
-                        onChange={(e) => setFollowUpData({ ...followUpData, priority: e.target.value })}
+                        onChange={(e) =>
+                          setFollowUpData({
+                            ...followUpData,
+                            priority: e.target.value,
+                          })
+                        }
                         className="text-teal-400 focus:ring-0 bg-transparent border-[#20346c]"
                       />
                       <span>{p}</span>
@@ -1381,7 +1454,9 @@ export default function WhatsAppChat() {
                   rows={3}
                   required
                   value={followUpData.notes}
-                  onChange={(e) => setFollowUpData({ ...followUpData, notes: e.target.value })}
+                  onChange={(e) =>
+                    setFollowUpData({ ...followUpData, notes: e.target.value })
+                  }
                   className="w-full bg-[#101b3f] border border-[#20346c] text-white rounded-lg p-2.5 outline-none"
                   placeholder="Task instruction for sales agent..."
                 />
@@ -1397,7 +1472,6 @@ export default function WhatsAppChat() {
           </div>
         </div>
       )}
-
     </div>
   );
 }
