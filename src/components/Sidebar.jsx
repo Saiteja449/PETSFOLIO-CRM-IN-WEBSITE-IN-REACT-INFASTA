@@ -9,6 +9,7 @@ import {
   LogOut,
   PawPrint,
   ClipboardList,
+  MessageSquare,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext.jsx";
 import { useNotifications } from "../context/NotificationContext.jsx";
@@ -42,6 +43,11 @@ export default function Sidebar({ mobileOpen, handleDrawerToggle }) {
       icon: <Bell className="w-5 h-5" />,
       path: "/notifications",
       badge: unreadCount,
+    },
+    {
+      text: "WhatsApp Chat",
+      icon: <MessageSquare className="w-5 h-5" />,
+      path: "/whatsapp",
     },
   ];
 
@@ -100,7 +106,8 @@ export default function Sidebar({ mobileOpen, handleDrawerToggle }) {
             const isActive =
               location.pathname === item.path ||
               (item.path === "/leads" &&
-                location.pathname.startsWith("/lead-details"));
+                (location.pathname.startsWith("/leads") ||
+                 location.pathname.startsWith("/lead-details")));
             return (
               <li key={item.text}>
                 <button

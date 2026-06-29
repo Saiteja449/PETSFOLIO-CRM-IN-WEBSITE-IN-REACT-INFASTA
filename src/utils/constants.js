@@ -20,4 +20,17 @@ export const API_ENDPOINTS = {
   FOLLOWUPS: {
     BASE: `${API_BASE_URL}/followups`,
   },
+  WHATSAPP: {
+    CONNECT: `${API_BASE_URL}/whatsapp/connect`,
+    STATUS: `${API_BASE_URL}/whatsapp/status`,
+    LOGOUT: `${API_BASE_URL}/whatsapp/logout`,
+    QR: `${API_BASE_URL}/whatsapp/qr`,
+    CONVERSATIONS: `${API_BASE_URL}/whatsapp/conversations`,
+    CONVERSATION: (leadId) => `${API_BASE_URL}/whatsapp/conversation/${leadId}`,
+    SEND_MESSAGE: `${API_BASE_URL}/whatsapp/message/send`,
+    AI_TOGGLE: `${API_BASE_URL}/whatsapp/ai/toggle`,
+    AI_REPLY: `${API_BASE_URL}/whatsapp/ai/reply`,
+    KB: `${API_BASE_URL}/whatsapp/knowledge-base`,
+    UPLOAD: `${API_BASE_URL}/whatsapp/upload`,
+  },
 };
