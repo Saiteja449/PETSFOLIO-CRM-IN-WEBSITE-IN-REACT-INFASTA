@@ -12,20 +12,21 @@ export function LeadsProvider({ children }) {
   const [activeServices, setActiveServices] = useState(services);
   const [followups, setFollowups] = useState([]);
 
+  const refreshData = React.useCallback(async () => {
+    try {
+      const [leadsRes, followupsRes] = await Promise.all([
+        axios.get(API_ENDPOINTS.LEADS.BASE),
+        axios.get(API_ENDPOINTS.FOLLOWUPS.BASE),
+      ]);
+      setLeads(leadsRes.data);
+      setFollowups(followupsRes.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }, []);
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [leadsRes, followupsRes] = await Promise.all([
-          axios.get(API_ENDPOINTS.LEADS.BASE),
-          axios.get(API_ENDPOINTS.FOLLOWUPS.BASE),
-        ]);
-        setLeads(leadsRes.data);
-        setFollowups(followupsRes.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchData();
+    refreshData();
   }, []);
 
   // Add a new lead
@@ -174,6 +175,7 @@ export function LeadsProvider({ children }) {
         addFollowup,
         toggleFollowupDone,
         deleteLead,
+        refreshData,
       }}
     >
       {children}

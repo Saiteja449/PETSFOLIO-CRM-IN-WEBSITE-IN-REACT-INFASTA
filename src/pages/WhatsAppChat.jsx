@@ -62,9 +62,6 @@ export default function WhatsAppChat() {
   const [inputValue, setInputValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
 
-  // AI Suggestions and Logging
-  const [suggestions, setSuggestions] = useState([]);
-  const [suggestionsLoading, setSuggestionsLoading] = useState(false);
 
   // Upload/Attachment State
   const [attachedFile, setAttachedFile] = useState(null);
@@ -289,26 +286,13 @@ export default function WhatsAppChat() {
       setMessages(res.data);
       setMessagesLoading(false);
       scrollToBottom();
-      
-      // Load AI suggested replies
-      fetchAISuggestions(conv.leadId?.id);
+
     } catch (err) {
       console.error("Failed to load message logs", err);
       setMessagesLoading(false);
     }
   };
 
-  const fetchAISuggestions = async (leadId) => {
-    setSuggestionsLoading(true);
-    try {
-      const res = await axios.post(API_ENDPOINTS.WHATSAPP.AI_REPLY, { leadId });
-      setSuggestions(res.data.suggestions || []);
-    } catch (err) {
-      console.error("Failed to fetch AI suggestions");
-    } finally {
-      setSuggestionsLoading(false);
-    }
-  };
 
   // Toggle AI on/off for lead
   const handleToggleAI = async () => {
@@ -390,18 +374,12 @@ export default function WhatsAppChat() {
         text: fullText,
         senderName: currentUser?.name || "System"
       });
-      
-      // Auto reload suggestions after a short wait
-      setTimeout(() => fetchAISuggestions(selectedConv.leadId?.id), 2000);
+
     } catch (err) {
       alert("Failed to send message.");
     }
   };
 
-  // Handle suggested reply click
-  const handleUseSuggestion = (text) => {
-    setInputValue(text);
-  };
 
   // Update lead qualification parameters in DB
   const handleUpdateQualification = async (e) => {
@@ -877,27 +855,6 @@ export default function WhatsAppChat() {
                   </>
                 )}
               </div>
-
-              {/* Suggestions Panel */}
-              {suggestions.length > 0 && (
-                <div className="p-3 border-t border-[#1c2d5a] bg-[#091026] flex flex-col gap-2">
-                  <div className="flex items-center gap-1.5 text-xs text-indigo-400 font-bold">
-                    <Sparkles className="w-3.5 h-3.5 animate-pulse" />
-                    AI Copilot Suggestions:
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {suggestions.map((text, idx) => (
-                      <button
-                        key={idx}
-                        onClick={() => handleUseSuggestion(text)}
-                        className="text-xs bg-indigo-500/10 hover:bg-indigo-500/25 border border-indigo-500/30 text-indigo-200 px-3 py-1.5 rounded-xl text-left transition-all"
-                      >
-                        {text}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
 
               {/* Chat Input footer */}
               <form onSubmit={handleSend} className="p-3 border-t border-[#1c2d5a] bg-[#0c1635] flex items-center gap-2">

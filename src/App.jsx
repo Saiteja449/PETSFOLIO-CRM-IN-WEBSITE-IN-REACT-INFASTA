@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   BrowserRouter,
   Routes,
   Route,
   Navigate,
   Outlet,
+  useLocation,
 } from "react-router-dom";
 import { useAuth } from "./context/AuthContext.jsx";
+import { useLeads } from "./context/LeadsContext.jsx";
+import { useNotifications } from "./context/NotificationContext.jsx";
 import RootProvider from "./context/RootProvider.jsx";
 
 import Login from "./pages/Login.jsx";
@@ -25,6 +28,17 @@ import Header from "./components/Header.jsx";
 function AppLayout() {
   const { isAuthenticated } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const location = useLocation();
+  const { refreshData } = useLeads();
+  const { refreshNotifications } = useNotifications();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      refreshData();
+      refreshNotifications();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname, isAuthenticated, refreshData]);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
