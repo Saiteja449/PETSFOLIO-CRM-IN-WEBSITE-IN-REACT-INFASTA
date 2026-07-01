@@ -41,12 +41,7 @@ export default function WhatsAppChat() {
   const messagesEndRef = useRef(null);
 
   // Connection & Session States
-  const [session, setSession] = useState({
-    status: "disconnected",
-    qrCode: "",
-    connectedPhone: "",
-    connectedName: "",
-  });
+  const [sessions, setSessions] = useState([]);
   const [sessionLoading, setSessionLoading] = useState(false);
 
   // Conversations List
@@ -104,7 +99,16 @@ export default function WhatsAppChat() {
 
     // Socket.IO updates
     socket.on("whatsapp_status", (data) => {
-      setSession(data);
+      setSessions((prev) => {
+        const existingIndex = prev.findIndex(s => s.sessionId === data.sessionId);
+        if (existingIndex >= 0) {
+          const newSessions = [...prev];
+          newSessions[existingIndex] = data;
+          return newSessions;
+        } else {
+          return [...prev, data];
+        }
+      });
     });
 
     socket.on("conversation_updated", (data) => {
@@ -168,7 +172,7 @@ export default function WhatsAppChat() {
   const fetchSessionStatus = async () => {
     try {
       const res = await axios.get(API_ENDPOINTS.WHATSAPP.STATUS);
-      setSession(res.data);
+      setSessions(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.error("Failed to fetch WhatsApp connection status", err);
     }
@@ -235,8 +239,11 @@ export default function WhatsAppChat() {
   const handleConnect = async () => {
     setSessionLoading(true);
     try {
-      await axios.post(API_ENDPOINTS.WHATSAPP.CONNECT);
-      // Wait a moment then query status
+      let nextSessionId = "device_1";
+      if (sessions.some(s => s.sessionId === "device_1" && s.status !== "disconnected")) {
+        nextSessionId = "device_2";
+      }
+      await axios.post(API_ENDPOINTS.WHATSAPP.CONNECT, { sessionId: nextSessionId });
       setTimeout(fetchSessionStatus, 2000);
     } catch (err) {
       alert("Failed to send connect command.");
@@ -245,14 +252,14 @@ export default function WhatsAppChat() {
     }
   };
 
-  const handleLogout = async () => {
+  const handleLogout = async (sessionId) => {
     if (
       !window.confirm("Are you sure you want to disconnect WhatsApp session?")
     )
       return;
     setSessionLoading(true);
     try {
-      await axios.post(API_ENDPOINTS.WHATSAPP.LOGOUT);
+      await axios.post(API_ENDPOINTS.WHATSAPP.LOGOUT, { sessionId });
       fetchSessionStatus();
     } catch (err) {
       alert("Failed to send logout command.");
@@ -503,25 +510,33 @@ export default function WhatsAppChat() {
             <h1 className="text-lg font-bold tracking-tight">
               WhatsApp AI Lead Hub
             </h1>
-            <div className="flex items-center gap-2 mt-0.5">
-              <span
-                className={`w-2.5 h-2.5 rounded-full ${
-                  session.status === "connected"
-                    ? "bg-emerald-500 animate-pulse"
-                    : session.status === "qr"
-                      ? "bg-amber-400"
-                      : session.status === "connecting"
-                        ? "bg-blue-400 animate-spin border-t-transparent"
-                        : "bg-red-500"
-                }`}
-              />
-              <span className="text-xs font-semibold capitalize text-brand-secondary/80">
-                Connection Status:{" "}
-                {session.status === "qr" ? "Scan QR Code" : session.status}
-              </span>
-              {session.status === "connected" && session.connectedPhone && (
-                <span className="text-xs text-emerald-400 font-bold ml-1">
-                  ({session.connectedPhone})
+            <div className="flex flex-col gap-1 mt-1">
+              {sessions.filter(s => s.status !== "disconnected").map((session) => (
+                <div key={session.sessionId} className="flex items-center gap-2">
+                  <span
+                    className={`w-2.5 h-2.5 rounded-full ${
+                      session.status === "connected"
+                        ? "bg-emerald-500 animate-pulse"
+                        : session.status === "qr"
+                          ? "bg-amber-400"
+                          : session.status === "connecting"
+                            ? "bg-blue-400 animate-spin border-t-transparent"
+                            : "bg-red-500"
+                    }`}
+                  />
+                  <span className="text-xs font-semibold capitalize text-brand-secondary/80">
+                    {session.sessionId}: {session.status === "qr" ? "Scan QR Code" : session.status}
+                  </span>
+                  {session.status === "connected" && session.connectedPhone && (
+                    <span className="text-xs text-emerald-400 font-bold ml-1">
+                      ({session.connectedPhone})
+                    </span>
+                  )}
+                </div>
+              ))}
+              {sessions.filter(s => s.status !== "disconnected").length === 0 && (
+                <span className="text-xs font-semibold text-red-400">
+                  No devices connected
                 </span>
               )}
             </div>
@@ -529,52 +544,49 @@ export default function WhatsAppChat() {
         </div>
 
         {/* Setup actions */}
-        <div className="flex items-center gap-2">
-          {session.status === "disconnected" && (
+        <div className="flex items-center gap-4">
+          <div className="flex gap-2">
+            {sessions.filter(s => s.status !== "disconnected").map(session => (
+              <div key={session.sessionId} className="flex items-center gap-2">
+                {session.status === "qr" && session.qrCode && (
+                  <div className="relative group">
+                    <button className="flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded-xl text-sm">
+                      Scan QR ({session.sessionId})
+                    </button>
+                    {/* QR Popup */}
+                    <div className="absolute right-0 top-12 z-50 p-4 bg-white text-black border border-gray-200 rounded-2xl shadow-2xl flex flex-col items-center">
+                      <img
+                        src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(session.qrCode)}`}
+                        alt="WhatsApp QR Code"
+                        className="w-48 h-48"
+                      />
+                      <p className="text-xs font-bold text-center mt-2 text-gray-600">
+                        Scan via WhatsApp Link Device
+                      </p>
+                    </div>
+                  </div>
+                )}
+                {session.status === "connected" && (
+                  <button
+                    onClick={() => handleLogout(session.sessionId)}
+                    disabled={sessionLoading}
+                    className="flex items-center gap-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 font-bold py-2 px-3 rounded-xl transition-all border border-red-500/30 text-sm"
+                  >
+                    Disconnect {session.sessionId}
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {sessions.filter(s => s.status !== "disconnected").length < 2 && (
             <button
               onClick={handleConnect}
               disabled={sessionLoading}
-              className="flex items-center gap-2 bg-teal-500 hover:bg-teal-600 disabled:opacity-50 text-white font-bold py-2 px-4 rounded-xl transition-all"
+              className="flex items-center gap-2 bg-teal-500 hover:bg-teal-600 disabled:opacity-50 text-white font-bold py-2 px-4 rounded-xl transition-all text-sm"
             >
-              <RefreshCw
-                className={`w-4 h-4 ${sessionLoading ? "animate-spin" : ""}`}
-              />
-              Link WhatsApp
-            </button>
-          )}
-
-          {session.status === "qr" && session.qrCode && (
-            <div className="relative group">
-              <button className="flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-6 min-w-[200px] rounded-xl">
-                Scan QR Code
-              </button>
-              {/* QR Popup */}
-              <div className="absolute right-0 top-12 z-50 p-4 bg-white text-black border border-gray-200 rounded-2xl shadow-2xl flex flex-col items-center">
-                <img
-                  src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(session.qrCode)}`}
-                  alt="WhatsApp QR Code"
-                  className="w-48 h-48"
-                />
-                <p className="text-xs font-bold text-center mt-2 text-gray-600">
-                  Scan via WhatsApp Link Device
-                </p>
-                <button
-                  onClick={fetchSessionStatus}
-                  className="mt-3 text-xs flex items-center gap-1 text-teal-600 hover:text-teal-700 font-bold"
-                >
-                  <RefreshCw className="w-3 h-3" /> Check Connection Status
-                </button>
-              </div>
-            </div>
-          )}
-
-          {session.status === "connected" && (
-            <button
-              onClick={handleLogout}
-              disabled={sessionLoading}
-              className="flex items-center gap-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 font-bold py-2 px-4 rounded-xl transition-all border border-red-500/30"
-            >
-              Disconnect Phone
+              <RefreshCw className={`w-4 h-4 ${sessionLoading ? "animate-spin" : ""}`} />
+              {sessions.filter(s => s.status !== "disconnected").length === 0 ? "Link WhatsApp" : "Add Another Device"}
             </button>
           )}
 
