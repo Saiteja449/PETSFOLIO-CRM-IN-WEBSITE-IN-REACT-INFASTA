@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
 const useThemeStore = create((set) => ({
-  theme: localStorage.getItem("theme") || "dark",
+  theme: localStorage.getItem("theme") || "light",
   toggleTheme: () =>
     set((state) => {
       const nextTheme = state.theme === "light" ? "dark" : "light";
