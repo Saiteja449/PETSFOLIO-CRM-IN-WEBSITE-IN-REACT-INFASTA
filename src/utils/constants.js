@@ -31,6 +31,9 @@ export const API_ENDPOINTS = {
     KB: `${API_BASE_URL}/whatsapp/knowledge-base`,
     UPLOAD: `${API_BASE_URL}/whatsapp/upload`,
   },
+  ANALYTICS: {
+    BASE: `${API_BASE_URL}/analytics`,
+  }
 };
 
 export const BACKEND_URL = API_BASE_URL.replace(/\/api$/, "");

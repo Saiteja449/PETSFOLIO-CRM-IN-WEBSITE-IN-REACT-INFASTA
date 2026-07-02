@@ -84,6 +84,7 @@ export function getStatusColor(status) {
   if (st === "job posted") return "secondary";
   if (st === "joined") return "success";
   if (st === "job assigned" || st === "assigned") return "success";
+  if (st === "policy active") return "success";
   return "default";
 }
 

@@ -210,6 +210,10 @@ export default function Leads() {
       );
       return;
     }
+    if (formFields.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formFields.email)) {
+      alert("Please enter a valid email address.");
+      return;
+    }
     const toSave = { ...formFields, status: formFields.status || "New" };
     try {
       await addLead(toSave, currentUser?.name || "System");
@@ -240,6 +244,10 @@ export default function Leads() {
 
   const handleSaveEdit = async (e) => {
     e.preventDefault();
+    if (formFields.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formFields.email)) {
+      alert("Please enter a valid email address.");
+      return;
+    }
     try {
       await updateLead(
         selectedLead.id,
@@ -268,7 +276,6 @@ export default function Leads() {
         return "bg-indigo-500/10 text-indigo-500 border border-indigo-500/20 font-extrabold";
       case "not attended":
       case "price issue":
-      case "not answered":
       case "not interested":
         return "bg-red-500/10 text-red-500 border border-red-500/20";
       default:
@@ -411,6 +418,7 @@ export default function Leads() {
               <option value="Joined">Joined</option>
               <option value="Job Posted">Job Posted</option>
               <option value="Job Assigned">Job Assigned</option>
+              <option value="Policy Active">Policy Active (Pet Insurance)</option>
             </select>
           </div>
         </div>
@@ -846,7 +854,7 @@ export default function Leads() {
                       required
                       value={formFields.phone}
                       onChange={(e) =>
-                        setFormFields({ ...formFields, phone: e.target.value })
+                        setFormFields({ ...formFields, phone: e.target.value.replace(/[^0-9+]/g, "") })
                       }
                       className="w-full bg-brand-light border border-brand-secondary rounded-lg px-3 py-2 text-sm text-brand-primary focus:outline-none focus:border-teal-500"
                     />
@@ -943,12 +951,13 @@ export default function Leads() {
                       <option value="New">New</option>
                       <option value="Follow Up">Follow Up</option>
                       <option value="Not Attended">Not Attended</option>
-
-                      <option value="Not Answered">Not Answered</option>
                       <option value="Price Issue">Price Issue</option>
                       <option value="Joined">Joined</option>
                       <option value="Job Posted">Job Posted</option>
                       <option value="Job Assigned">Job Assigned</option>
+                      {formFields.service === "Pet Insurance" && (
+                        <option value="Policy Active">Policy Active</option>
+                      )}
                     </select>
                   </div>
 

@@ -10,7 +10,16 @@ import {
   Download,
   ChevronLeft,
   ChevronRight,
+  Phone,
+  PhoneIncoming,
+  PhoneOutgoing,
+  PhoneMissed,
+  PhoneOff,
+  Clock,
+  TrendingUp,
 } from "lucide-react";
+import axios from "axios";
+import { API_ENDPOINTS } from "../utils/constants.js";
 import { useLeads } from "../context/LeadsContext.jsx";
 import { getServiceColor, formatDate, exportToCSV } from "../utils/helpers.js";
 
@@ -28,7 +37,45 @@ export default function SalesPersonDetails() {
   const { leads } = useLeads();
   const decodedName = decodeURIComponent(name);
   const [activeTab, setActiveTab] = useState("New Leads");
+  const [analytics, setAnalytics] = useState([]);
   const scrollContainerRef = useRef(null);
+
+  React.useEffect(() => {
+    const fetchAnalytics = async () => {
+      try {
+        const res = await axios.get(`${API_ENDPOINTS.ANALYTICS.BASE}/${decodedName}`);
+        setAnalytics(res.data.data || []);
+      } catch (error) {
+        console.error("Failed to fetch analytics:", error);
+      }
+    };
+    fetchAnalytics();
+  }, [decodedName]);
+
+  const formatTalkTime = (seconds) => {
+    if (!seconds) return '00:00';
+    const hrs = Math.floor(seconds / 3600);
+    const mins = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+    if (hrs > 0) return `${hrs}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  const todayStrDate = new Date().toISOString().split("T")[0];
+  const todayAnalytics = analytics.find(a => a.date === todayStrDate) || {
+    totalCalls: 0, talkTime: 0, incoming: 0, outgoing: 0, missed: 0, connected: 0, rejected: 0, notConnected: 0
+  };
+  
+  const weeklyAnalytics = analytics.reduce((acc, curr) => ({
+    totalCalls: acc.totalCalls + curr.totalCalls,
+    talkTime: acc.talkTime + curr.talkTime,
+    incoming: acc.incoming + curr.incoming,
+    outgoing: acc.outgoing + curr.outgoing,
+    missed: acc.missed + curr.missed,
+    connected: acc.connected + curr.connected,
+    rejected: acc.rejected + curr.rejected,
+    notConnected: acc.notConnected + curr.notConnected,
+  }), { totalCalls: 0, talkTime: 0, incoming: 0, outgoing: 0, missed: 0, connected: 0, rejected: 0, notConnected: 0 });
 
   const handleScroll = (direction) => {
     if (scrollContainerRef.current) {
@@ -71,7 +118,7 @@ export default function SalesPersonDetails() {
   const lostLeads = repLeads.filter((l) => {
     const s = l.status?.toLowerCase();
     return (
-      s === "price issue" || s === "not answered" || s === "not interested"
+      s === "price issue" || s === "not interested"
     );
   });
 
@@ -115,8 +162,7 @@ export default function SalesPersonDetails() {
         return "bg-indigo-500/10 text-indigo-500 border border-indigo-500/20 font-extrabold";
       case "not attended":
       case "price issue":
-
-      case "not answered":
+      case "not interested":
         return "bg-red-500/10 text-red-500 border border-red-500/20";
       default:
         return "bg-brand-secondary/40 text-brand-primary/70 border border-brand-secondary/50";
@@ -170,6 +216,81 @@ export default function SalesPersonDetails() {
           >
             <Download className="w-4 h-4" /> Export
           </button>
+        </div>
+      </div>
+
+      {/* Analytics Board */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+        <div className="bg-brand-light border border-brand-secondary rounded-2xl p-4">
+          <h2 className="text-lg font-bold text-brand-primary mb-1 flex items-center gap-2">
+            <TrendingUp className="w-5 h-5 text-teal-500" /> Today's Activity
+          </h2>
+          <div className="grid grid-cols-2 gap-3 mt-4">
+            <div className="bg-brand-secondary/20 p-3 rounded-lg border border-brand-secondary">
+              <span className="text-xs text-brand-primary/70 block mb-1">Calls Today</span>
+              <span className="text-xl font-bold text-brand-primary">{todayAnalytics.totalCalls}</span>
+            </div>
+            <div className="bg-brand-secondary/20 p-3 rounded-lg border border-brand-secondary">
+              <span className="text-xs text-brand-primary/70 block mb-1">Talk Time</span>
+              <span className="text-xl font-bold text-brand-primary">{formatTalkTime(todayAnalytics.talkTime)}</span>
+            </div>
+            <div className="bg-red-500/10 p-3 rounded-lg border border-red-500/20">
+              <span className="text-xs text-red-500 block mb-1">Missed Today</span>
+              <span className="text-xl font-bold text-red-500">{todayAnalytics.missed}</span>
+            </div>
+            <div className="bg-emerald-500/10 p-3 rounded-lg border border-emerald-500/20">
+              <span className="text-xs text-emerald-500 block mb-1">Connected Today</span>
+              <span className="text-xl font-bold text-emerald-600">{todayAnalytics.connected}</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-brand-light border border-brand-secondary rounded-2xl p-4">
+          <h2 className="text-lg font-bold text-brand-primary mb-1 flex items-center gap-2">
+            <Calendar className="w-5 h-5 text-sky-500" /> Last 7 Days Summary
+          </h2>
+          <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 mt-4">
+            <div className="flex flex-col items-center p-2 bg-brand-secondary/10 rounded-lg">
+              <Phone className="w-4 h-4 text-brand-primary/70 mb-1" />
+              <span className="text-xs text-brand-primary/70 text-center">Total</span>
+              <span className="font-bold text-brand-primary">{weeklyAnalytics.totalCalls}</span>
+            </div>
+            <div className="flex flex-col items-center p-2 bg-indigo-500/10 rounded-lg">
+              <PhoneIncoming className="w-4 h-4 text-indigo-500 mb-1" />
+              <span className="text-xs text-indigo-500 text-center">Incoming</span>
+              <span className="font-bold text-indigo-600">{weeklyAnalytics.incoming}</span>
+            </div>
+            <div className="flex flex-col items-center p-2 bg-teal-500/10 rounded-lg">
+              <PhoneOutgoing className="w-4 h-4 text-teal-500 mb-1" />
+              <span className="text-xs text-teal-500 text-center">Outgoing</span>
+              <span className="font-bold text-teal-600">{weeklyAnalytics.outgoing}</span>
+            </div>
+            <div className="flex flex-col items-center p-2 bg-red-500/10 rounded-lg">
+              <PhoneMissed className="w-4 h-4 text-red-500 mb-1" />
+              <span className="text-xs text-red-500 text-center">Missed</span>
+              <span className="font-bold text-red-600">{weeklyAnalytics.missed}</span>
+            </div>
+            <div className="flex flex-col items-center p-2 bg-emerald-500/10 rounded-lg">
+              <Phone className="w-4 h-4 text-emerald-500 mb-1" />
+              <span className="text-xs text-emerald-500 text-center">Connected</span>
+              <span className="font-bold text-emerald-600">{weeklyAnalytics.connected}</span>
+            </div>
+            <div className="flex flex-col items-center p-2 bg-orange-500/10 rounded-lg">
+              <PhoneOff className="w-4 h-4 text-orange-500 mb-1" />
+              <span className="text-xs text-orange-500 text-center">Rejected</span>
+              <span className="font-bold text-orange-600">{weeklyAnalytics.rejected}</span>
+            </div>
+            <div className="flex flex-col items-center p-2 bg-brand-secondary/20 rounded-lg">
+              <PhoneOff className="w-4 h-4 text-brand-primary/50 mb-1" />
+              <span className="text-[10px] leading-tight text-brand-primary/50 text-center">Not Connect</span>
+              <span className="font-bold text-brand-primary/70">{weeklyAnalytics.notConnected}</span>
+            </div>
+            <div className="flex flex-col items-center p-2 bg-sky-500/10 rounded-lg">
+              <Clock className="w-4 h-4 text-sky-500 mb-1" />
+              <span className="text-xs text-sky-500 text-center">Talk Time</span>
+              <span className="font-bold text-sky-600 text-xs mt-1">{formatTalkTime(weeklyAnalytics.talkTime)}</span>
+            </div>
+          </div>
         </div>
       </div>
 
