@@ -1,21 +1,86 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
 @import "tailwindcss";
 
+:root {
+  --bg-main: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-secondary: #f1f5f9;
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+  --border: #e2e8f0;
+
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.dark {
+  --bg-main: #0f172a;
+  --bg-card: #111827;
+  --bg-secondary: #1e293b;
+  --text-primary: #ffffff;
+  --text-secondary: #94a3b8;
+  --border: #1e293b;
+}
+
 @theme {
-  --color-brand-primary: #00246B;
-  --color-brand-secondary: #CADCFC;
-  --color-brand-light: #FFFFFF;
+  /* Font Family override (Inter is loaded from Google Fonts above, weights 300, 400, 500, 600, 700) */
   --font-sans: "Inter", "Roboto", sans-serif;
+
+  /* Theme variables mapping */
+  --color-bg-main: var(--bg-main);
+  --color-bg-card: var(--bg-card);
+  --color-bg-secondary: var(--bg-secondary);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-border-main: var(--border);
+
+  /* Legacy brand colors dynamically mapped to active theme */
+  --color-brand-primary: var(--text-primary);
+  --color-brand-secondary: var(--border);
+  --color-brand-light: var(--bg-card);
+
+  /* Accents (identical in both modes) */
+  --color-primary-indigo: #6366f1;
+  --color-accent-purple: #8b5cf6;
+  --color-accent-blue: #3b82f6;
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+  --color-cyan: #06b6d4;
+}
+
+/* Global root HTML transition */
+html {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 body {
   margin: 0;
   padding: 0;
-  background-color: #FFFFFF;
-  color: #00246B;
+  background-color: var(--bg-main);
+  color: var(--text-primary);
   overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 * {
   box-sizing: border-box;
+}
+
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-main);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-secondary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--text-secondary) 80%, transparent);
 }

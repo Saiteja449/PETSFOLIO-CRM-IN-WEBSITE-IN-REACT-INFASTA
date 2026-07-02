@@ -174,7 +174,7 @@ export default function Dashboard() {
                 key={s.name}
                 className="relative bg-brand-light border border-brand-secondary rounded-2xl overflow-hidden"
                 style={{
-                  background: `linear-gradient(135deg, #FFFFFF 60%, ${sColor}1a 100%)`,
+                  background: `linear-gradient(135deg, var(--bg-card) 60%, ${sColor}1a 100%)`,
                 }}
               >
                 <div
@@ -242,17 +242,17 @@ export default function Dashboard() {
                 </Pie>
                 <RechartsTooltip
                   contentStyle={{
-                    backgroundColor: "#FFFFFF",
-                    borderColor: "#CADCFC",
-                    color: "#00246B",
+                    backgroundColor: "var(--bg-card)",
+                    borderColor: "var(--border)",
+                    color: "var(--text-primary)",
                     borderRadius: "8px",
                   }}
-                  itemStyle={{ color: "#00246B" }}
+                  itemStyle={{ color: "var(--text-primary)" }}
                 />
                 <Legend
                   verticalAlign="bottom"
                   height={36}
-                  wrapperStyle={{ fontSize: "12px", color: "#00246B" }}
+                  wrapperStyle={{ fontSize: "12px", color: "var(--text-primary)" }}
                 />
               </PieChart>
             </ResponsiveContainer>
@@ -287,17 +287,17 @@ export default function Dashboard() {
                 </Pie>
                 <RechartsTooltip
                   contentStyle={{
-                    backgroundColor: "#FFFFFF",
-                    borderColor: "#CADCFC",
-                    color: "#00246B",
+                    backgroundColor: "var(--bg-card)",
+                    borderColor: "var(--border)",
+                    color: "var(--text-primary)",
                     borderRadius: "8px",
                   }}
-                  itemStyle={{ color: "#00246B" }}
+                  itemStyle={{ color: "var(--text-primary)" }}
                 />
                 <Legend
                   verticalAlign="bottom"
                   height={36}
-                  wrapperStyle={{ fontSize: "12px", color: "#00246B" }}
+                  wrapperStyle={{ fontSize: "12px", color: "var(--text-primary)" }}
                 />
               </PieChart>
             </ResponsiveContainer>

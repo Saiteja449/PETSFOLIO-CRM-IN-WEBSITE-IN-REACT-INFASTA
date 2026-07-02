@@ -11,6 +11,7 @@ import { useAuth } from "./context/AuthContext.jsx";
 import { useLeads } from "./context/LeadsContext.jsx";
 import { useNotifications } from "./context/NotificationContext.jsx";
 import RootProvider from "./context/RootProvider.jsx";
+import useThemeStore from "./store/themeStore.js";
 
 import Login from "./pages/Login.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
@@ -49,7 +50,7 @@ function AppLayout() {
   }
 
   return (
-    <div className="flex min-h-screen bg-brand-light text-brand-primary font-sans">
+    <div className="flex min-h-screen bg-bg-main text-text-primary font-sans">
       <Sidebar
         mobileOpen={mobileOpen}
         handleDrawerToggle={handleDrawerToggle}
@@ -66,6 +67,14 @@ function AppLayout() {
 }
 
 export default function App() {
+  const theme = useThemeStore((state) => state.theme);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    root.classList.remove("light", "dark");
+    root.classList.add(theme);
+  }, [theme]);
+
   return (
     <RootProvider>
       <BrowserRouter basename="/crm/in">
