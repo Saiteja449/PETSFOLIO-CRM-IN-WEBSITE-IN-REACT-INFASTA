@@ -1,4 +1,6 @@
-export const API_BASE_URL = "https://crm-backend-14p9.onrender.com/api";
+export const API_BASE_URL = true
+  ? "http://localhost:5000/api"
+  : "https://crm-backend-14p9.onrender.com/api";
 
 export const API_ENDPOINTS = {
   AUTH: {
@@ -33,8 +35,7 @@ export const API_ENDPOINTS = {
   },
   ANALYTICS: {
     BASE: `${API_BASE_URL}/analytics`,
-  }
+  },
 };
 
 export const BACKEND_URL = API_BASE_URL.replace(/\/api$/, "");
-

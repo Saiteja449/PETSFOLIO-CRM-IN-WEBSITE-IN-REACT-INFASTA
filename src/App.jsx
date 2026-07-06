@@ -77,7 +77,7 @@ export default function App() {
 
   return (
     <RootProvider>
-      <BrowserRouter basename="/crm/in">
+      <BrowserRouter basename="/crm/beta">
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route element={<AppLayout />}>
