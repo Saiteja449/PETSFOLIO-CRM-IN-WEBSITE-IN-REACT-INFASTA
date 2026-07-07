@@ -1,6 +1,6 @@
 export const API_BASE_URL = true
   ? "http://localhost:5000/api"
-  : "https://crm-backend-14p9.onrender.com/api";
+  : "https://crm-backend-1-fpyv.onrender.com/api";
 
 export const API_ENDPOINTS = {
   AUTH: {
