@@ -1,14 +1,30 @@
-import React from "react";
-import { createContext, useContext, useMemo } from "react";
+import React, { createContext, useContext, useMemo, useState, useEffect } from "react";
+import axios from "axios";
+import { API_ENDPOINTS } from "../utils/constants.js";
 import { useLeads } from "./LeadsContext.jsx";
 import { useAuth } from "./AuthContext.jsx";
+import { normalizeServices } from "../utils/helpers.js";
 
 const DashboardContext = createContext(null);
 
 export function DashboardProvider({ children }) {
   const { currentUser, allUsers } = useAuth();
-
   const { leads: rawLeads, followups: rawFollowups } = useLeads();
+  const [todayAnalytics, setTodayAnalytics] = useState([]);
+
+  useEffect(() => {
+    const fetchAnalytics = async () => {
+      try {
+        const res = await axios.get(API_ENDPOINTS.ANALYTICS.TODAY);
+        setTodayAnalytics(res.data.data || []);
+      } catch (err) {
+        console.error("Failed to fetch today analytics:", err);
+      }
+    };
+    fetchAnalytics();
+    const interval = setInterval(fetchAnalytics, 60000); // refresh every minute
+    return () => clearInterval(interval);
+  }, []);
 
   // Filter based on user role: if Sales Representative, only show their assigned leads for simple dashboard KPIs
   const leads = useMemo(() => {
@@ -66,11 +82,13 @@ export function DashboardProvider({ children }) {
     const serviceWonLeads = {};
 
     leads.forEach((lead) => {
-      const s = lead.service;
-      serviceBreakdown[s] = (serviceBreakdown[s] || 0) + 1;
-      if (isLeadWon(lead)) {
-        serviceWonLeads[s] = (serviceWonLeads[s] || 0) + 1;
-      }
+      const services = normalizeServices(lead.service);
+      services.forEach((s) => {
+        serviceBreakdown[s] = (serviceBreakdown[s] || 0) + 1;
+        if (isLeadWon(lead)) {
+          serviceWonLeads[s] = (serviceWonLeads[s] || 0) + 1;
+        }
+      });
     });
 
     // Formatted for Charts
@@ -106,6 +124,7 @@ export function DashboardProvider({ children }) {
     // Seed performerMap with all active salespeople so they exist even with zero assigned leads
     (allUsers || []).forEach((user) => {
       if (user.role === "Sales Representative") {
+        const userAnalytics = todayAnalytics.find(a => a.salesperson === user.name) || {};
         performerMap[user.name] = {
           id: user.id,
           name: user.name,
@@ -113,6 +132,7 @@ export function DashboardProvider({ children }) {
           role: user.role,
           assigned: 0,
           won: 0,
+          callsMade: userAnalytics.totalCalls || 0,
         };
       }
     });
@@ -210,7 +230,7 @@ export function DashboardProvider({ children }) {
       performersList,
       recentActivities: followups.filter((f) => f.done).slice(0, 10),
     };
-  }, [leads, followups, rawLeads, rawFollowups, allUsers]);
+  }, [leads, followups, rawLeads, rawFollowups, allUsers, todayAnalytics]);
 
   return (
     <DashboardContext.Provider value={stats}>

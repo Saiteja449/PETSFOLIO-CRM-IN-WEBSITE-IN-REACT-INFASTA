@@ -17,10 +17,13 @@ import {
   PhoneOff,
   Clock,
   TrendingUp,
+  Target,
 } from "lucide-react";
 import axios from "axios";
 import { API_ENDPOINTS } from "../utils/constants.js";
 import { useLeads } from "../context/LeadsContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
+import { useTargets } from "../context/TargetsContext.jsx";
 import { getServiceColor, formatDate, exportToCSV } from "../utils/helpers.js";
 
 const Badge = ({ children, colorClass, className = "" }) => (
@@ -35,6 +38,8 @@ export default function SalesPersonDetails() {
   const { name } = useParams();
   const navigate = useNavigate();
   const { leads } = useLeads();
+  const { allUsers } = useAuth();
+  const { repAssignments, templates, getRepAssignment, getTemplateForAssignment } = useTargets();
   const decodedName = decodeURIComponent(name);
   const [activeTab, setActiveTab] = useState("New Leads");
   const [analytics, setAnalytics] = useState([]);
@@ -218,6 +223,58 @@ export default function SalesPersonDetails() {
           </button>
         </div>
       </div>
+      {/* ── Current Target Banner ──────────────────────────────────────────── */}
+      {(() => {
+        const currentMonth = new Date().toISOString().slice(0, 7);
+        const repUser = allUsers?.find(
+          (u) => u.name?.toLowerCase() === decodedName?.toLowerCase()
+        );
+        const assignment = repUser ? getRepAssignment(repUser.id, currentMonth) : null;
+        const tpl = getTemplateForAssignment(assignment);
+
+        if (!assignment || !tpl) return null;
+
+        return (
+          <div className="bg-brand-light border border-brand-secondary rounded-2xl p-4 mb-2 flex items-center gap-6 flex-wrap shadow-sm">
+            <div className="flex items-center gap-2">
+              <Target size={18} className="text-indigo-500 animate-pulse" />
+              <span className="text-sm font-bold text-brand-primary">Active Target Plan</span>
+            </div>
+            
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-brand-primary/60">Template:</span>
+              <span className="text-xs font-bold text-brand-primary">{tpl.categoryName}</span>
+              <span className="text-[10px] px-2 py-0.5 rounded border border-brand-secondary text-brand-primary/60 bg-brand-secondary/10">
+                {tpl.type}
+              </span>
+            </div>
+
+            {/* Displaying Tiers details */}
+            <div className="flex items-center gap-3 flex-wrap">
+              {/* Baseline */}
+              <div className="flex items-center gap-2 px-2.5 py-1 rounded bg-orange-500/10 text-orange-600 border border-orange-400/30 text-xs">
+                <span className="font-bold">Baseline:</span>
+                <span>{assignment.tiers?.baseline?.callsPerDay || "0"} calls/day • {assignment.tiers?.baseline?.conversionPct || "0"}%</span>
+              </div>
+              {/* Target */}
+              <div className="flex items-center gap-2 px-2.5 py-1 rounded bg-emerald-500/10 text-emerald-600 border border-emerald-400/30 text-xs">
+                <span className="font-bold">Target:</span>
+                <span>{assignment.tiers?.target?.callsPerDay || "0"} calls/day • {assignment.tiers?.target?.conversionPct || "0"}%</span>
+              </div>
+              {/* Star */}
+              <div className="flex items-center gap-2 px-2.5 py-1 rounded bg-indigo-500/10 text-indigo-600 border border-indigo-400/30 text-xs">
+                <span className="font-bold">Star:</span>
+                <span>{assignment.tiers?.star?.callsPerDay || "0"} calls/day • {assignment.tiers?.star?.conversionPct || "0"}%</span>
+              </div>
+            </div>
+
+            <span className="text-[10px] text-brand-primary/40 ml-auto">
+              Month: {assignment.assignedMonth}
+            </span>
+          </div>
+        );
+      })()}
+
 
       {/* Analytics Board */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">

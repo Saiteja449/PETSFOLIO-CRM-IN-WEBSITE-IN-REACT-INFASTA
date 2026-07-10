@@ -14,6 +14,7 @@ import {
   Trash2,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
 } from "lucide-react";
 import axios from "axios";
 import { API_ENDPOINTS } from "../utils/constants.js";
@@ -26,6 +27,7 @@ import {
   getStatusColor,
   getSourceColor,
   filterLeads,
+  normalizeServices,
 } from "../utils/helpers.js";
 
 // Helper components for UI
@@ -36,6 +38,74 @@ const Badge = ({ children, colorClass, className = "" }) => (
     {children}
   </span>
 );
+
+// Multi-checkbox dropdown for service selection
+function ServiceMultiSelect({ services, selected, onChange }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  // Close on outside click
+  React.useEffect(() => {
+    const handler = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  const toggle = (code) => {
+    if (selected.includes(code)) {
+      onChange(selected.filter((s) => s !== code));
+    } else {
+      onChange([...selected, code]);
+    }
+  };
+
+  const label =
+    selected.length === 0
+      ? "Select services..."
+      : selected.length === 1
+      ? selected[0]
+      : `${selected.length} services selected`;
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        className="w-full flex items-center justify-between bg-brand-light border border-brand-secondary rounded-lg px-3 py-2 text-sm text-brand-primary focus:outline-none focus:border-teal-500 transition-colors"
+      >
+        <span className={selected.length === 0 ? "text-brand-primary/40" : ""}>
+          {label}
+        </span>
+        <ChevronDown className={`w-4 h-4 text-brand-primary/50 transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
+
+      {open && (
+        <div className="absolute z-50 mt-1 w-full bg-brand-light border border-brand-secondary rounded-lg shadow-xl overflow-hidden">
+          {services.map((s) => {
+            const checked = selected.includes(s.code);
+            return (
+              <label
+                key={s.code}
+                className="flex items-center gap-3 px-3 py-2.5 cursor-pointer hover:bg-brand-secondary/20 transition-colors"
+              >
+                <input
+                  type="checkbox"
+                  checked={checked}
+                  onChange={() => toggle(s.code)}
+                  className="w-4 h-4 rounded accent-teal-500 cursor-pointer"
+                />
+                <div className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: s.color }} />
+                <span className="text-sm font-medium text-brand-primary">{s.name}</span>
+              </label>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function Leads() {
   const navigate = useNavigate();
@@ -101,7 +171,7 @@ export default function Leads() {
     phone: "",
     email: "",
     source: "Manual Entry",
-    service: "Grooming",
+    service: ["Grooming"],
 
     assignedTo: currentUser?.name || "Alex Mercer",
     nextFollowUp: "2026-05-26",
@@ -204,9 +274,9 @@ export default function Leads() {
 
   const handleSaveAdd = async (e) => {
     e.preventDefault();
-    if (!formFields.name || !formFields.phone || !formFields.service) {
+    if (!formFields.name || !formFields.phone || !formFields.service?.length) {
       alert(
-        "Please fill in main credentials (Customer Name, Phone, and chosen Service)",
+        "Please fill in main credentials (Customer Name, Phone, and at least one Service)",
       );
       return;
     }
@@ -231,7 +301,7 @@ export default function Leads() {
       phone: lead.phone,
       email: lead.email || "",
       source: lead.source,
-      service: lead.service,
+      service: normalizeServices(lead.service),
 
       assignedTo: lead.assignedTo,
       nextFollowUp: lead.nextFollowUp || "",
@@ -499,16 +569,18 @@ export default function Leads() {
                       </Badge>
                     </td>
                     <td className="px-4 py-3">
-                      <div className="flex items-center gap-2">
-                        <div
-                          className="w-2 h-2 rounded-full"
-                          style={{
-                            backgroundColor: getServiceColor(lead.service),
-                          }}
-                        ></div>
-                        <span className="text-sm font-semibold text-brand-primary">
-                          {lead.service}
-                        </span>
+                      <div className="flex items-center flex-wrap gap-1">
+                        {normalizeServices(lead.service).map((svc) => (
+                          <div key={svc} className="flex items-center gap-1.5">
+                            <div
+                              className="w-2 h-2 rounded-full flex-shrink-0"
+                              style={{ backgroundColor: getServiceColor(svc) }}
+                            />
+                            <span className="text-xs font-semibold text-brand-primary">
+                              {svc}
+                            </span>
+                          </div>
+                        ))}
                       </div>
                     </td>
                     {currentUser?.role !== "Sales Representative" && (
@@ -891,27 +963,18 @@ export default function Leads() {
                     </select>
                   </div>
 
-                  <div>
+                  {/* Service Interest — multi-checkbox dropdown */}
+                  <div className="relative">
                     <label className="block text-xs font-bold text-brand-primary/70 mb-1">
-                      Service Interest
+                      Service Interest *
                     </label>
-                    <select
-                      value={formFields.service}
-                      onChange={(e) => {
-                        const selService = e.target.value;
-                        setFormFields({
-                          ...formFields,
-                          service: selService,
-                        });
-                      }}
-                      className="w-full bg-brand-light border border-brand-secondary rounded-lg px-3 py-2 text-sm text-brand-primary focus:outline-none focus:border-teal-500"
-                    >
-                      {activeServices.map((s) => (
-                        <option key={s.code} value={s.code}>
-                          {s.name}
-                        </option>
-                      ))}
-                    </select>
+                    <ServiceMultiSelect
+                      services={activeServices}
+                      selected={normalizeServices(formFields.service)}
+                      onChange={(newArr) =>
+                        setFormFields({ ...formFields, service: newArr })
+                      }
+                    />
                   </div>
 
                   <div>
@@ -955,7 +1018,7 @@ export default function Leads() {
                       <option value="Joined">Joined</option>
                       <option value="Job Posted">Job Posted</option>
                       <option value="Job Assigned">Job Assigned</option>
-                      {formFields.service === "Pet Insurance" && (
+                      {formFields.service?.includes("Pet Insurance") && (
                         <option value="Policy Active">Policy Active</option>
                       )}
                     </select>

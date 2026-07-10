@@ -1,4 +1,15 @@
 /**
+ * Normalize the service field to always return an array.
+ * Handles backward-compatible reads of old leads where service is a plain string.
+ * e.g. "Grooming" → ["Grooming"]  |  ["Grooming","Training"] → ["Grooming","Training"]
+ */
+export function normalizeServices(value) {
+  if (!value) return [];
+  if (Array.isArray(value)) return value;
+  return [value];
+}
+
+/**
  * Date Formatter helper
  */
 export function formatDate(dateString) {
@@ -139,7 +150,8 @@ export function filterLeads(
       lead.phone.includes(search) ||
       (lead.email && lead.email.toLowerCase().includes(search.toLowerCase()));
 
-    const matchService = service === "All" || lead.service === service;
+    const matchService =
+      service === "All" || normalizeServices(lead.service).includes(service);
     const matchStage = stage === "All" || lead.stage === stage;
     const matchSalesperson =
       salesperson === "All" || lead.assignedTo === salesperson;

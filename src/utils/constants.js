@@ -35,6 +35,13 @@ export const API_ENDPOINTS = {
   },
   ANALYTICS: {
     BASE: `${API_BASE_URL}/analytics`,
+    TODAY: `${API_BASE_URL}/analytics/today`,
+  },
+  TARGETS: {
+    TEMPLATES: `${API_BASE_URL}/targets/templates`,
+    TEMPLATE: (id) => `${API_BASE_URL}/targets/templates/${id}`,
+    ASSIGNMENTS: `${API_BASE_URL}/targets/assignments`,
+    ASSIGNMENT: (id) => `${API_BASE_URL}/targets/assignments/${id}`,
   },
 };
 
