@@ -10,6 +10,7 @@ import {
   PawPrint,
   ClipboardList,
   MessageSquare,
+  Bot,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext.jsx";
 import { useNotifications } from "../context/NotificationContext.jsx";
@@ -48,6 +49,11 @@ export default function Sidebar({ mobileOpen, handleDrawerToggle }) {
       text: "WhatsApp Chat",
       icon: <MessageSquare className="w-5 h-5" />,
       path: "/whatsapp",
+    },
+    {
+      text: "Test AI",
+      icon: <Bot className="w-5 h-5" />,
+      path: "/test-ai",
     },
   ];
 
