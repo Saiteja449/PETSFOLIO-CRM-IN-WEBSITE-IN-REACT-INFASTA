@@ -10,7 +10,8 @@ export default function TestAI() {
   const [leadId, setLeadId] = useState(null);
   const messagesEndRef = useRef(null);
 
-  const API_URL = "http://localhost:5000/api/whatsapp/test-ai";
+  const API_URL =
+    "https://crm-backend-1-fpyv.onrender.com/api/whatsapp/test-ai";
 
   const fetchHistory = async () => {
     try {
@@ -52,7 +53,7 @@ export default function TestAI() {
         message: userMessage.text,
         leadId,
       });
-      
+
       const aiResponse = { text: res.data.outgoing.text, role: "ai" };
       setMessages((prev) => [...prev, aiResponse]);
       setAiQualification(res.data.aiQualification);
@@ -84,7 +85,9 @@ export default function TestAI() {
         <div className="p-4 border-b border-brand-secondary flex justify-between items-center bg-bg-main/50">
           <div className="flex items-center gap-2">
             <Bot className="w-6 h-6 text-teal-500" />
-            <h2 className="text-lg font-bold text-brand-primary">AI Testing Interface</h2>
+            <h2 className="text-lg font-bold text-brand-primary">
+              AI Testing Interface
+            </h2>
           </div>
           <button
             onClick={handleReset}
@@ -157,7 +160,9 @@ export default function TestAI() {
       {/* Qualification Area */}
       <div className="w-80 flex flex-col bg-brand-light rounded-xl border border-brand-secondary overflow-hidden">
         <div className="p-4 border-b border-brand-secondary bg-bg-main/50">
-          <h2 className="text-lg font-bold text-brand-primary">AI Qualification</h2>
+          <h2 className="text-lg font-bold text-brand-primary">
+            AI Qualification
+          </h2>
           <p className="text-xs text-brand-primary/70">Extracted details</p>
         </div>
         <div className="p-4 overflow-y-auto flex-1">
@@ -165,50 +170,74 @@ export default function TestAI() {
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-y-3 gap-x-2 text-sm">
                 <div className="text-brand-primary/70">Pet Type</div>
-                <div className="font-medium text-brand-primary">{aiQualification.petType || "-"}</div>
-                
+                <div className="font-medium text-brand-primary">
+                  {aiQualification.petType || "-"}
+                </div>
+
                 <div className="text-brand-primary/70">Breed</div>
-                <div className="font-medium text-brand-primary">{aiQualification.breed || "-"}</div>
-                
+                <div className="font-medium text-brand-primary">
+                  {aiQualification.breed || "-"}
+                </div>
+
                 <div className="text-brand-primary/70">Pet Age</div>
-                <div className="font-medium text-brand-primary">{aiQualification.petAge || "-"}</div>
-                
+                <div className="font-medium text-brand-primary">
+                  {aiQualification.petAge || "-"}
+                </div>
+
                 <div className="text-brand-primary/70">City</div>
-                <div className="font-medium text-brand-primary">{aiQualification.city || "-"}</div>
-                
+                <div className="font-medium text-brand-primary">
+                  {aiQualification.city || "-"}
+                </div>
+
                 <div className="text-brand-primary/70">Intent</div>
-                <div className="font-medium text-brand-primary">{aiQualification.intent || "-"}</div>
-                
+                <div className="font-medium text-brand-primary">
+                  {aiQualification.intent || "-"}
+                </div>
+
                 <div className="text-brand-primary/70">Budget</div>
-                <div className="font-medium text-brand-primary">{aiQualification.budget || "-"}</div>
-                
+                <div className="font-medium text-brand-primary">
+                  {aiQualification.budget || "-"}
+                </div>
+
                 <div className="text-brand-primary/70">Urgency</div>
-                <div className="font-medium text-brand-primary">{aiQualification.urgency || "-"}</div>
+                <div className="font-medium text-brand-primary">
+                  {aiQualification.urgency || "-"}
+                </div>
               </div>
-              
+
               {aiQualification.specialRequirements && (
                 <div>
-                  <div className="text-brand-primary/70 text-sm mb-1">Special Requirements</div>
+                  <div className="text-brand-primary/70 text-sm mb-1">
+                    Special Requirements
+                  </div>
                   <div className="p-2 bg-bg-main rounded border border-brand-secondary text-sm text-brand-primary">
                     {aiQualification.specialRequirements}
                   </div>
                 </div>
               )}
-              
+
               <div className="mt-4 pt-4 border-t border-brand-secondary">
-                <div className="text-brand-primary/70 text-sm mb-1">Interest Score</div>
+                <div className="text-brand-primary/70 text-sm mb-1">
+                  Interest Score
+                </div>
                 <div className="flex items-center gap-2">
                   <div className="h-2 flex-1 bg-brand-secondary rounded-full overflow-hidden">
-                    <div 
+                    <div
                       className={`h-full ${
-                        (aiQualification.interestScore || 0) > 7 ? 'bg-green-500' :
-                        (aiQualification.interestScore || 0) > 4 ? 'bg-yellow-500' :
-                        'bg-red-500'
+                        (aiQualification.interestScore || 0) > 7
+                          ? "bg-green-500"
+                          : (aiQualification.interestScore || 0) > 4
+                            ? "bg-yellow-500"
+                            : "bg-red-500"
                       }`}
-                      style={{ width: `${(aiQualification.interestScore || 0) * 10}%` }}
+                      style={{
+                        width: `${(aiQualification.interestScore || 0) * 10}%`,
+                      }}
                     />
                   </div>
-                  <span className="font-bold text-brand-primary">{aiQualification.interestScore || 0}/10</span>
+                  <span className="font-bold text-brand-primary">
+                    {aiQualification.interestScore || 0}/10
+                  </span>
                 </div>
               </div>
             </div>
