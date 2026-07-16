@@ -1,4 +1,4 @@
-export const API_BASE_URL = true
+export const API_BASE_URL = false
   ? "http://localhost:5000/api"
   : "https://crm-backend-1-fpyv.onrender.com/api";
 
