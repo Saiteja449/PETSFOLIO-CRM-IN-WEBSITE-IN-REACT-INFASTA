@@ -10,8 +10,7 @@ export default function TestAI() {
   const [leadId, setLeadId] = useState(null);
   const messagesEndRef = useRef(null);
 
-  const API_URL =
-    "https://crm-backend-1-fpyv.onrender.com/api/whatsapp/test-ai";
+  const API_URL = "http://localhost:5000/api/whatsapp/test-ai";
 
   const fetchHistory = async () => {
     try {

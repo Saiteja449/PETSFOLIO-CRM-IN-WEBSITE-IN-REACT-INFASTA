@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useMemo, useState, useEffect } from "react";
+import React, {
+  createContext,
+  useContext,
+  useMemo,
+  useState,
+  useEffect,
+} from "react";
 import axios from "axios";
 import { API_ENDPOINTS } from "../utils/constants.js";
 import { useLeads } from "./LeadsContext.jsx";
@@ -82,13 +88,11 @@ export function DashboardProvider({ children }) {
     const serviceWonLeads = {};
 
     leads.forEach((lead) => {
-      const services = normalizeServices(lead.service);
-      services.forEach((s) => {
-        serviceBreakdown[s] = (serviceBreakdown[s] || 0) + 1;
-        if (isLeadWon(lead)) {
-          serviceWonLeads[s] = (serviceWonLeads[s] || 0) + 1;
-        }
-      });
+      const s = normalizeServices(lead.service);
+      serviceBreakdown[s] = (serviceBreakdown[s] || 0) + 1;
+      if (isLeadWon(lead)) {
+        serviceWonLeads[s] = (serviceWonLeads[s] || 0) + 1;
+      }
     });
 
     // Formatted for Charts
@@ -124,7 +128,8 @@ export function DashboardProvider({ children }) {
     // Seed performerMap with all active salespeople so they exist even with zero assigned leads
     (allUsers || []).forEach((user) => {
       if (user.role === "Sales Representative") {
-        const userAnalytics = todayAnalytics.find(a => a.salesperson === user.name) || {};
+        const userAnalytics =
+          todayAnalytics.find((a) => a.salesperson === user.name) || {};
         performerMap[user.name] = {
           id: user.id,
           name: user.name,

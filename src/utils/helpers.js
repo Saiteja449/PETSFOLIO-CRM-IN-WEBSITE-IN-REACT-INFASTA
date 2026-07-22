@@ -1,12 +1,10 @@
 /**
- * Normalize the service field to always return an array.
- * Handles backward-compatible reads of old leads where service is a plain string.
- * e.g. "Grooming" → ["Grooming"]  |  ["Grooming","Training"] → ["Grooming","Training"]
+ * Ensures service is read as a string.
  */
 export function normalizeServices(value) {
-  if (!value) return [];
-  if (Array.isArray(value)) return value;
-  return [value];
+  if (!value) return "Grooming";
+  if (Array.isArray(value)) return value[0] || "Grooming";
+  return String(value);
 }
 
 /**
@@ -151,7 +149,7 @@ export function filterLeads(
       (lead.email && lead.email.toLowerCase().includes(search.toLowerCase()));
 
     const matchService =
-      service === "All" || normalizeServices(lead.service).includes(service);
+      service === "All" || lead.service === service;
     const matchStage = stage === "All" || lead.stage === stage;
     const matchSalesperson =
       salesperson === "All" || lead.assignedTo === salesperson;
