@@ -1,8 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { Send, RefreshCw, Bot } from "lucide-react";
+import { Navigate } from "react-router-dom";
 
 export default function TestAI() {
+  if (import.meta.env.PROD || import.meta.env.VITE_PROD === "true") {
+    return <Navigate to="/dashboard" replace />;
+  }
+
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
   const [aiQualification, setAiQualification] = useState(null);

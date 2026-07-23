@@ -50,11 +50,15 @@ export default function Sidebar({ mobileOpen, handleDrawerToggle }) {
       icon: <MessageSquare className="w-5 h-5" />,
       path: "/whatsapp",
     },
-    {
-      text: "Test AI",
-      icon: <Bot className="w-5 h-5" />,
-      path: "/test-ai",
-    },
+    ...(import.meta.env.PROD || import.meta.env.VITE_PROD === "true"
+      ? []
+      : [
+          {
+            text: "Test AI",
+            icon: <Bot className="w-5 h-5" />,
+            path: "/test-ai",
+          },
+        ]),
   ];
 
   const handleNav = (path) => {
