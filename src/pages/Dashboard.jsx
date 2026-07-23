@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import {
   Users,
   DollarSign,
@@ -11,6 +12,8 @@ import {
   Star,
   CheckCircle2,
   Download,
+  Bot,
+  RefreshCw,
 } from "lucide-react";
 import {
   ResponsiveContainer,
@@ -28,6 +31,7 @@ import { useDashboard } from "../context/DashboardContext.jsx";
 import { useLeads } from "../context/LeadsContext.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
 import { formatDate, getServiceColor, exportToCSV } from "../utils/helpers.js";
+import { API_ENDPOINTS } from "../utils/constants.js";
 
 const CHART_COLORS = ["#2563eb", "#16a34a", "#ea580c", "#db2777", "#7c3aed"];
 
@@ -36,6 +40,39 @@ export default function Dashboard() {
   const stats = useDashboard();
   const { leads } = useLeads();
   const { currentUser } = useAuth();
+  
+  const [aiLimits, setAiLimits] = useState(null);
+  const [aiLimitsLoading, setAiLimitsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchAILimits = async () => {
+      try {
+        const res = await axios.get(API_ENDPOINTS.ANALYTICS.AI_LIMITS);
+        if (res.data.success) {
+          setAiLimits(res.data.data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch previous AI limits:", err);
+      } finally {
+        setAiLimitsLoading(false);
+      }
+    };
+    fetchAILimits();
+  }, []);
+
+  const handleRefreshAILimits = async () => {
+    setAiLimitsLoading(true);
+    try {
+      const res = await axios.post(API_ENDPOINTS.ANALYTICS.AI_LIMITS_REFRESH);
+      if (res.data.success) {
+        setAiLimits(res.data.data);
+      }
+    } catch (err) {
+      console.error("Failed to refresh AI limits:", err);
+    } finally {
+      setAiLimitsLoading(false);
+    }
+  };
 
   const handleExport = () => {
     exportToCSV(leads, "dashboard_leads_export.csv");
@@ -104,7 +141,7 @@ export default function Dashboard() {
         </div>
 
         {/* To-Do followup Index */}
-        <div className="bg-brand-light border border-brand-secondary rounded-2xl p-5 flex items-center justify-between">
+        {/* <div className="bg-brand-light border border-brand-secondary rounded-2xl p-5 flex items-center justify-between">
           <div>
             <h3 className="text-xs font-bold text-brand-primary/70 uppercase tracking-wider">
               Today's Follow-ups
@@ -126,7 +163,7 @@ export default function Dashboard() {
                 </>
               ) : (
                 "Fully streamlined"
-              )} */}
+              // )} 
             </div>
           </div>
           <div
@@ -138,7 +175,7 @@ export default function Dashboard() {
           >
             <CheckSquare className="w-6 h-6" />
           </div>
-        </div>
+        </div> */}
 
         {/* Jobs Assigned */}
         <div className="bg-brand-light border border-brand-secondary rounded-2xl p-5 flex items-center justify-between">
@@ -156,6 +193,46 @@ export default function Dashboard() {
           <div className="w-12 h-12 rounded-full bg-purple-500/10 flex items-center justify-center">
             <CheckCircle2 className="w-6 h-6 text-purple-500" />
           </div>
+        </div>
+
+        {/* AI Rate Limits */}
+        <div className="bg-brand-light border border-brand-secondary rounded-2xl p-4 flex flex-col justify-between">
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="text-xs font-bold text-brand-primary/70 uppercase tracking-wider">
+              AI Rate Limits (Groq)
+            </h3>
+            <div className="flex items-center gap-2">
+              <button 
+                onClick={handleRefreshAILimits}
+                disabled={aiLimitsLoading}
+                className="w-8 h-8 rounded-full bg-brand-secondary/30 hover:bg-brand-secondary/50 flex items-center justify-center transition-colors disabled:opacity-50"
+                title="Refresh limits"
+              >
+                <RefreshCw className={`w-4 h-4 text-brand-primary/70 ${aiLimitsLoading ? 'animate-spin' : ''}`} />
+              </button>
+              <div className="w-8 h-8 rounded-full bg-indigo-500/10 flex items-center justify-center">
+                <Bot className="w-4 h-4 text-indigo-500" />
+              </div>
+            </div>
+          </div>
+          {aiLimitsLoading ? (
+            <div className="text-xs text-brand-primary/50 animate-pulse flex-1 flex items-center">Loading limits...</div>
+          ) : aiLimits ? (
+            <div className="grid grid-cols-2 gap-2 text-xs">
+              <div className="bg-brand-secondary/30 p-2 rounded">
+                <span className="block text-brand-primary/70 mb-1">Req Rem:</span>
+                <span className="font-bold text-brand-primary">{aiLimits.remainingRequests}</span>
+                <span className="block text-[9px] text-brand-primary/50 mt-1">Resets in: {aiLimits.resetRequests}</span>
+              </div>
+              <div className="bg-brand-secondary/30 p-2 rounded">
+                <span className="block text-brand-primary/70 mb-1">Tok Rem:</span>
+                <span className="font-bold text-brand-primary">{aiLimits.remainingTokens}</span>
+                <span className="block text-[9px] text-brand-primary/50 mt-1">Resets in: {aiLimits.resetTokens}</span>
+              </div>
+            </div>
+          ) : (
+            <div className="text-xs text-brand-primary/50 flex-1 flex items-center">Click refresh to view limits</div>
+          )}
         </div>
       </div>
 

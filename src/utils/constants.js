@@ -1,4 +1,4 @@
-export const API_BASE_URL = true
+export const API_BASE_URL = false
   ? "http://localhost:5000/api"
   : "https://crm-backend-1-fpyv.onrender.com/api";
 
@@ -36,6 +36,8 @@ export const API_ENDPOINTS = {
   ANALYTICS: {
     BASE: `${API_BASE_URL}/analytics`,
     TODAY: `${API_BASE_URL}/analytics/today`,
+    AI_LIMITS: `${API_BASE_URL}/analytics/ai-limits`,
+    AI_LIMITS_REFRESH: `${API_BASE_URL}/analytics/ai-limits/refresh`,
   },
   TARGETS: {
     TEMPLATES: `${API_BASE_URL}/targets/templates`,
