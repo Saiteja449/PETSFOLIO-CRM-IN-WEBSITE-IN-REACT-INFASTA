@@ -107,7 +107,7 @@ export default function Leads() {
     source: "Manual Entry",
     service: "Grooming",
 
-    assignedTo: currentUser?.name || "Alex Mercer",
+    assignedTo: currentUser?.role === "Sales Representative" ? currentUser.name : "Unassigned",
     nextFollowUp: "2026-05-26",
     status: "New",
     leadType: "Client",
@@ -928,6 +928,12 @@ export default function Leads() {
                       disabled={currentUser?.role === "Sales Representative"}
                       className="w-full bg-brand-light border border-brand-secondary rounded-lg px-3 py-2 text-sm text-brand-primary focus:outline-none focus:border-teal-500 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
+                      <option value="Unassigned">Unassigned (Auto Assign)</option>
+                      {currentUser?.role !== "Sales Representative" && 
+                       formFields.assignedTo !== "Unassigned" && 
+                       !salespeople.includes(formFields.assignedTo) && (
+                        <option value={formFields.assignedTo}>{formFields.assignedTo}</option>
+                      )}
                       {salespeople.map((rep) => (
                         <option key={rep} value={rep}>
                           {rep}

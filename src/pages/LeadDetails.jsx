@@ -575,6 +575,64 @@ export default function LeadDetails() {
           </div>
         )}
 
+        {/* 2.5 Call Recordings & Analysis */}
+        {currentLead.recordings && currentLead.recordings.length > 0 && (
+          <div className="bg-brand-light border border-brand-secondary rounded-xl shadow-sm mb-6">
+            <div className="p-4 border-b border-brand-secondary bg-brand-light/50 rounded-t-xl">
+              <h3 className="font-bold text-brand-primary flex items-center gap-2">
+                <Phone size={18} />
+                Call Recordings & AI Analysis
+              </h3>
+            </div>
+            <div className="p-5 space-y-6">
+              {currentLead.recordings.map((rec, index) => (
+                <div key={rec._id || index} className="bg-brand-secondary/10 p-4 rounded-lg border border-brand-secondary/30">
+                  <div className="flex justify-between items-center mb-3">
+                    <span className="font-semibold text-brand-primary">
+                      {rec.name || `Recording ${index + 1}`}
+                    </span>
+                    <span className="text-xs text-brand-primary/60">
+                      {new Date(rec.uploadedAt).toLocaleString()}
+                    </span>
+                  </div>
+                  <audio controls src={rec.url} className="w-full h-10 mb-4" />
+                  
+                  <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+                    <h4 className="text-sm font-bold text-brand-primary mb-2 flex items-center gap-2">
+                      <MessageSquare size={16} className="text-brand-accent" />
+                      AI Analysis Summary
+                    </h4>
+                    {rec.analysisStatus === "pending" && (
+                      <div className="text-sm text-yellow-600 flex items-center gap-2 animate-pulse">
+                        <Circle size={12} className="fill-yellow-600" />
+                        Analysis in progress. Please check back in a few seconds...
+                      </div>
+                    )}
+                    {rec.analysisStatus === "failed" && (
+                      <div className="text-sm text-red-500">
+                        Analysis failed to generate.
+                      </div>
+                    )}
+                    {(!rec.analysisStatus || rec.analysisStatus === "completed") && rec.analysis && (
+                      <div className="prose prose-sm max-w-none text-brand-primary/80">
+                        <div dangerouslySetInnerHTML={{ 
+                          __html: rec.analysis
+                            .replace(/\n/g, "<br/>")
+                            .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+                            .replace(/\*(.*?)\*/g, "<em>$1</em>") 
+                        }} />
+                      </div>
+                    )}
+                    {(!rec.analysisStatus || rec.analysisStatus === "completed") && !rec.analysis && (
+                      <div className="text-sm text-gray-500 italic">No analysis available for this recording.</div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* 3. Update Lead Details Form */}
         <div className="bg-brand-light border border-brand-secondary rounded-xl shadow-sm">
           <div className="p-4 border-b border-brand-secondary bg-brand-light/50 rounded-t-xl">
