@@ -14,6 +14,11 @@ import {
   Download,
   Bot,
   RefreshCw,
+  Phone,
+  MessageCircle,
+  Mail,
+  Instagram,
+  Clock,
 } from "lucide-react";
 import {
   ResponsiveContainer,
@@ -78,6 +83,23 @@ export default function Dashboard() {
     exportToCSV(leads, "dashboard_leads_export.csv");
   };
 
+  const getLatestEnquiryTime = (sourceFilters) => {
+    if (!leads || leads.length === 0) return "N/A";
+    const filtered = leads.filter((l) => sourceFilters.includes(l.source));
+    if (filtered.length === 0) return "N/A";
+
+    const latest = filtered.reduce((latestLead, currentLead) => {
+      const current = new Date(currentLead.joinedAt || currentLead.createdAt);
+      const latestDt = new Date(latestLead.joinedAt || latestLead.createdAt);
+      return current > latestDt ? currentLead : latestLead;
+    });
+
+    const dt = new Date(latest.joinedAt || latest.createdAt);
+    if (isNaN(dt.getTime())) return "N/A";
+    return dt.toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
+  };
+
+
   return (
     <div className="p-4 md:p-6 space-y-6">
       {/* Top Banner section */}
@@ -97,6 +119,58 @@ export default function Dashboard() {
         >
           <Download className="w-4 h-4" /> Export Data
         </button>
+      </div>
+
+      {/* Latest Enquiry Times Row */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="bg-brand-light border border-brand-secondary rounded-xl p-3 flex items-center gap-3 shadow-sm">
+          <div className="w-8 h-8 rounded-full bg-green-500/10 flex items-center justify-center">
+            <MessageCircle className="w-4 h-4 text-green-500" />
+          </div>
+          <div>
+            <div className="text-[10px] font-bold text-brand-primary/60 uppercase">WhatsApp</div>
+            <div className="text-xs font-semibold text-brand-primary flex items-center gap-1">
+              <Clock className="w-3 h-3 text-brand-primary/40" />
+              {getLatestEnquiryTime(["WhatsApp"])}
+            </div>
+          </div>
+        </div>
+        <div className="bg-brand-light border border-brand-secondary rounded-xl p-3 flex items-center gap-3 shadow-sm">
+          <div className="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center">
+            <Phone className="w-4 h-4 text-blue-500" />
+          </div>
+          <div>
+            <div className="text-[10px] font-bold text-brand-primary/60 uppercase">Mobile</div>
+            <div className="text-xs font-semibold text-brand-primary flex items-center gap-1">
+              <Clock className="w-3 h-3 text-brand-primary/40" />
+              {getLatestEnquiryTime(["Call", "Manual Entry"])}
+            </div>
+          </div>
+        </div>
+        <div className="bg-brand-light border border-brand-secondary rounded-xl p-3 flex items-center gap-3 shadow-sm">
+          <div className="w-8 h-8 rounded-full bg-pink-500/10 flex items-center justify-center">
+            <Instagram className="w-4 h-4 text-pink-500" />
+          </div>
+          <div>
+            <div className="text-[10px] font-bold text-brand-primary/60 uppercase">Instagram / Meta</div>
+            <div className="text-xs font-semibold text-brand-primary flex items-center gap-1">
+              <Clock className="w-3 h-3 text-brand-primary/40" />
+              {getLatestEnquiryTime(["Meta Ads"])}
+            </div>
+          </div>
+        </div>
+        <div className="bg-brand-light border border-brand-secondary rounded-xl p-3 flex items-center gap-3 shadow-sm">
+          <div className="w-8 h-8 rounded-full bg-orange-500/10 flex items-center justify-center">
+            <Mail className="w-4 h-4 text-orange-500" />
+          </div>
+          <div>
+            <div className="text-[10px] font-bold text-brand-primary/60 uppercase">Email / Web</div>
+            <div className="text-xs font-semibold text-brand-primary flex items-center gap-1">
+              <Clock className="w-3 h-3 text-brand-primary/40" />
+              {getLatestEnquiryTime(["Email", "Website Form"])}
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* KPI Cards Row */}

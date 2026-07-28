@@ -13,7 +13,10 @@ import {
   Circle,
   MapPin,
   MessageSquare,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
+import { API_BASE_URL, BACKEND_URL } from "../utils/constants.js";
 import { useLeads } from "../context/LeadsContext.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
 import { formatDate } from "../utils/helpers.js";
@@ -78,6 +81,30 @@ export default function LeadDetails() {
   });
 
   const [followupType, setFollowupType] = useState("Call");
+
+  const [expandedRecordings, setExpandedRecordings] = useState({});
+  const toggleRecording = (id) => {
+    setExpandedRecordings((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  const getAudioUrl = (url) => {
+    if (!url) return "";
+
+    const parts = url.split("/");
+    let filename = parts[parts.length - 1];
+
+    // Fully decode the filename to handle double-encoded cases (like %2520)
+    try {
+      while (filename !== decodeURIComponent(filename)) {
+        filename = decodeURIComponent(filename);
+      }
+    } catch (e) {
+      // Fallback in case of malformed URI components
+    }
+
+    // Encode it exactly once
+    return `${BACKEND_URL}/uploads/${encodeURIComponent(filename)}`;
+  };
 
   if (!currentLead) {
     return (
@@ -197,6 +224,7 @@ export default function LeadDetails() {
       // Reset local comments box after submitting
       setFormData((prev) => ({ ...prev, comments: "" }));
       alert("Customer lead records were updated successfully.");
+      navigate("/leads");
     } catch (error) {
       console.error(error);
       alert("Failed to update lead records.");
@@ -584,51 +612,95 @@ export default function LeadDetails() {
                 Call Recordings & AI Analysis
               </h3>
             </div>
-            <div className="p-5 space-y-6">
-              {currentLead.recordings.map((rec, index) => (
-                <div key={rec._id || index} className="bg-brand-secondary/10 p-4 rounded-lg border border-brand-secondary/30">
-                  <div className="flex justify-between items-center mb-3">
-                    <span className="font-semibold text-brand-primary">
-                      {rec.name || `Recording ${index + 1}`}
-                    </span>
-                    <span className="text-xs text-brand-primary/60">
-                      {new Date(rec.uploadedAt).toLocaleString()}
-                    </span>
+            <div className="p-5 space-y-4">
+              {currentLead.recordings.map((rec, index) => {
+                const recId = rec._id || index;
+                const isExpanded = expandedRecordings[recId];
+                return (
+                  <div
+                    key={recId}
+                    className="bg-brand-secondary/10 p-4 rounded-lg border border-brand-secondary/30"
+                  >
+                    <div
+                      className="flex justify-between items-center cursor-pointer"
+                      onClick={() => toggleRecording(recId)}
+                    >
+                      <div className="flex items-center gap-2">
+                        {isExpanded ? (
+                          <ChevronUp size={18} className="text-brand-primary" />
+                        ) : (
+                          <ChevronDown
+                            size={18}
+                            className="text-brand-primary"
+                          />
+                        )}
+                        <span className="font-semibold text-brand-primary">
+                          {rec.name || `Recording ${index + 1}`}
+                        </span>
+                      </div>
+                      <span className="text-xs text-brand-primary/60">
+                        {new Date(rec.uploadedAt).toLocaleString()}
+                      </span>
+                    </div>
+
+                    {isExpanded && (
+                      <div className="mt-4">
+                        <audio
+                          controls
+                          src={getAudioUrl(rec.url)}
+                          className="w-full h-10 mb-4"
+                        />
+
+                        <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+                          <h4 className="text-sm font-bold text-brand-primary mb-2 flex items-center gap-2">
+                            <MessageSquare
+                              size={16}
+                              className="text-brand-accent"
+                            />
+                            AI Analysis Summary
+                          </h4>
+                          {rec.analysisStatus === "pending" && (
+                            <div className="text-sm text-yellow-600 flex items-center gap-2 animate-pulse">
+                              <Circle size={12} className="fill-yellow-600" />
+                              Analysis in progress. Please check back in a few
+                              seconds...
+                            </div>
+                          )}
+                          {rec.analysisStatus === "failed" && (
+                            <div className="text-sm text-red-500">
+                              Analysis failed to generate.
+                            </div>
+                          )}
+                          {(!rec.analysisStatus ||
+                            rec.analysisStatus === "completed") &&
+                            rec.analysis && (
+                              <div className="prose prose-sm max-w-none text-brand-primary/80">
+                                <div
+                                  dangerouslySetInnerHTML={{
+                                    __html: rec.analysis
+                                      .replace(/\n/g, "<br/>")
+                                      .replace(
+                                        /\*\*(.*?)\*\*/g,
+                                        "<strong>$1</strong>",
+                                      )
+                                      .replace(/\*(.*?)\*/g, "<em>$1</em>"),
+                                  }}
+                                />
+                              </div>
+                            )}
+                          {(!rec.analysisStatus ||
+                            rec.analysisStatus === "completed") &&
+                            !rec.analysis && (
+                              <div className="text-sm text-gray-500 italic">
+                                No analysis available for this recording.
+                              </div>
+                            )}
+                        </div>
+                      </div>
+                    )}
                   </div>
-                  <audio controls src={rec.url} className="w-full h-10 mb-4" />
-                  
-                  <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
-                    <h4 className="text-sm font-bold text-brand-primary mb-2 flex items-center gap-2">
-                      <MessageSquare size={16} className="text-brand-accent" />
-                      AI Analysis Summary
-                    </h4>
-                    {rec.analysisStatus === "pending" && (
-                      <div className="text-sm text-yellow-600 flex items-center gap-2 animate-pulse">
-                        <Circle size={12} className="fill-yellow-600" />
-                        Analysis in progress. Please check back in a few seconds...
-                      </div>
-                    )}
-                    {rec.analysisStatus === "failed" && (
-                      <div className="text-sm text-red-500">
-                        Analysis failed to generate.
-                      </div>
-                    )}
-                    {(!rec.analysisStatus || rec.analysisStatus === "completed") && rec.analysis && (
-                      <div className="prose prose-sm max-w-none text-brand-primary/80">
-                        <div dangerouslySetInnerHTML={{ 
-                          __html: rec.analysis
-                            .replace(/\n/g, "<br/>")
-                            .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-                            .replace(/\*(.*?)\*/g, "<em>$1</em>") 
-                        }} />
-                      </div>
-                    )}
-                    {(!rec.analysisStatus || rec.analysisStatus === "completed") && !rec.analysis && (
-                      <div className="text-sm text-gray-500 italic">No analysis available for this recording.</div>
-                    )}
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}

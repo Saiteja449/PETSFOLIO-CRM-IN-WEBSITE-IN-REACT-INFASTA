@@ -109,6 +109,8 @@ export default function Leads() {
 
     assignedTo: currentUser?.role === "Sales Representative" ? currentUser.name : "Unassigned",
     nextFollowUp: "2026-05-26",
+    followupTime: "11:00 AM",
+    followupType: "Call",
     status: "New",
     leadType: "Client",
     notes: "",
@@ -239,6 +241,8 @@ export default function Leads() {
 
       assignedTo: lead.assignedTo,
       nextFollowUp: lead.nextFollowUp || "",
+      followupTime: lead.followupTime || "11:00 AM",
+      followupType: lead.followupType || "Call",
       status: lead.status || "New",
       leadType: lead.leadType || "Client",
       notes: lead.notes || "",
@@ -965,6 +969,55 @@ export default function Leads() {
                       )}
                     </select>
                   </div>
+
+                  {formFields.status === "Follow Up" && (
+                    <>
+                      <div>
+                        <label className="block text-xs font-bold text-brand-primary/70 mb-1">
+                          Follow Up Type
+                        </label>
+                        <select
+                          value={formFields.followupType}
+                          onChange={(e) =>
+                            setFormFields({ ...formFields, followupType: e.target.value })
+                          }
+                          className="w-full bg-brand-light border border-brand-secondary rounded-lg px-3 py-2 text-sm text-brand-primary focus:outline-none focus:border-teal-500"
+                        >
+                          <option value="Call">Call</option>
+                          <option value="WhatsApp">WhatsApp</option>
+                          <option value="Email">Email</option>
+                          <option value="Meeting">Meeting</option>
+                          <option value="Consultation">Consultation</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-brand-primary/70 mb-1">
+                          Next Follow Up Date
+                        </label>
+                        <input
+                          type="date"
+                          value={formFields.nextFollowUp}
+                          onChange={(e) =>
+                            setFormFields({ ...formFields, nextFollowUp: e.target.value })
+                          }
+                          className="w-full bg-brand-light border border-brand-secondary rounded-lg px-3 py-2 text-sm text-brand-primary focus:outline-none focus:border-teal-500"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-brand-primary/70 mb-1">
+                          Follow Up Time
+                        </label>
+                        <input
+                          type="time"
+                          value={formFields.followupTime}
+                          onChange={(e) =>
+                            setFormFields({ ...formFields, followupTime: e.target.value })
+                          }
+                          className="w-full bg-brand-light border border-brand-secondary rounded-lg px-3 py-2 text-sm text-brand-primary focus:outline-none focus:border-teal-500"
+                        />
+                      </div>
+                    </>
+                  )}
 
                   <div className="md:col-span-2">
                     <label className="block text-xs font-bold text-brand-primary/70 mb-1">
