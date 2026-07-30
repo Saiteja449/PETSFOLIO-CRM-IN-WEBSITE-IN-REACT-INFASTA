@@ -121,6 +121,7 @@ export default function Leads() {
 
   const salespeople = (allUsers || []).map((u) => u.name);
   const tabsData = [
+    { name: "OldLeads", label: "Old Leads", count: tabCounts.OldLeads || 0 },
     { name: "New", label: "New Leads", count: tabCounts.New || 0 },
     {
       name: "TodayFollowup",
@@ -145,7 +146,6 @@ export default function Leads() {
       count: tabCounts.Converted || 0,
     },
     { name: "Lost", label: "Lost/Dropped", count: tabCounts.Lost || 0 },
-    { name: "OldLeads", label: "Old Leads", count: tabCounts.OldLeads || 0 },
   ];
   const sources = [
     "Email",
@@ -217,7 +217,10 @@ export default function Leads() {
       );
       return;
     }
-    if (formFields.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formFields.email)) {
+    if (
+      formFields.email &&
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formFields.email)
+    ) {
       alert("Please enter a valid email address.");
       return;
     }
@@ -251,7 +254,10 @@ export default function Leads() {
 
   const handleSaveEdit = async (e) => {
     e.preventDefault();
-    if (formFields.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formFields.email)) {
+    if (
+      formFields.email &&
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formFields.email)
+    ) {
       alert("Please enter a valid email address.");
       return;
     }
@@ -425,7 +431,9 @@ export default function Leads() {
               <option value="Joined">Joined</option>
               <option value="Job Posted">Job Posted</option>
               <option value="Job Assigned">Job Assigned</option>
-              <option value="Policy Active">Policy Active (Pet Insurance)</option>
+              <option value="Policy Active">
+                Policy Active (Pet Insurance)
+              </option>
             </select>
           </div>
         </div>
@@ -489,7 +497,7 @@ export default function Leads() {
                             onClick={() => navigate(`/lead-details/${lead.id}`)}
                             className="text-sm font-bold text-teal-400 hover:text-teal-300 hover:underline text-left"
                           >
-                            {lead.name}
+                            {lead.name?.substring(0, 25)}
                           </button>
                         </div>
                       </div>
@@ -506,16 +514,19 @@ export default function Leads() {
                       </Badge>
                     </td>
                     <td className="px-4 py-3">
-                        <div className="flex items-center gap-1.5">
-                          <div
-                            className="w-2 h-2 rounded-full flex-shrink-0"
-                            style={{ backgroundColor: getServiceColor(normalizeServices(lead.service)) }}
-                          />
-                          <span className="text-xs font-semibold text-brand-primary">
-                            {normalizeServices(lead.service)}
-                          </span>
-                        </div>
-
+                      <div className="flex items-center gap-1.5">
+                        <div
+                          className="w-2 h-2 rounded-full flex-shrink-0"
+                          style={{
+                            backgroundColor: getServiceColor(
+                              normalizeServices(lead.service),
+                            ),
+                          }}
+                        />
+                        <span className="text-xs font-semibold text-brand-primary">
+                          {normalizeServices(lead.service)}
+                        </span>
+                      </div>
                     </td>
                     {currentUser?.role !== "Sales Representative" && (
                       <td className="px-4 py-3 text-sm text-brand-primary">
@@ -860,7 +871,10 @@ export default function Leads() {
                       required
                       value={formFields.phone}
                       onChange={(e) =>
-                        setFormFields({ ...formFields, phone: e.target.value.replace(/[^0-9+]/g, "") })
+                        setFormFields({
+                          ...formFields,
+                          phone: e.target.value.replace(/[^0-9+]/g, ""),
+                        })
                       }
                       className="w-full bg-brand-light border border-brand-secondary rounded-lg px-3 py-2 text-sm text-brand-primary focus:outline-none focus:border-teal-500"
                     />
@@ -904,7 +918,10 @@ export default function Leads() {
                     <select
                       value={formFields.service}
                       onChange={(e) =>
-                        setFormFields({ ...formFields, service: e.target.value })
+                        setFormFields({
+                          ...formFields,
+                          service: e.target.value,
+                        })
                       }
                       className="w-full bg-brand-light border border-brand-secondary rounded-lg px-3 py-2 text-sm text-brand-primary focus:outline-none focus:border-teal-500 appearance-none"
                     >
