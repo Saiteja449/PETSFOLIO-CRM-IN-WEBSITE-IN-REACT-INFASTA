@@ -68,6 +68,7 @@ export default function Leads() {
     jobposted: "JobPosted",
     converted: "Converted",
     lost: "Lost",
+    oldleads: "OldLeads",
   };
   const tabToParam = {
     New: "new",
@@ -78,6 +79,7 @@ export default function Leads() {
     JobPosted: "jobposted",
     Converted: "converted",
     Lost: "lost",
+    OldLeads: "oldleads",
   };
 
   const [search, setSearch] = useState("");
@@ -143,6 +145,7 @@ export default function Leads() {
       count: tabCounts.Converted || 0,
     },
     { name: "Lost", label: "Lost/Dropped", count: tabCounts.Lost || 0 },
+    { name: "OldLeads", label: "Old Leads", count: tabCounts.OldLeads || 0 },
   ];
   const sources = [
     "Email",
