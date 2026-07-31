@@ -21,6 +21,7 @@ import TeamPerformance from "./pages/TeamPerformance.jsx";
 import NotificationsPage from "./pages/NotificationsPage.jsx";
 import FollowUpReport from "./pages/FollowUpReport.jsx";
 import SalesPersonDetails from "./pages/SalesPersonDetails.jsx";
+import SalesPersonReports from "./pages/SalesPersonReports.jsx";
 import WhatsAppChat from "./pages/WhatsAppChat.jsx";
 import TestAI from "./pages/TestAI.jsx";
 
@@ -97,6 +98,7 @@ export default function App() {
             <Route path="/followups" element={<FollowUpReport />} />
             <Route path="/performance" element={<TeamPerformance />} />
             <Route path="/salesperson/:name" element={<SalesPersonDetails />} />
+            <Route path="/salesperson/:name/reports" element={<SalesPersonReports />} />
             <Route path="/notifications" element={<NotificationsPage />} />
             <Route path="/whatsapp" element={<WhatsAppChat />} />
             <Route path="/test-ai" element={<TestAI />} />
