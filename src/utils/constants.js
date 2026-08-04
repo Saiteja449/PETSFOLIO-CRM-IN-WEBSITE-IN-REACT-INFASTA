@@ -1,6 +1,6 @@
 export const API_BASE_URL = false
   ? "http://localhost:5000/api"
-  : "https://holyminicow.com/crm-beta/api";
+  : "https://api.holyminicow.com/api";
 
 export const API_ENDPOINTS = {
   AUTH: {
