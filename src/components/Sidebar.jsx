@@ -50,7 +50,7 @@ export default function Sidebar({ mobileOpen, handleDrawerToggle }) {
       icon: <MessageSquare className="w-5 h-5" />,
       path: "/whatsapp",
     },
-    ...(import.meta.env.PROD || import.meta.env.VITE_PROD === "true"
+    ...(import.meta.env.VITE_PROD === "true"
       ? []
       : [
           {

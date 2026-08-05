@@ -65,6 +65,20 @@ export const services = [
     active: true,
     color: "#7c3aed",
   },
+  {
+    id: "s6",
+    name: "Job Inquiry",
+    code: "Job Inquiry",
+    active: true,
+    color: "#475569", // slate
+  },
+  {
+    id: "s7",
+    name: "Cow Services",
+    code: "Cow Services",
+    active: true,
+    color: "#84cc16", // lime green
+  },
 ];
 
 

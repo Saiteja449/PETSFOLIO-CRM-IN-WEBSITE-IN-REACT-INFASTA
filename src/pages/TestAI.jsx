@@ -4,7 +4,7 @@ import { Send, RefreshCw, Bot } from "lucide-react";
 import { Navigate } from "react-router-dom";
 
 export default function TestAI() {
-  if (import.meta.env.PROD || import.meta.env.VITE_PROD === "true") {
+  if (import.meta.env.VITE_PROD === "true") {
     return <Navigate to="/dashboard" replace />;
   }
 
@@ -15,7 +15,7 @@ export default function TestAI() {
   const [leadId, setLeadId] = useState(null);
   const messagesEndRef = useRef(null);
 
-  const API_URL = "https://api.holyminicow.com/api/whatsapp/test-ai";
+  const API_URL = "http://localhost:5000/api/whatsapp/test-ai";
 
   const fetchHistory = async () => {
     try {
