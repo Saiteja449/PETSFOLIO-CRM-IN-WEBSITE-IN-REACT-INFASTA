@@ -24,6 +24,7 @@ import SalesPersonDetails from "./pages/SalesPersonDetails.jsx";
 import SalesPersonReports from "./pages/SalesPersonReports.jsx";
 import WhatsAppChat from "./pages/WhatsAppChat.jsx";
 import TestAI from "./pages/TestAI.jsx";
+import AIFollowUps from "./pages/AIFollowUps.jsx";
 
 import Sidebar from "./components/Sidebar.jsx";
 import Header from "./components/Header.jsx";
@@ -102,6 +103,7 @@ export default function App() {
             <Route path="/notifications" element={<NotificationsPage />} />
             <Route path="/whatsapp" element={<WhatsAppChat />} />
             <Route path="/test-ai" element={<TestAI />} />
+            <Route path="/ai-followups" element={<AIFollowUps />} />
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
           </Route>
           <Route path="*" element={<Navigate to="/dashboard" replace />} />

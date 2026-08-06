@@ -11,6 +11,7 @@ import {
   ClipboardList,
   MessageSquare,
   Bot,
+  Sparkles,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext.jsx";
 import { useNotifications } from "../context/NotificationContext.jsx";
@@ -49,6 +50,11 @@ export default function Sidebar({ mobileOpen, handleDrawerToggle }) {
       text: "WhatsApp Chat",
       icon: <MessageSquare className="w-5 h-5" />,
       path: "/whatsapp",
+    },
+    {
+      text: "AI Follow-ups",
+      icon: <Sparkles className="w-5 h-5 text-teal-500" />,
+      path: "/ai-followups",
     },
     ...(import.meta.env.VITE_PROD === "true"
       ? []
