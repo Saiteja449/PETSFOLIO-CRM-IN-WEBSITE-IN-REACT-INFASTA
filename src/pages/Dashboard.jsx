@@ -251,17 +251,17 @@ export default function Dashboard() {
           </div>
         </div> */}
 
-        {/* Jobs Assigned */}
+        {/* Joined */}
         <div className="bg-brand-light border border-brand-secondary rounded-2xl p-5 flex items-center justify-between">
           <div>
             <h3 className="text-xs font-bold text-brand-primary/70 uppercase tracking-wider">
-              Jobs Assigned
+              Joined
             </h3>
             <div className="text-3xl font-extrabold text-purple-500 mt-1">
-              {stats.jobsAssignedCount}
+              {stats.joinedCount}
             </div>
             <div className="text-xs font-semibold text-brand-primary/70 flex items-center mt-1">
-              Active assigned leads
+              Active joined leads
             </div>
           </div>
           <div className="w-12 h-12 rounded-full bg-purple-500/10 flex items-center justify-center">

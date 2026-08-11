@@ -61,7 +61,7 @@ export function DashboardProvider({ children }) {
     // Define what constitutes a "Closed Won" or Converted lead
     const isLeadWon = (lead) => {
       return (
-        lead.status === "Job Assigned" ||
+        lead.status === "Joined" ||
         [
           "Grooming Completed",
           "Repeat Booking",
@@ -75,8 +75,8 @@ export function DashboardProvider({ children }) {
 
     const wonLeads = leads.filter(isLeadWon);
     const totalWonCount = wonLeads.length;
-    const jobsAssignedCount = leads.filter(
-      (l) => l.status === "Job Assigned",
+    const joinedCount = leads.filter(
+      (l) => l.status === "Joined",
     ).length;
 
     // Conversion %
@@ -228,7 +228,7 @@ export function DashboardProvider({ children }) {
       conversionRate,
       leadsByServiceData,
       wonLeadsByServiceData,
-      jobsAssignedCount,
+      joinedCount,
       todaysFollowupsCount: todaysFws.length,
       overdueFollowupsCount: overdueFws.length,
       leadSourceData,
