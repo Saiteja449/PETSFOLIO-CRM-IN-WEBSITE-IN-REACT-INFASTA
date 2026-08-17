@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext.jsx";
 import { useNotifications } from "../context/NotificationContext.jsx";
+import { useLeads } from "../context/LeadsContext.jsx";
 
 const sidebarDrawerWidth = 260;
 
@@ -23,6 +24,9 @@ export default function Sidebar({ mobileOpen, handleDrawerToggle }) {
   const location = useLocation();
   const { logout, currentUser } = useAuth();
   const { unreadCount } = useNotifications();
+  const { followups } = useLeads();
+
+  const aiFollowupsCount = followups?.filter((f) => f.author === "AI Agent").length || 0;
 
   const menuItems = [
     {
@@ -52,9 +56,10 @@ export default function Sidebar({ mobileOpen, handleDrawerToggle }) {
       path: "/whatsapp",
     },
     {
-      text: "AI Follow-ups",
+      text: "Immediate Actions",
       icon: <Sparkles className="w-5 h-5 text-teal-500" />,
       path: "/ai-followups",
+      badge: aiFollowupsCount,
     },
     ...(import.meta.env.VITE_PROD === "true"
       ? []

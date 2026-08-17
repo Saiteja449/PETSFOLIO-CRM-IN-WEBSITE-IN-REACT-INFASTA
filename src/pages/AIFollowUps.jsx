@@ -74,7 +74,7 @@ export default function AIFollowUps() {
         <div className="p-4 border-b border-brand-secondary">
           <h2 className="text-xl font-bold text-brand-primary flex items-center gap-2 mb-4">
             <Sparkles className="text-teal-500 w-6 h-6" />
-            AI Follow-ups
+            Immediate Actions
           </h2>
           <div className="relative">
             <Search
@@ -94,7 +94,7 @@ export default function AIFollowUps() {
         <div className="flex-1 overflow-y-auto p-3 space-y-2">
           {filteredData.length === 0 ? (
             <div className="text-center py-8 text-brand-primary/50 text-sm">
-              No AI follow-ups found.
+              No immediate actions found.
             </div>
           ) : (
             filteredData.map((f) => (
@@ -230,13 +230,13 @@ export default function AIFollowUps() {
               </div>
             </div>
 
-            {/* AI Follow-up Note Card */}
+            {/* Immediate Action Note Card */}
             <div className="bg-brand-light border border-teal-500/30 rounded-xl overflow-hidden shadow-sm">
               <div className="p-5">
                 <div className="flex justify-between items-center mb-5">
                   <h3 className="font-bold text-teal-500 flex items-center gap-2">
                     <ClipboardList className="w-5 h-5" />
-                    AI Follow-Up details
+                    Immediate Action details
                   </h3>
                 </div>
 
@@ -311,7 +311,7 @@ export default function AIFollowUps() {
           <div className="flex flex-col items-center justify-center h-full text-brand-primary/50">
             <Sparkles size={48} className="mb-4 opacity-50" />
             <p className="text-lg font-medium">
-              Select a follow-up from the sidebar to view details
+              Select an immediate action from the sidebar to view details
             </p>
           </div>
         )}
