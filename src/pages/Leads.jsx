@@ -107,7 +107,7 @@ export default function Leads() {
     phone: "",
     email: "",
     source: "Manual Entry",
-    service: "Grooming",
+    services: ["Grooming"],
 
     assignedTo: currentUser?.role === "Sales Representative" ? currentUser.name : "Unassigned",
     nextFollowUp: "2026-05-26",
@@ -213,7 +213,7 @@ export default function Leads() {
 
   const handleSaveAdd = async (e) => {
     e.preventDefault();
-    if (!formFields.name || !formFields.phone || !formFields.service) {
+    if (!formFields.name || !formFields.phone || !formFields.services || formFields.services.length === 0) {
       alert(
         "Please fill in main credentials (Customer Name, Phone, and at least one Service)",
       );
@@ -243,7 +243,7 @@ export default function Leads() {
       phone: lead.phone,
       email: lead.email || "",
       source: lead.source,
-      service: normalizeServices(lead.service),
+      services: lead.services && lead.services.length > 0 ? lead.services : ["Grooming"],
 
       assignedTo: lead.assignedTo,
       nextFollowUp: lead.nextFollowUp || "",
@@ -518,18 +518,33 @@ export default function Leads() {
                       </Badge>
                     </td>
                     <td className="px-4 py-3">
-                      <div className="flex items-center gap-1.5">
-                        <div
-                          className="w-2 h-2 rounded-full flex-shrink-0"
-                          style={{
-                            backgroundColor: getServiceColor(
-                              normalizeServices(lead.service),
-                            ),
-                          }}
-                        />
-                        <span className="text-xs font-semibold text-brand-primary">
-                          {normalizeServices(lead.service)}
-                        </span>
+                      <div 
+                        className="flex flex-wrap gap-1.5"
+                        title={(lead.services && lead.services.length > 0 ? lead.services : ["Grooming"]).join(", ")}
+                      >
+                        {(() => {
+                          const services = lead.services && lead.services.length > 0 ? lead.services : ["Grooming"];
+                          return (
+                            <>
+                              <div className="flex items-center gap-1.5 bg-brand-secondary/20 px-2 py-0.5 rounded cursor-help">
+                                <div
+                                  className="w-2 h-2 rounded-full flex-shrink-0"
+                                  style={{ backgroundColor: getServiceColor(services[0]) }}
+                                />
+                                <span className="text-xs font-semibold text-brand-primary">
+                                  {services[0]}
+                                </span>
+                              </div>
+                              {services.length > 1 && (
+                                <div className="flex items-center gap-1.5 bg-brand-secondary/20 px-2 py-0.5 rounded cursor-help">
+                                  <span className="text-xs font-semibold text-brand-primary">
+                                    +{services.length - 1}
+                                  </span>
+                                </div>
+                              )}
+                            </>
+                          );
+                        })()}
                       </div>
                     </td>
                     {currentUser?.role !== "Sales Representative" && (
@@ -704,16 +719,20 @@ export default function Leads() {
                   <span className="block text-xs text-brand-primary/70 mb-1">
                     Service Interest
                   </span>
-                  <div className="flex items-center gap-1.5">
-                    <div
-                      className="w-2 h-2 rounded-full"
-                      style={{
-                        backgroundColor: getServiceColor(selectedLead.service),
-                      }}
-                    ></div>
-                    <span className="font-bold text-brand-primary">
-                      {selectedLead.service}
-                    </span>
+                  <div className="flex flex-col gap-1.5">
+                    {(selectedLead.services && selectedLead.services.length > 0 ? selectedLead.services : ["Grooming"]).map((s, idx) => (
+                      <div key={idx} className="flex items-center gap-1.5">
+                        <div
+                          className="w-2 h-2 rounded-full"
+                          style={{
+                            backgroundColor: getServiceColor(s),
+                          }}
+                        ></div>
+                        <span className="font-bold text-brand-primary">
+                          {s}
+                        </span>
+                      </div>
+                    ))}
                   </div>
                 </div>
 
@@ -915,26 +934,31 @@ export default function Leads() {
                     </select>
                   </div>
 
-                  <div>
+                  <div className="md:col-span-2">
                     <label className="block text-xs font-bold text-brand-primary/70 mb-1">
                       Service Interest *
                     </label>
-                    <select
-                      value={formFields.service}
-                      onChange={(e) =>
-                        setFormFields({
-                          ...formFields,
-                          service: e.target.value,
-                        })
-                      }
-                      className="w-full bg-brand-light border border-brand-secondary rounded-lg px-3 py-2 text-sm text-brand-primary focus:outline-none focus:border-teal-500 appearance-none"
-                    >
+                    <div className="flex flex-wrap gap-2">
                       {activeServices.map((s) => (
-                        <option key={s.code} value={s.code}>
-                          {s.name}
-                        </option>
+                        <label key={s.code} className="flex items-center gap-1.5 cursor-pointer bg-brand-light border border-brand-secondary px-3 py-1.5 rounded-lg hover:border-teal-500 transition-colors">
+                          <input
+                            type="checkbox"
+                            checked={formFields.services?.includes(s.code)}
+                            onChange={(e) => {
+                              const checked = e.target.checked;
+                              setFormFields((prev) => ({
+                                ...prev,
+                                services: checked
+                                  ? [...(prev.services || []), s.code]
+                                  : (prev.services || []).filter((sv) => sv !== s.code),
+                              }));
+                            }}
+                            className="accent-teal-500"
+                          />
+                          <span className="text-sm text-brand-primary">{s.name}</span>
+                        </label>
                       ))}
-                    </select>
+                    </div>
                   </div>
 
                   <div>
@@ -984,7 +1008,7 @@ export default function Leads() {
                       <option value="Joined">Joined</option>
                       <option value="Job Posted">Job Posted</option>
                       <option value="Job Assigned">Job Assigned</option>
-                      {formFields.service === "Pet Insurance" && (
+                      {formFields.services?.includes("Pet Insurance") && (
                         <option value="Policy Active">Policy Active</option>
                       )}
                     </select>

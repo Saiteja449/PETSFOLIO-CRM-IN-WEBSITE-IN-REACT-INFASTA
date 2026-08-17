@@ -149,7 +149,7 @@ export function filterLeads(
       (lead.email && lead.email.toLowerCase().includes(search.toLowerCase()));
 
     const matchService =
-      service === "All" || lead.service === service;
+      service === "All" || (lead.services && lead.services.includes(service));
     const matchStage = stage === "All" || lead.stage === stage;
     const matchSalesperson =
       salesperson === "All" || lead.assignedTo === salesperson;

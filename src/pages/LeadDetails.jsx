@@ -740,7 +740,7 @@ export default function LeadDetails() {
                     <option value="Joined">Joined</option>
                     <option value="Job Posted">Job Posted</option>
                     <option value="Job Assigned">Job Assigned</option>
-                    {formData.service === "Pet Insurance" && (
+                    {currentLead?.services?.includes("Pet Insurance") && (
                       <option value="Policy Active">Policy Active</option>
                     )}
                   </select>

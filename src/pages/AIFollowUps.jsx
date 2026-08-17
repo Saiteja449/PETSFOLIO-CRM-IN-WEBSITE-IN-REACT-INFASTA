@@ -189,10 +189,10 @@ export default function AIFollowUps() {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="bg-bg-main p-4 rounded-xl border border-brand-secondary">
                   <span className="block text-xs font-semibold text-brand-primary/60 uppercase tracking-wider mb-1">
-                    Service
+                    Services
                   </span>
                   <span className="font-bold text-brand-primary">
-                    {selectedData.lead.service}
+                    {selectedData.lead.services?.join(", ") || selectedData.lead.service || "Grooming"}
                   </span>
                 </div>
                 {/* <div className="bg-bg-main p-4 rounded-xl border border-brand-secondary">

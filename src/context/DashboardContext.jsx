@@ -88,10 +88,14 @@ export function DashboardProvider({ children }) {
     const serviceWonLeads = {};
 
     leads.forEach((lead) => {
-      const s = normalizeServices(lead.service);
-      serviceBreakdown[s] = (serviceBreakdown[s] || 0) + 1;
-      if (isLeadWon(lead)) {
-        serviceWonLeads[s] = (serviceWonLeads[s] || 0) + 1;
+      if (lead.services && lead.services.length > 0) {
+        lead.services.forEach(service => {
+          const s = normalizeServices(service);
+          serviceBreakdown[s] = (serviceBreakdown[s] || 0) + 1;
+          if (isLeadWon(lead)) {
+            serviceWonLeads[s] = (serviceWonLeads[s] || 0) + 1;
+          }
+        });
       }
     });
 

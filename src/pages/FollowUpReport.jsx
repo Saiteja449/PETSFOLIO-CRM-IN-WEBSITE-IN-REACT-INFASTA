@@ -137,7 +137,7 @@ export default function FollowUpReport() {
                           </td>
                           <td className="p-4">
                             <div className="text-sm text-brand-primary/80">
-                              <div className="font-medium">{lead.service}</div>
+                              <div className="font-medium">{lead.services && lead.services.length > 0 ? lead.services.join(", ") : "Grooming"}</div>
                               <div className="text-xs text-brand-primary/60 mt-0.5">
                                 {lead.stage}
                               </div>

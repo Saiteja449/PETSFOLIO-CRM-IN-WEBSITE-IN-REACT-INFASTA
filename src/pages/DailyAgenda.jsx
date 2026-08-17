@@ -24,7 +24,7 @@ const LeadCard = ({ lead, navigate }) => (
           {lead.name}
         </h4>
         <span className="text-xs font-medium text-brand-primary/70">
-          {lead.service} • {lead.stage}
+          {lead.services?.join(', ') || 'Grooming'} • {lead.stage}
         </span>
       </div>
       <ExternalLink className="text-brand-primary/50 group-hover:text-teal-500 w-4 h-4 transition-colors" />
@@ -268,7 +268,7 @@ export default function DailyAgenda() {
                     </td>
                     <td className="p-4">
                       <div className="text-sm text-brand-primary/80">
-                        <div className="font-medium">{lead.service}</div>
+                        <div className="font-medium">{lead.services?.join(', ') || 'Grooming'}</div>
                         <div className="text-xs text-brand-primary/60 mt-0.5">
                           {lead.stage}
                         </div>

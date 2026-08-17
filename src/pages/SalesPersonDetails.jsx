@@ -373,16 +373,33 @@ export default function SalesPersonDetails() {
                       {lead.phone}
                     </td>
                     <td className="px-4 py-3">
-                      <div className="flex items-center gap-2">
-                        <div
-                          className="w-2 h-2 rounded-full"
-                          style={{
-                            backgroundColor: getServiceColor(lead.service),
-                          }}
-                        ></div>
-                        <span className="text-sm font-semibold text-brand-primary">
-                          {lead.service}
-                        </span>
+                      <div 
+                        className="flex flex-wrap gap-1.5"
+                        title={(lead.services && lead.services.length > 0 ? lead.services : ["Grooming"]).join(", ")}
+                      >
+                        {(() => {
+                          const services = lead.services && lead.services.length > 0 ? lead.services : ["Grooming"];
+                          return (
+                            <>
+                              <div className="flex items-center gap-1.5 bg-brand-secondary/20 px-2 py-0.5 rounded cursor-help">
+                                <div
+                                  className="w-2 h-2 rounded-full flex-shrink-0"
+                                  style={{ backgroundColor: getServiceColor(services[0]) }}
+                                />
+                                <span className="text-xs font-semibold text-brand-primary">
+                                  {services[0]}
+                                </span>
+                              </div>
+                              {services.length > 1 && (
+                                <div className="flex items-center gap-1.5 bg-brand-secondary/20 px-2 py-0.5 rounded cursor-help">
+                                  <span className="text-xs font-semibold text-brand-primary">
+                                    +{services.length - 1}
+                                  </span>
+                                </div>
+                              )}
+                            </>
+                          );
+                        })()}
                       </div>
                     </td>
                     <td className="px-4 py-3">
