@@ -162,8 +162,8 @@ export default function Leads() {
     const fetchLeads = async () => {
       try {
         const queryParams = new URLSearchParams({
-          page,
-          limit: rowsPerPage,
+          page: rowsPerPage === "All" ? 0 : page,
+          limit: rowsPerPage === "All" ? "all" : rowsPerPage,
           search,
           service,
           salesperson,
@@ -204,7 +204,10 @@ export default function Leads() {
     );
   }, [leadTypeTab]);
 
-  const totalPages = Math.ceil(totalLeadsCount / rowsPerPage);
+  const totalPages =
+    rowsPerPage === "All" || Number(rowsPerPage) <= 0
+      ? 1
+      : Math.ceil(totalLeadsCount / Number(rowsPerPage));
 
   const handleOpenAdd = () => {
     setFormFields(defaultFormFields);
@@ -609,41 +612,59 @@ export default function Leads() {
           </table>
         </div>
 
-        {/* Pagination */}
-        <div className="px-4 py-3 border-t border-brand-secondary flex items-center justify-between">
-          <div className="flex items-center gap-2 text-sm text-brand-primary/70">
-            <span>Rows per page:</span>
-            <select
-              value={rowsPerPage}
-              onChange={(e) => {
-                setRowsPerPage(Number(e.target.value));
-                setPage(0);
-              }}
-              className="bg-brand-light border border-brand-secondary rounded px-2 py-1 focus:outline-none focus:border-teal-500"
-            >
-              <option value={5}>5</option>
-              <option value={10}>10</option>
-              <option value={25}>25</option>
-            </select>
+        {/* Pagination & Filter Options */}
+        <div className="px-4 py-3 border-t border-brand-secondary flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-3 text-sm text-brand-primary/70">
+            <span className="font-medium text-xs text-brand-primary/80">Show leads:</span>
+            <div className="inline-flex items-center rounded-lg bg-brand-secondary/20 p-0.5 border border-brand-secondary">
+              {[10, 25, 50, "All"].map((option) => {
+                const isSelected = rowsPerPage === option;
+                return (
+                  <button
+                    key={option}
+                    type="button"
+                    onClick={() => {
+                      setRowsPerPage(option);
+                      setPage(0);
+                    }}
+                    className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${
+                      isSelected
+                        ? "bg-teal-500 text-white shadow-sm"
+                        : "text-brand-primary/70 hover:text-brand-primary hover:bg-brand-secondary/40"
+                    }`}
+                  >
+                    {option}
+                  </button>
+                );
+              })}
+            </div>
           </div>
           <div className="flex items-center gap-4 text-sm text-brand-primary/70">
-            <span>
-              {totalLeadsCount === 0 ? 0 : page * rowsPerPage + 1}-
-              {Math.min((page + 1) * rowsPerPage, totalLeadsCount)} of{" "}
-              {totalLeadsCount}
+            <span className="text-xs">
+              {totalLeadsCount === 0
+                ? "0 leads"
+                : rowsPerPage === "All"
+                ? `Showing all ${totalLeadsCount} leads`
+                : `${page * Number(rowsPerPage) + 1}-${Math.min(
+                    (page + 1) * Number(rowsPerPage),
+                    totalLeadsCount
+                  )} of ${totalLeadsCount}`}
             </span>
-            <div className="flex gap-1">
+            <div className="flex items-center gap-1.5">
               <button
                 onClick={() => setPage(Math.max(0, page - 1))}
-                disabled={page === 0}
-                className="px-2 py-1 hover:bg-brand-secondary/30 rounded disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={page === 0 || rowsPerPage === "All"}
+                className="px-2.5 py-1 text-xs font-semibold bg-brand-light border border-brand-secondary hover:bg-brand-secondary/30 rounded disabled:opacity-40 disabled:cursor-not-allowed transition-colors text-brand-primary"
               >
                 Prev
               </button>
+              <span className="text-xs font-medium text-brand-primary/80 px-1">
+                Page {rowsPerPage === "All" ? 1 : page + 1} of {Math.max(1, totalPages)}
+              </span>
               <button
                 onClick={() => setPage(Math.min(totalPages - 1, page + 1))}
-                disabled={page >= totalPages - 1}
-                className="px-2 py-1 hover:bg-brand-secondary/30 rounded disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={page >= totalPages - 1 || rowsPerPage === "All"}
+                className="px-2.5 py-1 text-xs font-semibold bg-brand-light border border-brand-secondary text-brand-primary hover:bg-brand-secondary/30 rounded disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
               >
                 Next
               </button>
