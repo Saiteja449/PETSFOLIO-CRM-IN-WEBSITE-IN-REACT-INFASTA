@@ -25,6 +25,7 @@ export function AuthProvider({ children }) {
         name: user.name || user.email.split("@")[0],
         email: user.email,
         role: roleMap[user.role?.toLowerCase()] || user.role,
+        specialization: user.specialization || "General Services",
         avatar: (user.name || user.email).substring(0, 2).toUpperCase(),
       }));
 
@@ -112,12 +113,13 @@ export function AuthProvider({ children }) {
     localStorage.removeItem("petsfolio_session_user");
   };
 
-  const addSalesPerson = async (name, email, password) => {
+  const addSalesPerson = async (name, email, password, specialization = "General Services") => {
     try {
       const response = await axios.post(API_ENDPOINTS.USERS.BASE, {
         name,
         email,
         password,
+        specialization,
       });
 
       // Refresh the users list

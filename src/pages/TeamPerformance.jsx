@@ -109,7 +109,7 @@ function TemplateCard({ template, onEdit, onDelete }) {
 export default function TeamPerformance() {
   const navigate = useNavigate();
   const { performersList } = useDashboard();
-  const { currentUser, addSalesPerson, deleteSalesPerson } = useAuth();
+  const { currentUser, addSalesPerson, deleteSalesPerson, allUsers } = useAuth();
   const {
     templates,
     repAssignments,
@@ -134,6 +134,7 @@ export default function TeamPerformance() {
   const [newEmail, setNewEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [newSpecialization, setNewSpecialization] = useState("General Services");
   const [createError, setCreateError] = useState("");
 
   // ── Rep deletion ───────────────────────────────────────────────────────────
@@ -156,9 +157,9 @@ export default function TeamPerformance() {
   const [assignRep, setAssignRep] = useState(null);
   const [assignTemplateId, setAssignTemplateId] = useState("");
   const [assignTiers, setAssignTiers] = useState({
-    baseline: { callsPerDay: "", conversionPct: "" },
-    target: { callsPerDay: "", conversionPct: "" },
-    star: { callsPerDay: "", conversionPct: "" },
+    baseline: { callsPerDay: "", conversionPct: "", expectedConversionPct: "", monthlyClosings: "", expectedClosures: "" },
+    target: { callsPerDay: "", conversionPct: "", expectedConversionPct: "", monthlyClosings: "", expectedClosures: "" },
+    star: { callsPerDay: "", conversionPct: "", expectedConversionPct: "", monthlyClosings: "", expectedClosures: "" },
   });
   const [assignMonth, setAssignMonth] = useState(currentMonth);
   const [assignError, setAssignError] = useState("");
@@ -197,11 +198,12 @@ export default function TeamPerformance() {
     }
 
     try {
-      await addSalesPerson(newName.trim(), newEmail.trim(), newPassword);
+      await addSalesPerson(newName.trim(), newEmail.trim(), newPassword, newSpecialization);
       setNewName("");
       setNewEmail("");
       setNewPassword("");
       setConfirmPassword("");
+      setNewSpecialization("General Services");
       setCreateOpen(false);
     } catch (err) {
       setCreateError(err.message || "Failed to add representative.");
@@ -295,14 +297,23 @@ export default function TeamPerformance() {
       baseline: {
         callsPerDay: existing?.tiers?.baseline?.callsPerDay ?? "",
         conversionPct: existing?.tiers?.baseline?.conversionPct ?? "",
+        expectedConversionPct: existing?.tiers?.baseline?.expectedConversionPct ?? "",
+        monthlyClosings: existing?.tiers?.baseline?.monthlyClosings ?? "",
+        expectedClosures: existing?.tiers?.baseline?.expectedClosures ?? "",
       },
       target: {
         callsPerDay: existing?.tiers?.target?.callsPerDay ?? "",
         conversionPct: existing?.tiers?.target?.conversionPct ?? "",
+        expectedConversionPct: existing?.tiers?.target?.expectedConversionPct ?? "",
+        monthlyClosings: existing?.tiers?.target?.monthlyClosings ?? "",
+        expectedClosures: existing?.tiers?.target?.expectedClosures ?? "",
       },
       star: {
         callsPerDay: existing?.tiers?.star?.callsPerDay ?? "",
         conversionPct: existing?.tiers?.star?.conversionPct ?? "",
+        expectedConversionPct: existing?.tiers?.star?.expectedConversionPct ?? "",
+        monthlyClosings: existing?.tiers?.star?.monthlyClosings ?? "",
+        expectedClosures: existing?.tiers?.star?.expectedClosures ?? "",
       },
     });
     setAssignMonth(currentMonth);
@@ -334,14 +345,23 @@ export default function TeamPerformance() {
           baseline: {
             callsPerDay: Number(assignTiers.baseline.callsPerDay) || 0,
             conversionPct: Number(assignTiers.baseline.conversionPct) || 0,
+            expectedConversionPct: Number(assignTiers.baseline.expectedConversionPct) || 0,
+            monthlyClosings: Number(assignTiers.baseline.monthlyClosings) || 0,
+            expectedClosures: Number(assignTiers.baseline.expectedClosures) || 0,
           },
           target: {
             callsPerDay: Number(assignTiers.target.callsPerDay) || 0,
             conversionPct: Number(assignTiers.target.conversionPct) || 0,
+            expectedConversionPct: Number(assignTiers.target.expectedConversionPct) || 0,
+            monthlyClosings: Number(assignTiers.target.monthlyClosings) || 0,
+            expectedClosures: Number(assignTiers.target.expectedClosures) || 0,
           },
           star: {
             callsPerDay: Number(assignTiers.star.callsPerDay) || 0,
             conversionPct: Number(assignTiers.star.conversionPct) || 0,
+            expectedConversionPct: Number(assignTiers.star.expectedConversionPct) || 0,
+            monthlyClosings: Number(assignTiers.star.monthlyClosings) || 0,
+            expectedClosures: Number(assignTiers.star.expectedClosures) || 0,
           },
         },
         assignMonth,
@@ -624,8 +644,11 @@ export default function TeamPerformance() {
                           </span>
                         </div>
                       </td>
-                      <td className="py-3 px-4 font-bold text-brand-primary">
-                        {p.name}
+                      <td className="py-3 px-4">
+                        <div className="font-bold text-brand-primary">{p.name}</div>
+                        <div className="text-[10px] text-teal-600 font-semibold bg-teal-500/10 px-1.5 py-0.5 rounded w-fit mt-1">
+                          {allUsers.find((u) => u.name === p.name)?.specialization || "General Services"}
+                        </div>
                       </td>
                       <td className="py-3 px-4 text-brand-primary">
                         {p.assigned}
@@ -1026,6 +1049,58 @@ export default function TeamPerformance() {
                                 )
                               }
                               placeholder="e.g. 40"
+                              className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg px-3 py-1.5 focus:outline-none focus:border-teal-500 mb-2"
+                            />
+                            <label className="block text-[10px] font-bold text-brand-primary/60 mb-1">
+                              Expected Conversion %
+                            </label>
+                            <input
+                              type="number"
+                              min="0"
+                              max="100"
+                              value={assignTiers.baseline.expectedConversionPct}
+                              onChange={(e) =>
+                                updateAssignTier(
+                                  "baseline",
+                                  "expectedConversionPct",
+                                  e.target.value,
+                                )
+                              }
+                              placeholder="e.g. 40"
+                              className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg px-3 py-1.5 focus:outline-none focus:border-teal-500 mb-2"
+                            />
+                            <label className="block text-[10px] font-bold text-brand-primary/60 mb-1">
+                              Monthly Closures Target
+                            </label>
+                            <input
+                              type="number"
+                              min="0"
+                              value={assignTiers.baseline.monthlyClosings}
+                              onChange={(e) =>
+                                updateAssignTier(
+                                  "baseline",
+                                  "monthlyClosings",
+                                  e.target.value,
+                                )
+                              }
+                              placeholder="e.g. 20"
+                              className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg px-3 py-1.5 focus:outline-none focus:border-teal-500 mb-2"
+                            />
+                            <label className="block text-[10px] font-bold text-brand-primary/60 mb-1">
+                              Expected Closures
+                            </label>
+                            <input
+                              type="number"
+                              min="0"
+                              value={assignTiers.baseline.expectedClosures}
+                              onChange={(e) =>
+                                updateAssignTier(
+                                  "baseline",
+                                  "expectedClosures",
+                                  e.target.value,
+                                )
+                              }
+                              placeholder="e.g. 15"
                               className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg px-3 py-1.5 focus:outline-none focus:border-teal-500"
                             />
                           </div>
@@ -1086,6 +1161,58 @@ export default function TeamPerformance() {
                                 )
                               }
                               placeholder="e.g. 60"
+                              className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg px-3 py-1.5 focus:outline-none focus:border-teal-500 mb-2"
+                            />
+                            <label className="block text-[10px] font-bold text-brand-primary/60 mb-1">
+                              Expected Conversion %
+                            </label>
+                            <input
+                              type="number"
+                              min="0"
+                              max="100"
+                              value={assignTiers.target.expectedConversionPct}
+                              onChange={(e) =>
+                                updateAssignTier(
+                                  "target",
+                                  "expectedConversionPct",
+                                  e.target.value,
+                                )
+                              }
+                              placeholder="e.g. 60"
+                              className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg px-3 py-1.5 focus:outline-none focus:border-teal-500 mb-2"
+                            />
+                            <label className="block text-[10px] font-bold text-brand-primary/60 mb-1">
+                              Monthly Closures Target
+                            </label>
+                            <input
+                              type="number"
+                              min="0"
+                              value={assignTiers.target.monthlyClosings}
+                              onChange={(e) =>
+                                updateAssignTier(
+                                  "target",
+                                  "monthlyClosings",
+                                  e.target.value,
+                                )
+                              }
+                              placeholder="e.g. 30"
+                              className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg px-3 py-1.5 focus:outline-none focus:border-teal-500 mb-2"
+                            />
+                            <label className="block text-[10px] font-bold text-brand-primary/60 mb-1">
+                              Expected Closures
+                            </label>
+                            <input
+                              type="number"
+                              min="0"
+                              value={assignTiers.target.expectedClosures}
+                              onChange={(e) =>
+                                updateAssignTier(
+                                  "target",
+                                  "expectedClosures",
+                                  e.target.value,
+                                )
+                              }
+                              placeholder="e.g. 25"
                               className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg px-3 py-1.5 focus:outline-none focus:border-teal-500"
                             />
                           </div>
@@ -1146,6 +1273,58 @@ export default function TeamPerformance() {
                                 )
                               }
                               placeholder="e.g. 75"
+                              className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg px-3 py-1.5 focus:outline-none focus:border-teal-500 mb-2"
+                            />
+                            <label className="block text-[10px] font-bold text-brand-primary/60 mb-1">
+                              Expected Conversion %
+                            </label>
+                            <input
+                              type="number"
+                              min="0"
+                              max="100"
+                              value={assignTiers.star.expectedConversionPct}
+                              onChange={(e) =>
+                                updateAssignTier(
+                                  "star",
+                                  "expectedConversionPct",
+                                  e.target.value,
+                                )
+                              }
+                              placeholder="e.g. 75"
+                              className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg px-3 py-1.5 focus:outline-none focus:border-teal-500 mb-2"
+                            />
+                            <label className="block text-[10px] font-bold text-brand-primary/60 mb-1">
+                              Monthly Closures Target
+                            </label>
+                            <input
+                              type="number"
+                              min="0"
+                              value={assignTiers.star.monthlyClosings}
+                              onChange={(e) =>
+                                updateAssignTier(
+                                  "star",
+                                  "monthlyClosings",
+                                  e.target.value,
+                                )
+                              }
+                              placeholder="e.g. 40"
+                              className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg px-3 py-1.5 focus:outline-none focus:border-teal-500 mb-2"
+                            />
+                            <label className="block text-[10px] font-bold text-brand-primary/60 mb-1">
+                              Expected Closures
+                            </label>
+                            <input
+                              type="number"
+                              min="0"
+                              value={assignTiers.star.expectedClosures}
+                              onChange={(e) =>
+                                updateAssignTier(
+                                  "star",
+                                  "expectedClosures",
+                                  e.target.value,
+                                )
+                              }
+                              placeholder="e.g. 35"
                               className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg px-3 py-1.5 focus:outline-none focus:border-teal-500"
                             />
                           </div>
@@ -1255,6 +1434,20 @@ export default function TeamPerformance() {
                   className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block p-2.5 outline-none"
                   required
                 />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-brand-primary/70 mb-1.5">
+                  Specialization
+                </label>
+                <select
+                  value={newSpecialization}
+                  onChange={(e) => setNewSpecialization(e.target.value)}
+                  className="w-full bg-brand-light border border-brand-secondary text-brand-primary text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block p-2.5 outline-none"
+                >
+                  <option value="General Services">General Services (Combined Core)</option>
+                  <option value="Pet Insurance">Pet Insurance</option>
+                  <option value="All Services">All Services</option>
+                </select>
               </div>
             </form>
 

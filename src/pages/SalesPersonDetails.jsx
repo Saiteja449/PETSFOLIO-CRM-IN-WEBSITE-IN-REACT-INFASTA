@@ -44,6 +44,7 @@ export default function SalesPersonDetails() {
   const decodedName = decodeURIComponent(name);
   const [activeTab, setActiveTab] = useState("New Leads");
   const [analytics, setAnalytics] = useState([]);
+  const [monthlyPerformance, setMonthlyPerformance] = useState(null);
   const scrollContainerRef = useRef(null);
 
   React.useEffect(() => {
@@ -55,7 +56,17 @@ export default function SalesPersonDetails() {
         console.error("Failed to fetch analytics:", error);
       }
     };
+    const fetchMonthly = async () => {
+      try {
+        const res = await axios.get(`${API_ENDPOINTS.ANALYTICS.BASE}/monthly-performance`);
+        const repPerf = res.data.data?.find(d => d.repName === decodedName);
+        setMonthlyPerformance(repPerf || null);
+      } catch (error) {
+        console.error("Failed to fetch monthly performance:", error);
+      }
+    };
     fetchAnalytics();
+    fetchMonthly();
   }, [decodedName]);
 
   const formatTalkTime = (seconds) => {
@@ -191,8 +202,11 @@ export default function SalesPersonDetails() {
             {decodedName.substring(0, 1).toUpperCase()}
           </div>
           <div>
-            <h1 className="text-2xl font-extrabold text-brand-primary tracking-tight">
+            <h1 className="text-2xl font-extrabold text-brand-primary tracking-tight flex items-center gap-3">
               {decodedName}'s Leads
+              <span className="text-xs font-semibold bg-teal-500/10 text-teal-600 px-2 py-1 rounded border border-teal-500/20">
+                {allUsers.find((u) => u.name === decodedName)?.specialization || "General Services"}
+              </span>
             </h1>
             <p className="text-sm text-brand-primary/70 mt-1">
               Total assigned leads: {repLeads.length}
@@ -281,6 +295,60 @@ export default function SalesPersonDetails() {
           </div>
         );
       })()}
+
+      {/* ── Monthly Performance Widget ──────────────────────────────────────── */}
+      {monthlyPerformance && (
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="bg-brand-light p-4 rounded-xl border border-brand-secondary shadow-sm flex flex-col justify-between">
+            <div>
+              <p className="text-xs text-brand-primary/60 font-bold mb-1">Expected Closures</p>
+              <div className="flex items-end gap-2">
+                <span className="text-2xl font-black text-brand-primary">{monthlyPerformance.expectedClosures}</span>
+                <span className="text-xs text-brand-primary/50 mb-1">this month</span>
+              </div>
+            </div>
+            <p className="text-[10px] text-brand-primary/50 mt-3 border-t border-brand-secondary/40 pt-2">
+              Based on {monthlyPerformance.assignedLeadsCount} assigned leads & {monthlyPerformance.expectedConversionPct}% expected conv.
+            </p>
+          </div>
+          <div className="bg-brand-light p-4 rounded-xl border border-brand-secondary shadow-sm flex flex-col justify-between">
+            <div>
+              <p className="text-xs text-brand-primary/60 font-bold mb-1">Actual Conversion Rate</p>
+              <div className="flex items-end gap-2">
+                <span className="text-2xl font-black text-teal-500">{monthlyPerformance.actualConversionPct}%</span>
+                <span className="text-xs text-brand-primary/50 mb-1">vs {monthlyPerformance.expectedConversionPct}%</span>
+              </div>
+            </div>
+            <p className="text-[10px] text-brand-primary/50 mt-3 border-t border-brand-secondary/40 pt-2">
+              {monthlyPerformance.actualClosures} closed out of {monthlyPerformance.assignedLeadsCount} leads.
+            </p>
+          </div>
+          <div className="bg-brand-light p-4 rounded-xl border border-brand-secondary shadow-sm flex flex-col justify-between">
+            <div>
+              <p className="text-xs text-brand-primary/60 font-bold mb-1">Closing Performance</p>
+              <div className="flex items-end gap-2">
+                <span className="text-2xl font-black text-brand-primary">{monthlyPerformance.closingPerformance}%</span>
+                <span className="text-xs text-brand-primary/50 mb-1">of target</span>
+              </div>
+            </div>
+            <div className="w-full bg-brand-secondary rounded-full h-1.5 mt-3">
+              <div className="bg-teal-500 h-1.5 rounded-full" style={{ width: `${Math.min(100, monthlyPerformance.closingPerformance)}%` }}></div>
+            </div>
+          </div>
+          <div className="bg-brand-light p-4 rounded-xl border border-brand-secondary shadow-sm flex flex-col justify-between">
+            <div>
+              <p className="text-xs text-brand-primary/60 font-bold mb-1">Overall Rating</p>
+              <div className="flex items-end gap-2">
+                <span className="text-2xl font-black text-amber-500">{monthlyPerformance.starRating.toFixed(1)}</span>
+                <span className="text-xs text-amber-500 font-bold mb-1">Stars</span>
+              </div>
+            </div>
+            <p className="text-[10px] text-brand-primary/50 mt-3 border-t border-brand-secondary/40 pt-2">
+              Score: {monthlyPerformance.overallScore} (Closures & Calls)
+            </p>
+          </div>
+        </div>
+      )}
 
 
       <div className="border-b border-brand-secondary w-full overflow-hidden mb-6">
