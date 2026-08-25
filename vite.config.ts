@@ -5,7 +5,7 @@ import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
   return {
-    base: '/crm/in/',
+    base: '/petsfolio-client-crm/in/',
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
