@@ -15,7 +15,9 @@ export default function TestAI() {
   const [leadId, setLeadId] = useState(null);
   const messagesEndRef = useRef(null);
 
-  const API_URL = "http://holyminicow.com/crm-beta/api/whatsapp/test-ai";
+  const API_URL = import.meta.env.VITE_PROD === "true"
+    ? "https://api.holyminicow.com/api/whatsapp/test-ai"
+    : "http://holyminicow.com/crm-beta/api/whatsapp/test-ai";
 
   const fetchHistory = async () => {
     try {

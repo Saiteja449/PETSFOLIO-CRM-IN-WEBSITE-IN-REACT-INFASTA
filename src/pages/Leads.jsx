@@ -15,6 +15,7 @@ import {
   ChevronLeft,
   ChevronRight,
   ChevronDown,
+  MapPin,
 } from "lucide-react";
 import axios from "axios";
 import { API_ENDPOINTS } from "../utils/constants.js";
@@ -106,6 +107,7 @@ export default function Leads() {
     name: "",
     phone: "",
     email: "",
+    city: "",
     source: "Manual Entry",
     services: ["Grooming"],
 
@@ -245,6 +247,7 @@ export default function Leads() {
       name: lead.name,
       phone: lead.phone,
       email: lead.email || "",
+      city: lead.city || lead.aiQualification?.city || "",
       source: lead.source,
       services: lead.services && lead.services.length > 0 ? lead.services : ["Grooming"],
 
@@ -459,6 +462,9 @@ export default function Leads() {
                   Phone Number
                 </th>
                 <th className="px-4 py-3 text-xs font-bold text-brand-primary uppercase tracking-wider">
+                  City
+                </th>
+                <th className="px-4 py-3 text-xs font-bold text-brand-primary uppercase tracking-wider">
                   Source
                 </th>
                 <th className="px-4 py-3 text-xs font-bold text-brand-primary uppercase tracking-wider">
@@ -485,7 +491,7 @@ export default function Leads() {
               {paginatedLeads.length === 0 ? (
                 <tr>
                   <td
-                    colSpan="8"
+                    colSpan={currentUser?.role !== "Sales Representative" ? "9" : "8"}
                     className="py-8 text-center text-sm text-brand-primary/70"
                   >
                     No customer files found for the current configuration.
@@ -511,6 +517,16 @@ export default function Leads() {
                     </td>
                     <td className="px-4 py-3 text-sm text-brand-primary">
                       {lead.phone}
+                    </td>
+                    <td className="px-4 py-3 text-sm text-brand-primary whitespace-nowrap">
+                      {lead.city || lead.aiQualification?.city ? (
+                        <span className="inline-flex items-center gap-1 font-medium capitalize text-xs bg-brand-secondary/20 px-2 py-0.5 rounded text-brand-primary">
+                          <MapPin className="w-3 h-3 text-teal-500 flex-shrink-0" />
+                          {lead.city || lead.aiQualification?.city}
+                        </span>
+                      ) : (
+                        <span className="text-brand-primary/40 text-xs">-</span>
+                      )}
                     </td>
                     <td className="px-4 py-3">
                       <Badge
@@ -932,6 +948,20 @@ export default function Leads() {
                       value={formFields.email}
                       onChange={(e) =>
                         setFormFields({ ...formFields, email: e.target.value })
+                      }
+                      className="w-full bg-brand-light border border-brand-secondary rounded-lg px-3 py-2 text-sm text-brand-primary focus:outline-none focus:border-teal-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-brand-primary/70 mb-1">
+                      City / Location
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Bangalore, Hyderabad"
+                      value={formFields.city || ""}
+                      onChange={(e) =>
+                        setFormFields({ ...formFields, city: e.target.value })
                       }
                       className="w-full bg-brand-light border border-brand-secondary rounded-lg px-3 py-2 text-sm text-brand-primary focus:outline-none focus:border-teal-500"
                     />
